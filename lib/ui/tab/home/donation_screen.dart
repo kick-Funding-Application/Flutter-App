@@ -17,7 +17,7 @@ class DonationScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: AppColor.kPrimaryColor,
+      backgroundColor: AppColor.kForthColor,
       body: Column(
         children: [
           Expanded(
@@ -180,6 +180,7 @@ class DonationScreen extends StatelessWidget {
                           style:
                               Theme.of(context).textTheme.headline5!.copyWith(
                                     fontWeight: FontWeight.bold,
+                                    color: AppColor.kTextColor1,
                                   ),
                         ),
                       ],
@@ -203,7 +204,7 @@ class DonationScreen extends StatelessWidget {
                     ),
                   ),
                   foregroundColor: MaterialStateProperty.all(
-                    AppColor.kPrimaryColor,
+                    AppColor.kPlaceholder2,
                   ),
                   minimumSize: MaterialStateProperty.all(
                     Size(

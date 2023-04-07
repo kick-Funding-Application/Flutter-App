@@ -20,7 +20,7 @@ class ProfileCard extends StatelessWidget {
             borderRadius: BorderRadius.circular(
               8.r,
             ),
-            color: AppColor.kBlue,
+            color: AppColor.kForthColor,
           ),
           child: Center(
             child: SvgPicture.asset(
@@ -37,13 +37,13 @@ class ProfileCard extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Text(
-                'Chiro Morganisa',
+                'Zahraa Ashraf',
                 style: Theme.of(context).textTheme.headline5!.copyWith(
                       fontWeight: FontWeight.bold,
                     ),
               ),
               Text(
-                '🇷🇺 +768-907-6969',
+                'EG +0201222318030',
                 style: Theme.of(context).textTheme.headline6!.copyWith(
                       color: AppColor.kTextColor1,
                     ),

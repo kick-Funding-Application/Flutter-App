@@ -6,7 +6,6 @@ import 'package:flutter_svg/flutter_svg.dart';
 import '../../../../bloc/profile/profile_bloc.dart';
 import '../../../../theme/app_color.dart';
 
-
 import 'details.dart';
 import 'profile_card.dart';
 
@@ -99,7 +98,7 @@ class ProfileContent extends StatelessWidget {
             Expanded(
               child: Details(
                 title: 'Help and support',
-                desc: 'afofa@ymail.com',
+                desc: 'zahraa@gmail.com',
               ),
             ),
             GestureDetector(

@@ -6,7 +6,7 @@ import '../../../../theme/app_color.dart';
 import '../charity/charity_input_field.dart';
 
 class EditContent extends StatelessWidget {
-  const EditContent();
+  const EditContent({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -28,7 +28,7 @@ class EditContent extends StatelessWidget {
                   borderRadius: BorderRadius.circular(
                     8.r,
                   ),
-                  color: AppColor.kBlue,
+                  color: AppColor.kForthColor,
                 ),
                 child: Center(
                   child: SvgPicture.asset(

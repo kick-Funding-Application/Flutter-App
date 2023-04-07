@@ -13,7 +13,7 @@ class DetailScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: AppColor.kPrimaryColor,
+      backgroundColor: AppColor.kForthColor,
       body: Stack(
         children: [
           Column(
@@ -151,7 +151,7 @@ class DetailScreen extends StatelessWidget {
                                       height: 6.h,
                                       decoration: ShapeDecoration(
                                         shape: const StadiumBorder(),
-                                        color: AppColor.kForthColor,
+                                        color: AppColor.kAccentColor,
                                       ),
                                     ),
                                     Spacer(),
@@ -260,7 +260,7 @@ class DetailScreen extends StatelessWidget {
                                   shape: BoxShape.circle,
                                   color: AppColor.kBlue,
                                   border: Border.all(
-                                    color: AppColor.kAccentColor,
+                                    color: AppColor.kForthColor,
                                     width: 4.sp,
                                   )),
                               child: Center(
@@ -279,7 +279,7 @@ class DetailScreen extends StatelessWidget {
                                     shape: BoxShape.circle,
                                     color: AppColor.kThirdColor,
                                     border: Border.all(
-                                      color: AppColor.kAccentColor,
+                                      color: AppColor.kForthColor,
                                       width: 4.sp,
                                     )),
                                 child: Center(
@@ -299,14 +299,14 @@ class DetailScreen extends StatelessWidget {
                                     shape: BoxShape.circle,
                                     color: Colors.white,
                                     border: Border.all(
-                                      color: AppColor.kPrimaryColor,
+                                      color: AppColor.kForthColor,
                                       width: 4.sp,
                                     )),
                                 child: Center(
                                   child: Text(
                                     '99+',
                                     style: TextStyle(
-                                      color: AppColor.kPrimaryColor,
+                                      color: AppColor.kForthColor,
                                       fontWeight: FontWeight.bold,
                                     ),
                                   ),
@@ -327,7 +327,7 @@ class DetailScreen extends StatelessWidget {
                           ),
                         ),
                         foregroundColor: MaterialStateProperty.all(
-                          AppColor.kForthColor,
+                          AppColor.kPlaceholder2,
                         ),
                         minimumSize: MaterialStateProperty.all(
                           Size(
