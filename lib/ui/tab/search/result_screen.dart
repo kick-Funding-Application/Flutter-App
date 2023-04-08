@@ -15,7 +15,8 @@ class ResultScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: AppColor.kPrimaryColor,
+      resizeToAvoidBottomInset: false,
+      backgroundColor: AppColor.kForthColor,
       body: Stack(
         children: [
           Column(
@@ -37,7 +38,6 @@ class ResultScreen extends StatelessWidget {
                   child: Column(
                     children: [
                       Expanded(
-                        flex: 2,
                         child: Container(
                           width: 1.sw,
                           decoration: BoxDecoration(
@@ -60,7 +60,6 @@ class ResultScreen extends StatelessWidget {
                         ),
                       ),
                       Expanded(
-                        flex: 3,
                         child: Container(
                           width: 1.sw,
                           decoration: BoxDecoration(
@@ -262,7 +261,7 @@ class ResultScreen extends StatelessWidget {
                                   shape: BoxShape.circle,
                                   color: AppColor.kBlue,
                                   border: Border.all(
-                                    color: AppColor.kPrimaryColor,
+                                    color: AppColor.kForthColor,
                                     width: 4.sp,
                                   )),
                               child: Center(
@@ -281,7 +280,7 @@ class ResultScreen extends StatelessWidget {
                                     shape: BoxShape.circle,
                                     color: AppColor.kThirdColor,
                                     border: Border.all(
-                                      color: AppColor.kPrimaryColor,
+                                      color: AppColor.kForthColor,
                                       width: 4.sp,
                                     )),
                                 child: Center(
@@ -301,14 +300,14 @@ class ResultScreen extends StatelessWidget {
                                     shape: BoxShape.circle,
                                     color: Colors.white,
                                     border: Border.all(
-                                      color: AppColor.kPrimaryColor,
+                                      color: AppColor.kForthColor,
                                       width: 4.sp,
                                     )),
                                 child: Center(
                                   child: Text(
                                     '99+',
                                     style: TextStyle(
-                                      color: AppColor.kPrimaryColor,
+                                      color: AppColor.kForthColor,
                                       fontWeight: FontWeight.bold,
                                     ),
                                   ),
@@ -353,7 +352,10 @@ class ResultScreen extends StatelessWidget {
                           builder: (_) => CalculatorBuilder(),
                         );
                       },
-                      child: Text('Donate'),
+                      child: Text(
+                        'Donate',
+                        style: TextStyle(color: AppColor.kPlaceholder1),
+                      ),
                     ),
                   ],
                 ),

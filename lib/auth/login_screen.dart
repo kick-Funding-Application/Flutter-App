@@ -210,7 +210,7 @@ class LoginForm extends StatelessWidget {
           height: 40.h,
         ),
         CustomInputField(
-          hintText: 'Phone, email or username',
+          hintText: 'Email or username',
           textInputAction: TextInputAction.next,
         ),
         SizedBox(

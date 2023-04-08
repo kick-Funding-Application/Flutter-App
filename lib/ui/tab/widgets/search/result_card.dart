@@ -6,7 +6,6 @@ import '../../../../models/result.dart';
 import '../../../../routes/routes.dart';
 import '../../../../theme/app_color.dart';
 
-
 final List<Result> results = [
   Result(
     title: 'Realize Syirian children dream for school',

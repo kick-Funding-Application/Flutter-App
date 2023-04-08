@@ -29,12 +29,27 @@ class SignupForm extends StatelessWidget {
           height: 40.h,
         ),
         CustomInputField(
-          hintText: 'Phone or email',
+          hintText: 'Email',
           textInputAction: TextInputAction.next,
         ),
         SizedBox(
           height: 8.h,
         ),
+        CustomInputField(
+          hintText: 'First Name',
+          textInputAction: TextInputAction.next,
+        ),
+        SizedBox(
+          height: 8.h,
+        ),
+        CustomInputField(
+          hintText: 'Last Name',
+          textInputAction: TextInputAction.next,
+        ),
+        SizedBox(
+          height: 8.h,
+        ),
+        
         CustomInputField(
           hintText: 'Username',
           textInputAction: TextInputAction.next,
@@ -69,8 +84,7 @@ class SignupForm extends StatelessWidget {
               ),
             ),
           ),
-          onPressed:
-          () => Navigator.of(context).pushReplacementNamed(
+          onPressed: () => Navigator.of(context).pushReplacementNamed(
             RouteGenerator.main,
           ),
           child: Text(
