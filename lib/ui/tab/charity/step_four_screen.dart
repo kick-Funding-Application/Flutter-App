@@ -8,9 +8,15 @@ import '../widgets/charity/charity_input_field.dart';
 import '../widgets/charity/charity_scaffold.dart';
 import '../widgets/charity/steps.dart';
 
-class StepFourScreen extends StatelessWidget {
+class StepFourScreen extends StatefulWidget {
   const StepFourScreen();
 
+  @override
+  State<StepFourScreen> createState() => _StepFourScreenState();
+}
+
+class _StepFourScreenState extends State<StepFourScreen> {
+  var phone = TextEditingController();
   @override
   Widget build(BuildContext context) {
     return CharityScaffold(
@@ -35,7 +41,12 @@ class StepFourScreen extends StatelessWidget {
         SizedBox(
           height: 24.h,
         ),
-        CharityInputField('Your Phone Number')
+        CharityInputField(
+          'Your Phone Number',
+          onchanged: (String value) {},
+          validateStatus: (value) {},
+          controller: phone,
+        )
       ],
       button: ElevatedButton(
         style: ButtonStyle(

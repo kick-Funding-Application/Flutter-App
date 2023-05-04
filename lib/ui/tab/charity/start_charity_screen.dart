@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:kickfunding/initials/constants.dart';
 
 import '../../../../models/charity.dart';
 import '../../../../routes/routes.dart';
@@ -7,9 +8,14 @@ import '../../../../theme/app_color.dart';
 import '../widgets/charity/category_card.dart';
 import '../widgets/charity/charity_screen_path.dart';
 
-class StartCharityScreen extends StatelessWidget {
+class StartCharityScreen extends StatefulWidget {
   const StartCharityScreen();
 
+  @override
+  State<StartCharityScreen> createState() => _StartCharityScreenState();
+}
+
+class _StartCharityScreenState extends State<StartCharityScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -34,6 +40,9 @@ class StartCharityScreen extends StatelessWidget {
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
+                        SizedBox(
+                          height: 30.h,
+                        ),
                         Text(
                           'Start a Charity',
                           style:

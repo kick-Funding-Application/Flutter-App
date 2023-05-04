@@ -48,6 +48,39 @@ class SignupScreen extends StatelessWidget {
                       ),
                       child: Column(
                         children: [
+                          // SignupForm(),
+                          SizedBox(
+                            height: 40.h,
+                          ),
+                        ],
+                      ),
+                    ),
+                    Container(
+                      width: double.infinity,
+                      padding: EdgeInsets.symmetric(
+                        horizontal: 16.w,
+                        vertical: 24.h,
+                      ),
+                      decoration: BoxDecoration(
+                        color: Colors.white,
+                        borderRadius: BorderRadius.circular(
+                          16.r,
+                        ),
+                        boxShadow: [
+                          BoxShadow(
+                            color: AppColor.kBlue.withOpacity(
+                              0.5,
+                            ),
+                            offset: Offset(
+                              0,
+                              2.h,
+                            ),
+                            blurRadius: 10,
+                          ),
+                        ],
+                      ),
+                      child: Column(
+                        children: [
                           SignupForm(),
                           SizedBox(
                             height: 40.h,
@@ -84,32 +117,6 @@ class SignupScreen extends StatelessWidget {
                           ),
                         ],
                       ),
-                    ),
-                    Container(
-                      width: double.infinity,
-                      padding: EdgeInsets.symmetric(
-                        horizontal: 16.w,
-                        vertical: 24.h,
-                      ),
-                      decoration: BoxDecoration(
-                        color: Colors.white,
-                        borderRadius: BorderRadius.circular(
-                          16.r,
-                        ),
-                        boxShadow: [
-                          BoxShadow(
-                            color: AppColor.kBlue.withOpacity(
-                              0.5,
-                            ),
-                            offset: Offset(
-                              0,
-                              2.h,
-                            ),
-                            blurRadius: 10,
-                          ),
-                        ],
-                      ),
-                      child: SignupForm(),
                     ),
                   ],
                 ),

@@ -6,28 +6,34 @@ import '../../../theme/app_color.dart';
 class CustomInputField extends StatelessWidget {
   const CustomInputField({
     this.textInputAction,
-    this.onSubmitted,
+    this.onChanged,
     this.controller,
     this.isPassword = false,
     this.hintText,
+    this.validateStatus,
+    this.sufficon,
   });
 
   final bool isPassword;
   final TextInputAction? textInputAction;
-  final Function(String)? onSubmitted;
+  final Function(String)? onChanged;
   final TextEditingController? controller;
   final String? hintText;
+  final FormFieldValidator? validateStatus;
+  final IconButton? sufficon;
 
   @override
   Widget build(BuildContext context) {
-    return TextField(
+    return TextFormField(
       obscureText: isPassword,
       controller: controller,
       textInputAction: textInputAction,
-      onSubmitted: onSubmitted,
+      validator: validateStatus,
+      onChanged: onChanged,
       cursorColor: AppColor.kPrimaryColor,
       style: Theme.of(context).textTheme.bodyText2,
       decoration: InputDecoration(
+        suffixIcon: sufficon,
         filled: true,
         fillColor: AppColor.kPlaceholder1,
         border: OutlineInputBorder(

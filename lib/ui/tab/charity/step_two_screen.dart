@@ -6,6 +6,7 @@ import '../../../../theme/app_color.dart';
 import '../widgets/charity/charity_input_field.dart';
 import '../widgets/charity/charity_scaffold.dart';
 import '../widgets/charity/steps.dart';
+import 'package:kickfunding/initials/constants.dart';
 
 class StepTwoScreen extends StatelessWidget {
   const StepTwoScreen();
@@ -32,13 +33,23 @@ class StepTwoScreen extends StatelessWidget {
         ),
         Steps(1, 4),
         Spacer(),
-        CharityInputField('Title for This Program'),
+        CharityInputField(
+          'Title for This Program',
+          onchanged: (String value) {},
+          validateStatus: (value) {},
+        ),
         Spacer(),
-        CharityInputField('Who are the benefit recipients'),
+        CharityInputField(
+          'Who are the benefit recipients',
+          validateStatus: (value) {},
+          onchanged: (String value) {},
+        ),
         Spacer(),
         CharityInputField(
           'Target',
           assetName: 'assets/images/dollar.svg',
+          onchanged: (String value) {},
+          validateStatus: (value) {},
         ),
         Spacer(),
         CharityInputField(
@@ -64,6 +75,8 @@ class StepTwoScreen extends StatelessWidget {
                     CharityInputField(
                       'Date the program started',
                       hintText: 'DD/MM/YYYY',
+                      onchanged: (String value) {},
+                      validateStatus: (value) {},
                     ),
                     SizedBox(
                       height: 8.h,
@@ -71,6 +84,8 @@ class StepTwoScreen extends StatelessWidget {
                     CharityInputField(
                       'Date the program ended',
                       hintText: 'DD/MM/YYYY',
+                      onchanged: (String value) {},
+                      validateStatus: (value) {},
                     ),
                     SizedBox(
                       height: 8.h,
@@ -109,6 +124,8 @@ class StepTwoScreen extends StatelessWidget {
               ),
             );
           },
+          onchanged: (String value) {},
+          validateStatus: (value) {},
         ),
         Spacer(),
       ],
@@ -161,8 +178,11 @@ class StepTwoScreen extends StatelessWidget {
                     AppColor.kPrimaryColor,
                   ),
                 ),
-                onPressed: () =>
-                    Navigator.of(context).pushNamed(RouteGenerator.stepThree),
+                onPressed: () {
+                  print(
+                      '${charityform.address},${charityform.profession},${charityform.institute},${charityform.socialacc},');
+                  Navigator.of(context).pushNamed(RouteGenerator.stepThree);
+                },
                 child: Text(
                   'Next',
                   style: TextStyle(color: Colors.white),

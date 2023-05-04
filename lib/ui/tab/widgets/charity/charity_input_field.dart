@@ -4,19 +4,24 @@ import 'package:flutter_svg/flutter_svg.dart';
 
 import '../../../../theme/app_color.dart';
 
-
 class CharityInputField extends StatelessWidget {
   const CharityInputField(
     this.title, {
     this.assetName,
     this.onTap,
     this.hintText,
+    required this.onchanged,
+    this.controller,
+    required this.validateStatus,
   });
 
   final String title;
   final String? assetName;
   final void Function()? onTap;
   final String? hintText;
+  final ValueChanged<String> onchanged;
+  final controller;
+  final FormFieldValidator validateStatus;
 
   @override
   Widget build(BuildContext context) {
@@ -32,7 +37,9 @@ class CharityInputField extends StatelessWidget {
         ),
         Stack(
           children: [
-            TextField(
+            TextFormField(
+              controller: controller,
+              onChanged: onchanged,
               decoration: InputDecoration(
                 filled: true,
                 fillColor: AppColor.kPlaceholder2,

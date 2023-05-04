@@ -4,6 +4,9 @@ import 'package:flutter_svg/flutter_svg.dart';
 import '../../../theme/app_color.dart';
 import '../routes/routes.dart';
 import '../ui/custom_input_field.dart';
+import 'login_form.dart';
+import 'dart:convert';
+import 'package:http/http.dart' as http;
 
 class LoginScreen extends StatelessWidget {
   const LoginScreen();
@@ -48,7 +51,7 @@ class LoginScreen extends StatelessWidget {
                       ),
                       child: Column(
                         children: [
-                          LoginForm(),
+                          //   LoginForm(),
                           SizedBox(
                             height: 32.h,
                           ),
@@ -109,7 +112,44 @@ class LoginScreen extends StatelessWidget {
                           ),
                         ],
                       ),
-                      child: LoginForm(),
+                      child: Column(
+                        children: [
+                          LoginForm(),
+                          SizedBox(
+                            height: 32.h,
+                          ),
+                          GestureDetector(
+                            onTap: () =>
+                                Navigator.of(context).pushReplacementNamed(
+                              RouteGenerator.signup,
+                            ),
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                Text(
+                                  'Don\'t have account? ',
+                                  style: Theme.of(context)
+                                      .textTheme
+                                      .bodyText1!
+                                      .copyWith(
+                                        color: AppColor.kTextColor1,
+                                      ),
+                                ),
+                                Text(
+                                  'Create new account',
+                                  style: Theme.of(context)
+                                      .textTheme
+                                      .bodyText1!
+                                      .copyWith(
+                                        color: AppColor.kAccentColor,
+                                        fontWeight: FontWeight.bold,
+                                      ),
+                                )
+                              ],
+                            ),
+                          ),
+                        ],
+                      ),
                     ),
                   ],
                 ),
@@ -180,94 +220,6 @@ class LoginScreen extends StatelessWidget {
           ),
         ),
       ),
-    );
-  }
-}
-
-class LoginForm extends StatelessWidget {
-  const LoginForm({
-    Key? key,
-  }) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        Text(
-          'Sign in',
-          style: Theme.of(context).textTheme.headline3!.copyWith(
-                color: AppColor.kForthColor,
-              ),
-        ),
-        Text(
-          'to continue',
-          style: Theme.of(context).textTheme.headline3!.copyWith(
-                color: AppColor.kForthColor,
-              ),
-        ),
-        SizedBox(
-          height: 40.h,
-        ),
-        CustomInputField(
-          hintText: 'Email or username',
-          textInputAction: TextInputAction.next,
-        ),
-        SizedBox(
-          height: 8.h,
-        ),
-        CustomInputField(
-          hintText: 'Password',
-          isPassword: true,
-          textInputAction: TextInputAction.done,
-        ),
-        Row(
-          mainAxisAlignment: MainAxisAlignment.end,
-          children: [
-            TextButton(
-              onPressed: () => Navigator.of(context).pushReplacementNamed(
-                RouteGenerator.forgetPw,
-              ),
-              child: Text(
-                'Forgot password?',
-                style: Theme.of(context).textTheme.bodyText1!.copyWith(
-                      color: AppColor.kAccentColor,
-                      fontWeight: FontWeight.bold,
-                    ),
-              ),
-            ),
-          ],
-        ),
-        SizedBox(
-          height: 120.h,
-        ),
-        ElevatedButton(
-          style: ButtonStyle(
-            backgroundColor: MaterialStateProperty.all(
-              AppColor.kAccentColor,
-            ),
-            shape: MaterialStateProperty.all(
-              RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(
-                  8.r,
-                ),
-              ),
-            ),
-            minimumSize: MaterialStateProperty.all(
-              Size(
-                double.infinity,
-                56.h,
-              ),
-            ),
-          ),
-          onPressed: () => Navigator.of(context).pushReplacementNamed(
-            RouteGenerator.main,
-          ),
-          child: Text(
-            'Login',
-          ),
-        ),
-      ],
     );
   }
 }

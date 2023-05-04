@@ -18,7 +18,7 @@ class MyApp extends StatelessWidget {
     return ScreenUtilInit(
       designSize: Size(414, 896),
       builder: (context, child) => MaterialApp(
-        title: 'AFOFA',
+        title: 'KickFunding',
         theme: AppTheme(context).initTheme(),
         debugShowCheckedModeBanner: false,
         initialRoute: RouteGenerator.splash,

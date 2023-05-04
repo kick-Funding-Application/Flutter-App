@@ -11,7 +11,7 @@ class AppTheme {
 
   ThemeData initTheme() {
     return ThemeData(
-      primarySwatch: Colors.green,
+      primarySwatch: Colors.deepOrange,
       primaryColor: AppColor.kPrimaryColor,
       buttonColor: AppColor.kPrimaryColor,
       elevatedButtonTheme: ElevatedButtonThemeData(

@@ -5,9 +5,19 @@ import 'package:flutter_svg/flutter_svg.dart';
 import '../../../../theme/app_color.dart';
 import '../charity/charity_input_field.dart';
 
-class EditContent extends StatelessWidget {
+class EditContent extends StatefulWidget {
   const EditContent({super.key});
 
+  @override
+  State<EditContent> createState() => _EditContentState();
+}
+
+class _EditContentState extends State<EditContent> {
+  /*Controllers*/
+  var firstname = TextEditingController();
+  var lastname = TextEditingController();
+  var email = TextEditingController();
+  var phone = TextEditingController();
   @override
   Widget build(BuildContext context) {
     return Column(
@@ -60,6 +70,9 @@ class EditContent extends StatelessWidget {
             Expanded(
               child: CharityInputField(
                 'First Name',
+                onchanged: (String value) {},
+                validateStatus: (value) {},
+                controller: firstname,
               ),
             ),
             SizedBox(
@@ -68,15 +81,26 @@ class EditContent extends StatelessWidget {
             Expanded(
               child: CharityInputField(
                 'Last Name',
+                onchanged: (String value) {},
+                validateStatus: (value) {},
+                controller: lastname,
               ),
             ),
           ],
         ),
         Spacer(),
-        CharityInputField('Email'),
+        CharityInputField(
+          'Email',
+          onchanged: (String value) {},
+          validateStatus: (value) {},
+          controller: email,
+        ),
         Spacer(),
         CharityInputField(
           'Phone Number',
+          onchanged: (String value) {},
+          validateStatus: (value) {},
+          controller: phone,
         ),
         Spacer(),
         ElevatedButton(

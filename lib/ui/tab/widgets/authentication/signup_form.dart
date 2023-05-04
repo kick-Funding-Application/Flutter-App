@@ -5,9 +5,17 @@ import '../../../../routes/routes.dart';
 import '../../../../theme/app_color.dart';
 import 'custom_input_field.dart';
 
-class SignupForm extends StatelessWidget {
+
+class SignupForm extends StatefulWidget {
   const SignupForm();
 
+  @override
+  State<SignupForm> createState() => _SignupFormState();
+}
+
+
+
+class _SignupFormState extends State<SignupForm> {
   @override
   Widget build(BuildContext context) {
     return Column(

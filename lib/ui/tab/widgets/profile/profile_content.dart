@@ -22,7 +22,7 @@ class ProfileContent extends StatelessWidget {
         Spacer(),
         Details(
           title: 'Email address',
-          desc: 'chiromorgan@gmail.com',
+          desc: 'zozo@gmail.com',
         ),
         Spacer(),
         Details(

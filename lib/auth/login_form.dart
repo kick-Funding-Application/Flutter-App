@@ -1,59 +1,32 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-
+import 'package:flutter_svg/flutter_svg.dart';
 import '../../../theme/app_color.dart';
 import '../routes/routes.dart';
-import 'custom_input_field.dart';
 import 'dart:convert';
 import 'package:http/http.dart' as http;
+import '../ui/custom_input_field.dart';
 
-class SignupForm extends StatefulWidget {
-  const SignupForm({
+class LoginForm extends StatefulWidget {
+  const LoginForm({
     super.key,
   });
 
   @override
-  State<SignupForm> createState() => _SignupFormState();
+  State<LoginForm> createState() => _LoginFormState();
 }
 
-GlobalKey<FormState> _formKey1 = GlobalKey<FormState>();
+GlobalKey<FormState> _formKey2 = GlobalKey<FormState>();
 
-/* Variables*/
-
-var token = "";
-var email = "";
-var password = "";
-var first_name = "";
-var username = "";
-var id = "";
-var phone = "";
-var last_name = "";
-var age = "";
-var gender = "";
-var obsecurepassword = true;
-Color iconcolor = Colors.grey;
-/* Variables */
-Future SignUp(BuildContext cont) async {
+Future Login(BuildContext cont) async {
   /**removecomment when online */
   Map<String, dynamic> body = {
-    "id": id,
     "email": email,
     "password": password,
-    "first_name": first_name,
-    "last_name": last_name,
-    "username": username,
-    "phone_number": phone,
-    "age": age,
   };
   String jsonBody = json.encode(body);
   final encoding = Encoding.getByName('utf-8');
-  if (email == "" ||
-      password == "" ||
-      first_name == "" ||
-      username == "" ||
-      phone == "" ||
-      last_name == "" ||
-      age == "") {
+  if (email == "" || password == "") {
     print('Fields have not to be empty');
   } else {
     var url =
@@ -82,23 +55,29 @@ Future SignUp(BuildContext cont) async {
   /**removecomment when online */
 }
 
-class _SignupFormState extends State<SignupForm> {
+var token = "";
+var email = "";
+var password = "";
+var obsecurepassword = true;
+Color iconcolor = Colors.grey;
+
+class _LoginFormState extends State<LoginForm> {
   @override
   Widget build(BuildContext context) {
     return Form(
-      key: _formKey1,
+      key: _formKey2,
       child: Container(
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Text(
-              'Create New',
+              'Sign in',
               style: Theme.of(context).textTheme.headline3!.copyWith(
                     color: AppColor.kForthColor,
                   ),
             ),
             Text(
-              'Account',
+              'to continue',
               style: Theme.of(context).textTheme.headline3!.copyWith(
                     color: AppColor.kForthColor,
                   ),
@@ -108,11 +87,8 @@ class _SignupFormState extends State<SignupForm> {
             ),
             CustomInputField(
               hintText: 'Email',
-              textInputAction: TextInputAction.next,
               onChanged: (value) {
-                setState(() {
-                  email = value;
-                });
+                email = value;
               },
               validateStatus: (value) {
                 if (value!.isEmpty) {
@@ -120,60 +96,7 @@ class _SignupFormState extends State<SignupForm> {
                 }
                 return null;
               },
-            ),
-            SizedBox(
-              height: 8.h,
-            ),
-            CustomInputField(
-              hintText: 'First Name',
               textInputAction: TextInputAction.next,
-              onChanged: (value) {
-                setState(() {
-                  first_name = value;
-                });
-              },
-              validateStatus: (value) {
-                if (value!.isEmpty) {
-                  return 'Field must not be empty';
-                }
-                return null;
-              },
-            ),
-            SizedBox(
-              height: 8.h,
-            ),
-            CustomInputField(
-              hintText: 'Last Name',
-              textInputAction: TextInputAction.next,
-              onChanged: (value) {
-                setState(() {
-                  last_name = value;
-                });
-              },
-              validateStatus: (value) {
-                if (value!.isEmpty) {
-                  return 'Field must not be empty';
-                }
-                return null;
-              },
-            ),
-            SizedBox(
-              height: 8.h,
-            ),
-            CustomInputField(
-              hintText: 'Username',
-              textInputAction: TextInputAction.next,
-              onChanged: (value) {
-                setState(() {
-                  username = value;
-                });
-              },
-              validateStatus: (value) {
-                if (value!.isEmpty) {
-                  return 'Field must not be empty';
-                }
-                return null;
-              },
             ),
             SizedBox(
               height: 8.h,
@@ -182,6 +105,9 @@ class _SignupFormState extends State<SignupForm> {
               hintText: 'Password',
               isPassword: obsecurepassword,
               textInputAction: TextInputAction.done,
+              onChanged: (value) {
+                password = value;
+              },
               sufficon: IconButton(
                 icon: Icon(
                   obsecurepassword ? Icons.visibility : Icons.visibility_off,
@@ -198,11 +124,6 @@ class _SignupFormState extends State<SignupForm> {
                   });
                 },
               ),
-              onChanged: (value) {
-                setState(() {
-                  password = value;
-                });
-              },
               validateStatus: (value) {
                 if (value!.isEmpty) {
                   return 'Field must not be empty';
@@ -210,8 +131,25 @@ class _SignupFormState extends State<SignupForm> {
                 return null;
               },
             ),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.end,
+              children: [
+                TextButton(
+                  onPressed: () => Navigator.of(context).pushReplacementNamed(
+                    RouteGenerator.forgetPw,
+                  ),
+                  child: Text(
+                    'Forgot password?',
+                    style: Theme.of(context).textTheme.bodyText1!.copyWith(
+                          color: AppColor.kAccentColor,
+                          fontWeight: FontWeight.bold,
+                        ),
+                  ),
+                ),
+              ],
+            ),
             SizedBox(
-              height: 40.h,
+              height: 120.h,
             ),
             ElevatedButton(
               style: ButtonStyle(
@@ -233,17 +171,17 @@ class _SignupFormState extends State<SignupForm> {
                 ),
               ),
               onPressed: () {
-                if (_formKey1.currentState!.validate()) {
+ if (_formKey2.currentState!.validate()) {
                   print('successful');
-                  //   SignUp(context);
+                  //   Login(context);
                 }
                 ;
-                //  Navigator.of(context).pushReplacementNamed(
-                //   RouteGenerator.main,
-                // ),
               },
+              // => Navigator.of(context).pushReplacementNamed(
+              //   RouteGenerator.login,
+              // ),
               child: Text(
-                'Create Account',
+                'Login',
               ),
             ),
           ],
