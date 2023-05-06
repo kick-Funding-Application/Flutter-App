@@ -44,25 +44,31 @@ class Header extends StatelessWidget {
                   ),
                   color: AppColor.kPlaceholder2,
                 ),
-                child: Center(
-                  child: SvgPicture.asset(
-                    'assets/images/noti.svg',
-                    width: 16.w,
+                child: GestureDetector(
+                  onTap: () {
+                    print('object');
+                  },
+                  child: Center(
+                    child: SvgPicture.asset(
+                      'assets/images/image_placeholder.svg',
+                      width: 12.w,
+                    ),
                   ),
                 ),
               ),
-              Positioned(
-                right: -2.w,
-                top: -2.w,
-                child: Container(
-                  width: 8.w,
-                  height: 8.w,
-                  decoration: BoxDecoration(
-                    shape: BoxShape.circle,
-                    color: Colors.red,
-                  ),
-                ),
-              )
+
+              // Positioned(
+              //   right: -2.w,
+              //   top: -2.w,
+              //   child: Container(
+              //     width: 8.w,
+              //     height: 8.w,
+              //     decoration: BoxDecoration(
+              //       shape: BoxShape.circle,
+              //       color: Colors.red,
+              //     ),
+              //   ),
+              // )
             ],
           ),
         ],

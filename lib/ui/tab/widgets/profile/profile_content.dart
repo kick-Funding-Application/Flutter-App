@@ -4,6 +4,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 
 import '../../../../bloc/profile/profile_bloc.dart';
+import '../../../../routes/routes.dart';
 import '../../../../theme/app_color.dart';
 
 import 'details.dart';
@@ -26,8 +27,8 @@ class ProfileContent extends StatelessWidget {
         ),
         Spacer(),
         Details(
-          title: 'Account ID',
-          desc: '18-92768AC009',
+          title: 'Country',
+          desc: 'Egypt',
         ),
         Spacer(),
         Row(
@@ -97,36 +98,36 @@ class ProfileContent extends StatelessWidget {
           children: [
             Expanded(
               child: Details(
-                title: 'Help and support',
-                desc: 'zahraa@gmail.com',
+                title: 'Username',
+                desc: 'Zahraa',
               ),
             ),
-            GestureDetector(
-              onTap: () {},
-              child: Container(
-                padding: EdgeInsets.symmetric(
-                  vertical: 8.w,
-                  horizontal: 8.w,
-                ),
-                decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(
-                    4.r,
-                  ),
-                  color: AppColor.kPlaceholder2,
-                ),
-                child: Icon(
-                  Icons.arrow_forward_ios,
-                  size: 14.sp,
-                  color: AppColor.kTextColor1,
-                ),
-              ),
-            )
+            // GestureDetector(
+            //   onTap: () {},
+            //   child: Container(
+            //     padding: EdgeInsets.symmetric(
+            //       vertical: 8.w,
+            //       horizontal: 8.w,
+            //     ),
+            //     decoration: BoxDecoration(
+            //       borderRadius: BorderRadius.circular(
+            //         4.r,
+            //       ),
+            //       color: AppColor.kPlaceholder2,
+            //     ),
+            //     child: Icon(
+            //       Icons.arrow_forward_ios,
+            //       size: 14.sp,
+            //       color: AppColor.kTextColor1,
+            //     ),
+            //   ),
+            // )
           ],
         ),
         Spacer(),
         Details(
-          title: 'Version',
-          desc: '1.01.2',
+          title: 'Birth date',
+          desc: '23/5/2000',
         ),
         Spacer(),
         ElevatedButton(
@@ -148,7 +149,11 @@ class ProfileContent extends StatelessWidget {
               ),
             ),
           ),
-          onPressed: () {},
+          onPressed: () {
+            Navigator.of(context).pushReplacementNamed(
+              RouteGenerator.splash,
+            );
+          },
           child: Row(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [

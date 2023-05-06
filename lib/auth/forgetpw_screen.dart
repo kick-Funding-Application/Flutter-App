@@ -110,7 +110,7 @@ class ForgetPwScreen extends StatelessWidget {
                               ),
                               onPressed: () =>
                                   Navigator.of(context).pushReplacementNamed(
-                                RouteGenerator.main,
+                                RouteGenerator.splash,
                               ),
                               child: Text(
                                 'Submit',

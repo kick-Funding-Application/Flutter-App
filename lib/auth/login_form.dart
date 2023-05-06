@@ -7,6 +7,8 @@ import 'dart:convert';
 import 'package:http/http.dart' as http;
 import '../ui/custom_input_field.dart';
 
+import 'package:shared_preferences/shared_preferences.dart';
+
 class LoginForm extends StatefulWidget {
   const LoginForm({
     super.key,
@@ -17,6 +19,12 @@ class LoginForm extends StatefulWidget {
 }
 
 GlobalKey<FormState> _formKey2 = GlobalKey<FormState>();
+
+Future performLogin(BuildContext cont2) async {
+  if (email == 'admin' && password == 'admin') {
+    return true;
+  }
+}
 
 Future Login(BuildContext cont) async {
   /**removecomment when online */
@@ -60,6 +68,7 @@ var email = "";
 var password = "";
 var obsecurepassword = true;
 Color iconcolor = Colors.grey;
+bool success = false;
 
 class _LoginFormState extends State<LoginForm> {
   @override
@@ -170,8 +179,20 @@ class _LoginFormState extends State<LoginForm> {
                   ),
                 ),
               ),
-              onPressed: () {
+              onPressed: () async {
                 if (_formKey2.currentState!.validate()) {
+                  // Perform login
+
+                  success = await performLogin(context);
+
+                  // Store login status
+                  if (success) {
+                    SharedPreferences prefs =
+                        await SharedPreferences.getInstance();
+                    prefs.setBool('isLoggedIn', true);
+                  } else if (success == false) {
+                    Center(child: CircularProgressIndicator());
+                  }
                   print('successful');
                   Navigator.of(context).pushReplacementNamed(
                     RouteGenerator.main,
