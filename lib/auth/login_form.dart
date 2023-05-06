@@ -171,15 +171,15 @@ class _LoginFormState extends State<LoginForm> {
                 ),
               ),
               onPressed: () {
- if (_formKey2.currentState!.validate()) {
+                if (_formKey2.currentState!.validate()) {
                   print('successful');
+                  Navigator.of(context).pushReplacementNamed(
+                    RouteGenerator.main,
+                  );
                   //   Login(context);
                 }
                 ;
               },
-              // => Navigator.of(context).pushReplacementNamed(
-              //   RouteGenerator.login,
-              // ),
               child: Text(
                 'Login',
               ),

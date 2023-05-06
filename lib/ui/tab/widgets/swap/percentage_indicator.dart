@@ -5,11 +5,18 @@ import '../../../../theme/app_color.dart';
 
 import 'circle_progess.dart';
 
-class PercentageIndicatior extends StatelessWidget {
-  const PercentageIndicatior({Key? key}) : super(key: key);
+class PercentageIndicatior extends StatefulWidget {
+  final String percentage;
+  PercentageIndicatior({required this.percentage});
 
   @override
+  State<PercentageIndicatior> createState() => _PercentageIndicatiorState();
+}
+
+class _PercentageIndicatiorState extends State<PercentageIndicatior> {
+  @override
   Widget build(BuildContext context) {
+    var percent = double.parse(widget.percentage);
     return Container(
       width: 64.w,
       height: 64.w,
@@ -22,7 +29,7 @@ class PercentageIndicatior extends StatelessWidget {
                 width: 80.w,
                 height: 80.w,
                 child: CustomPaint(
-                  foregroundPainter: CircleProgress(75),
+                  foregroundPainter: CircleProgress(percent as double),
                   child: Container(
                     width: 80.w,
                     height: 80.w,
@@ -48,7 +55,11 @@ class PercentageIndicatior extends StatelessWidget {
               decoration:
                   BoxDecoration(shape: BoxShape.circle, color: Colors.white),
               child: Center(
-                child: Text('75%'),
+                child: Row(
+                  children: [
+                    Text(' ${widget.percentage} %'),
+                  ],
+                ),
               ),
             ),
           )

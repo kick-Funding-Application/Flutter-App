@@ -1,3 +1,4 @@
+
 class Donation {
   final String organizer;
   final String desc;
@@ -14,53 +15,63 @@ class Donation {
 
 List<Donation> donations = [
   Donation(
-    organizer: 'Side Hat Organization',
-    desc: 'Finding Help to Take Their Next Steps',
+    organizer: 'project',
+    desc: 'description',
     total: '100',
     date: DateTime(
-      2019,
-      8,
-      14,
+      2023,
+      5,
+      1,
     ),
   ),
   Donation(
-    organizer: 'UNICEF',
-    desc: 'Realisze Syrian children dreams for school',
-    total: '710',
-    date: DateTime(
-      2019,
-      8,
-      14,
-    ),
-  ),
-  Donation(
-    organizer: 'WHO',
-    desc: 'Be part of covid-19 vaccine research development',
-    total: '1000',
-    date: DateTime(
-      2019,
-      8,
-      14,
-    ),
-  ),
-  Donation(
-    organizer: 'Ha He Foundation',
-    desc: 'Finding Help to Take Their Next Steps',
+    organizer: 'project',
+    desc: 'description',
     total: '100',
     date: DateTime(
-      2019,
-      11,
-      27,
+      2023,
+      5,
+      1,
     ),
   ),
   Donation(
-    organizer: 'UNICEF',
-    desc: 'Realisze Syrian children dreams for school',
-    total: '710',
+    organizer: 'project',
+    desc: 'description',
+    total: '100',
     date: DateTime(
-      2019,
-      11,
-      27,
+      2022,
+      5,
+      2,
+    ),
+  ),
+  Donation(
+    organizer: 'project',
+    desc: 'description',
+    total: '100',
+    date: DateTime(
+      2021,
+      5,
+      3,
+    ),
+  ),
+  Donation(
+    organizer: 'project',
+    desc: 'description',
+    total: '100',
+    date: DateTime(
+      2023,
+      5,
+      4,
+    ),
+  ),
+  Donation(
+    organizer: 'project',
+    desc: 'description',
+    total: '100',
+    date: DateTime(
+      2023,
+      5,
+      4,
     ),
   ),
 ];

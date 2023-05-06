@@ -6,65 +6,93 @@ import '../../../../models/result.dart';
 import '../../../../routes/routes.dart';
 import '../../../../theme/app_color.dart';
 
-final List<Result> results = [
-  Result(
-    title: 'Realize Syirian children dream for school',
-    target: '999.00',
-    percent: '75',
-    assetName: 'assets/images/image_placeholder.svg',
-    categories: ['Children', 'Education'],
-    days: 10,
-    organizer: 'Black Heart Institution',
-    remaining: '450.00',
-    desc:
-        'Make learning possible for students of all ages, from pre-school to graduate school.'
-        ' They also provide otger educational servuces and opportunities that help make schools '
-        'more effective and more accessible to students of all backgrounds.',
-    people: 99,
-  ),
-  Result(
-    title: 'Disaster on Two Coasts: Holding hands',
-    target: '999.00',
-    percent: '65',
-    assetName: 'assets/images/image_placeholder.svg',
-    categories: ['Children', 'Education'],
-    days: 20,
-    organizer: 'Love Bird Organization',
-    remaining: '450.00',
-    desc:
-        'Make learning possible for students of all ages, from pre-school to graduate school.'
-        ' They also provide otger educational servuces and opportunities that help make schools '
-        'more effective and more accessible to students of all backgrounds.',
-    people: 99,
-  ),
-  Result(
-    title: 'This Island Has No Bridges With Handlers',
-    target: '999.00',
-    percent: '90',
-    assetName: 'assets/images/image_placeholder.svg',
-    categories: ['Children', 'Education'],
-    days: 20,
-    organizer: 'One Heart Way',
-    remaining: '450.00',
-    desc:
-        'Make learning possible for students of all ages, from pre-school to graduate school.'
-        ' They also provide otger educational servuces and opportunities that help make schools '
-        'more effective and more accessible to students of all backgrounds.',
-    people: 99,
-  )
-];
+// final List<Result> results = [
+//   Result(
+//     title: 'Realize Syirian children dream for school',
+//     target: '999.00',
+//     percent: '75',
+//     assetName: 'assets/images/image_placeholder.svg',
+//     categories: ['Children', 'Education'],
+//     days: 10,
+//     organizer: 'Black Heart Institution',
+//     remaining: '450.00',
+//     desc:
+//         'Make learning possible for students of all ages, from pre-school to graduate school.'
+//         ' They also provide otger educational servuces and opportunities that help make schools '
+//         'more effective and more accessible to students of all backgrounds.',
+//     people: 99,
+//   ),
+//   Result(
+//     title: 'Disaster on Two Coasts: Holding hands',
+//     target: '999.00',
+//     percent: '65',
+//     assetName: 'assets/images/image_placeholder.svg',
+//     categories: ['Children', 'Education'],
+//     days: 20,
+//     organizer: 'Love Bird Organization',
+//     remaining: '450.00',
+//     desc:
+//         'Make learning possible for students of all ages, from pre-school to graduate school.'
+//         ' They also provide otger educational servuces and opportunities that help make schools '
+//         'more effective and more accessible to students of all backgrounds.',
+//     people: 99,
+//   ),
+//   Result(
+//     title: 'This Island Has No Bridges With Handlers',
+//     target: '999.00',
+//     percent: '90',
+//     assetName: 'assets/images/image_placeholder.svg',
+//     categories: ['Children', 'Education'],
+//     days: 20,
+//     organizer: 'One Heart Way',
+//     remaining: '450.00',
+//     desc:
+//         'Make learning possible for students of all ages, from pre-school to graduate school.'
+//         ' They also provide otger educational servuces and opportunities that help make schools '
+//         'more effective and more accessible to students of all backgrounds.',
+//     people: 99,
+//   )
+// ];
 
-class ResultCard extends StatelessWidget {
-  const ResultCard(this.result);
+class ResultCard extends StatefulWidget {
+  ResultCard(
+      //this.result
+      {required this.title,
+      required this.remaining,
+      required this.target,
+      required this.percent,
+      required this.assetName,
+      required this.categories,
+      required this.days,
+      required this.organizer,
+      required this.desc,
+      required this.people});
 
-  final Result result;
+  final String title;
 
+  final String target;
+  final String percent;
+  //final Result result;
+  final String assetName;
+  final List<dynamic> categories;
+  final int days;
+  final String organizer;
+  final String remaining;
+  final String desc;
+
+  final int people;
+
+  @override
+  State<ResultCard> createState() => _ResultCardState();
+}
+
+class _ResultCardState extends State<ResultCard> {
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
       onTap: () {
-        Navigator.of(context)
-            .pushNamed(RouteGenerator.result, arguments: result);
+        // Navigator.of(context)
+        //     .pushNamed(RouteGenerator.result, arguments: widget.result);
       },
       child: Container(
         height: 104.h,
@@ -81,7 +109,7 @@ class ResultCard extends StatelessWidget {
               ),
               child: Center(
                 child: SvgPicture.asset(
-                  result.assetName,
+                  widget.assetName,
                   width: 32.w,
                 ),
               ),
@@ -95,7 +123,7 @@ class ResultCard extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.spaceAround,
               children: [
                 Text(
-                  result.title,
+                  widget.title,
                   style: Theme.of(context).textTheme.headline6!.copyWith(
                         fontWeight: FontWeight.bold,
                       ),
@@ -103,7 +131,7 @@ class ResultCard extends StatelessWidget {
                   overflow: TextOverflow.ellipsis,
                 ),
                 Text(
-                  'By: ${result.organizer}',
+                  'By: ${widget.organizer}',
                   style: Theme.of(context).textTheme.bodyText2!.copyWith(
                         color: AppColor.kTextColor1,
                       ),
@@ -113,7 +141,7 @@ class ResultCard extends StatelessWidget {
                 Row(
                   children: [
                     Text(
-                      '${result.days} Days left',
+                      '${widget.days} Days left',
                       style: TextStyle(
                         fontWeight: FontWeight.bold,
                       ),
@@ -133,7 +161,7 @@ class ResultCard extends StatelessWidget {
                       width: 8.w,
                     ),
                     Text(
-                      '\$${result.remaining} left',
+                      '\$${widget.remaining} left',
                       style: TextStyle(
                         fontWeight: FontWeight.bold,
                       ),
@@ -155,7 +183,7 @@ class ResultCard extends StatelessWidget {
                           Row(
                             children: [
                               Expanded(
-                                flex: int.parse(result.percent),
+                                flex: int.parse(widget.percent),
                                 child: Container(
                                   height: 8.h,
                                   width: 8,
@@ -166,7 +194,7 @@ class ResultCard extends StatelessWidget {
                                 ),
                               ),
                               Expanded(
-                                flex: 100 - int.parse(result.percent),
+                                flex: 100 - int.parse(widget.percent),
                                 child: Container(
                                   height: 8.h,
                                   width: 8,
@@ -185,7 +213,7 @@ class ResultCard extends StatelessWidget {
                       width: 8.w,
                     ),
                     Text(
-                      '${result.percent}%',
+                      '${widget.percent}%',
                       style: TextStyle(
                         color: AppColor.kTextColor1,
                       ),

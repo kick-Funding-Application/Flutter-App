@@ -14,53 +14,53 @@ class Donator {
 
 List<Donator> donators = [
   Donator(
-    name: 'Anonymous',
-    phoneNo: '1284-6969-4646',
+    name: 'Donator',
+    phoneNo: 'phone number',
     total: '50',
     date: DateTime(
-      2019,
+      2023,
+      5,
       8,
-      14,
     ),
   ),
   Donator(
-    name: 'Anonymous',
-    phoneNo: '118-1019-9999',
-    total: '70',
-    date: DateTime(
-      2019,
-      8,
-      14,
-    ),
-  ),
-  Donator(
-    name: 'Stephen Jr',
-    phoneNo: '118-7978-3218',
+    name: 'Donator',
+    phoneNo: 'phone number',
     total: '50',
     date: DateTime(
-      2019,
-      8,
-      14,
+      2023,
+      5,
+      10,
     ),
   ),
   Donator(
-    name: 'Ruppert McDonald',
-    phoneNo: '1284-6969-4646',
+    name: 'Donator',
+    phoneNo: 'phone number',
     total: '50',
     date: DateTime(
-      2019,
-      9,
-      17,
+      2023,
+      5,
+      19,
     ),
   ),
   Donator(
-    name: 'Anonymous',
-    phoneNo: '1284-6969-4646',
-    total: '100',
+    name: 'Donator',
+    phoneNo: 'phone number',
+    total: '50',
     date: DateTime(
-      2019,
-      9,
-      17,
+      2023,
+      5,
+      22,
+    ),
+  ),
+  Donator(
+    name: 'Donator',
+    phoneNo: 'phone number',
+    total: '50',
+    date: DateTime(
+      2023,
+      5,
+      20,
     ),
   ),
 ];
