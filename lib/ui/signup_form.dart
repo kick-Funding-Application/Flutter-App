@@ -235,12 +235,12 @@ class _SignupFormState extends State<SignupForm> {
               onPressed: () {
                 if (_formKey1.currentState!.validate()) {
                   print('successful');
+                  Navigator.of(context).pushReplacementNamed(
+                    RouteGenerator.login,
+                  );
                   //   SignUp(context);
                 }
                 ;
-                //  Navigator.of(context).pushReplacementNamed(
-                //   RouteGenerator.main,
-                // ),
               },
               child: Text(
                 'Create Account',

@@ -4,10 +4,18 @@ import 'package:flutter_svg/flutter_svg.dart';
 
 import '../../../../theme/app_color.dart';
 
+class IntroCard extends StatefulWidget {
+  IntroCard( {required this.title, required this.Owner, required this.category, required this.Date});
+  final String title;
+  final String category;
+  final String Owner;
+  final DateTime Date;
 
-class IntroCard extends StatelessWidget {
-  const IntroCard();
+  @override
+  State<IntroCard> createState() => _IntroCardState();
+}
 
+class _IntroCardState extends State<IntroCard> {
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
@@ -56,7 +64,7 @@ class IntroCard extends StatelessWidget {
                       ),
                     ),
                     child: Text(
-                      'Education',
+                      '${widget.category}',
                       style: TextStyle(
                         color: Colors.white,
                       ),
@@ -73,7 +81,7 @@ class IntroCard extends StatelessWidget {
                     height: 8.h,
                   ),
                   Text(
-                    'Finding Help to Take Their Next Steps',
+                    '${widget.title}',
                     style: Theme.of(context).textTheme.headline6!.copyWith(
                           fontWeight: FontWeight.bold,
                         ),
@@ -105,13 +113,13 @@ class IntroCard extends StatelessWidget {
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           Text(
-                            'Side Hat Organization',
+                            '${widget.Owner}',
                             style: TextStyle(
                               fontWeight: FontWeight.bold,
                             ),
                           ),
                           Text(
-                            'Nov 27, 2019',
+                            '${widget.Date}',
                             style: TextStyle(
                               color: AppColor.kTextColor1,
                             ),
@@ -119,9 +127,15 @@ class IntroCard extends StatelessWidget {
                         ],
                       )
                     ],
+                  ),
+                  SizedBox(
+                    height: 20.h,
                   )
                 ],
               ),
+            ),
+            SizedBox(
+              height: 13.h,
             ),
           ],
         ),

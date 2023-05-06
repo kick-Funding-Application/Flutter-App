@@ -58,7 +58,7 @@ class CharityCard extends StatelessWidget {
                             color: AppColor.kForthColor,
                           ),
                           child: Text(
-                            'Culture & arts',
+                            'Category',
                             style: TextStyle(
                               color: Colors.white,
                               fontWeight: FontWeight.bold,
@@ -84,7 +84,7 @@ class CharityCard extends StatelessWidget {
                       horizontal: 8.w,
                     ),
                     child: Text(
-                      'Fundraising to recover Eu La Museum',
+                      'Title of project',
                       style: Theme.of(context).textTheme.headline6!.copyWith(
                             color: AppColor.kPrimaryColor,
                             fontWeight: FontWeight.bold,
@@ -98,7 +98,7 @@ class CharityCard extends StatelessWidget {
                       Column(
                         children: [
                           Text(
-                            '\$105.69',
+                            '\$400',
                             style:
                                 Theme.of(context).textTheme.headline6!.copyWith(
                                       color: AppColor.kPrimaryColor,
@@ -113,11 +113,13 @@ class CharityCard extends StatelessWidget {
                           ),
                         ],
                       ),
-                      PercentageIndicatior(),
+                      PercentageIndicatior(
+                        percentage: '90',
+                      ),
                       Column(
                         children: [
                           Text(
-                            '\$250.00',
+                            '\$700.00',
                             style:
                                 Theme.of(context).textTheme.headline6!.copyWith(
                                       color: AppColor.kPrimaryColor,
