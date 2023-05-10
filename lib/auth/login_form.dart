@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:kickfunding/ui/tab/widgets/profile/constants.dart';
 import '../../../theme/app_color.dart';
 import '../routes/routes.dart';
 import 'dart:convert';
@@ -21,8 +22,13 @@ class LoginForm extends StatefulWidget {
 GlobalKey<FormState> _formKey2 = GlobalKey<FormState>();
 
 Future performLogin(BuildContext cont2) async {
+  bool check = false;
   if (email == 'admin' && password == 'admin') {
-    return true;
+    check = true;
+    constant.success = check;
+    return constant.success;
+  } else {
+    return constant.success;
   }
 }
 
@@ -68,7 +74,6 @@ var email = "";
 var password = "";
 var obsecurepassword = true;
 Color iconcolor = Colors.grey;
-bool success = false;
 
 class _LoginFormState extends State<LoginForm> {
   @override
@@ -183,14 +188,14 @@ class _LoginFormState extends State<LoginForm> {
                 if (_formKey2.currentState!.validate()) {
                   // Perform login
 
-                  success = await performLogin(context);
+                  constant.success = await performLogin(context);
 
                   // Store login status
-                  if (success) {
+                  if (constant.success) {
                     SharedPreferences prefs =
                         await SharedPreferences.getInstance();
                     prefs.setBool('isLoggedIn', true);
-                  } else if (success == false) {
+                  } else if (constant.success == null) {
                     Center(child: CircularProgressIndicator());
                   }
                   print('successful');

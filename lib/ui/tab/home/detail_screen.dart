@@ -1,10 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
-
+import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import '../../../../models/urgent.dart';
 import '../../../../theme/app_color.dart';
 import '../widgets/home/calculator_builder.dart';
+import 'rate.dart';
 
 class DetailScreen extends StatelessWidget {
   DetailScreen(this.urgent);
@@ -233,6 +234,30 @@ class DetailScreen extends StatelessWidget {
                                       ),
                                 ),
                                 Spacer(),
+                                Container(
+                                  child: Row(
+                                    children: [
+                                      Text('Rate Your Experience:'),
+                                      RatingBar.builder(
+                                        itemSize: 30,
+                                        initialRating: 3,
+                                        minRating: 1,
+                                        direction: Axis.horizontal,
+                                        allowHalfRating: false,
+                                        itemCount: 5,
+                                        itemPadding: EdgeInsets.symmetric(
+                                            horizontal: 4.0),
+                                        itemBuilder: (context, _) => Icon(
+                                          Icons.star,
+                                          color: Colors.amber,
+                                        ),
+                                        onRatingUpdate: (rating) {
+                                          print(rating);
+                                        },
+                                      ),
+                                    ],
+                                  ),
+                                ),
                               ],
                             ),
                           ),
@@ -245,115 +270,51 @@ class DetailScreen extends StatelessWidget {
               Container(
                 padding: EdgeInsets.symmetric(
                   horizontal: 16.0.w,
+                  vertical: 30.h,
                 ),
-                height: 120.h,
-                child: Row(
-                  children: [
-                    Expanded(
-                      child: Container(
-                        child: Stack(
-                          children: [
-                            Container(
-                              width: 48.w,
-                              height: 48.w,
-                              decoration: BoxDecoration(
-                                  shape: BoxShape.circle,
-                                  color: AppColor.kBlue,
-                                  border: Border.all(
-                                    color: AppColor.kForthColor,
-                                    width: 4.sp,
-                                  )),
-                              child: Center(
-                                child: SvgPicture.asset(
-                                  'assets/images/image_placeholder.svg',
-                                  width: 16.w,
-                                ),
-                              ),
-                            ),
-                            Positioned(
-                              left: 24.w,
-                              child: Container(
-                                width: 48.w,
-                                height: 48.w,
-                                decoration: BoxDecoration(
-                                    shape: BoxShape.circle,
-                                    color: AppColor.kThirdColor,
-                                    border: Border.all(
-                                      color: AppColor.kForthColor,
-                                      width: 4.sp,
-                                    )),
-                                child: Center(
-                                  child: SvgPicture.asset(
-                                    'assets/images/image_placeholder.svg',
-                                    width: 16.w,
-                                  ),
-                                ),
-                              ),
-                            ),
-                            Positioned(
-                              left: 48.w,
-                              child: Container(
-                                width: 48.w,
-                                height: 48.w,
-                                decoration: BoxDecoration(
-                                    shape: BoxShape.circle,
-                                    color: Colors.white,
-                                    border: Border.all(
-                                      color: AppColor.kForthColor,
-                                      width: 4.sp,
-                                    )),
-                                child: Center(
-                                  child: Text(
-                                    '99+',
-                                    style: TextStyle(
-                                      color: AppColor.kForthColor,
-                                      fontWeight: FontWeight.bold,
-                                    ),
-                                  ),
-                                ),
-                              ),
-                            )
-                          ],
-                        ),
-                      ),
-                    ),
-                    ElevatedButton(
-                      style: ButtonStyle(
-                        shape: MaterialStateProperty.all(
-                          RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(
-                              8.r,
-                            ),
-                          ),
-                        ),
-                        foregroundColor: MaterialStateProperty.all(
-                          AppColor.kPlaceholder2,
-                        ),
-                        minimumSize: MaterialStateProperty.all(
-                          Size(
-                            0,
-                            48.h,
-                          ),
-                        ),
-                        padding: MaterialStateProperty.all(
-                          EdgeInsets.symmetric(
-                            horizontal: 24.w,
+                width: double.infinity,
+                //  height: 120.h,
+                child: Container(
+                  height: 50,
+                  child: ElevatedButton(
+                    style: ButtonStyle(
+                      shape: MaterialStateProperty.all(
+                        RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(
+                            8.r,
                           ),
                         ),
                       ),
-                      onPressed: () {
-                        showModalBottomSheet(
-                          context: context,
-                          isScrollControlled: true,
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(32.r),
-                          ),
-                          builder: (_) => CalculatorBuilder(),
-                        );
-                      },
-                      child: Text('Donate'),
+                      foregroundColor: MaterialStateProperty.all(
+                        AppColor.kPlaceholder2,
+                      ),
+                      minimumSize: MaterialStateProperty.all(
+                        Size(
+                          0,
+                          48.h,
+                        ),
+                      ),
+                      padding: MaterialStateProperty.all(
+                        EdgeInsets.symmetric(
+                          horizontal: 24.w,
+                        ),
+                      ),
                     ),
-                  ],
+                    onPressed: () {
+                      showModalBottomSheet(
+                        context: context,
+                        isScrollControlled: true,
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(32.r),
+                        ),
+                        builder: (_) => CalculatorBuilder(),
+                      );
+                    },
+                    child: Text(
+                      'Donate',
+                      style: TextStyle(fontSize: 17),
+                    ),
+                  ),
                 ),
               )
             ],
@@ -373,71 +334,6 @@ class DetailScreen extends StatelessWidget {
                     ),
                   ),
                   Spacer(),
-                  GestureDetector(
-                    onTap: () => showModalBottomSheet(
-                      context: context,
-                      isScrollControlled: true,
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(32.r),
-                      ),
-                      builder: (_) => Padding(
-                        padding: EdgeInsets.only(
-                          bottom: MediaQuery.of(context).viewPadding.bottom,
-                          top: 32.h,
-                          left: 16.w,
-                          right: 16.w,
-                        ),
-                        child: Column(
-                          mainAxisSize: MainAxisSize.min,
-                          children: [
-                            Text(
-                              'Share this by...',
-                              style: Theme.of(context)
-                                  .textTheme
-                                  .headline6!
-                                  .copyWith(
-                                    fontWeight: FontWeight.bold,
-                                  ),
-                            ),
-                            SizedBox(
-                              height: 8.h,
-                            ),
-                            Row(
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              children: List.generate(
-                                3,
-                                (index) => Row(
-                                  children: [
-                                    Container(
-                                      width: 48.w,
-                                      height: 48.w,
-                                      decoration: BoxDecoration(
-                                        shape: BoxShape.circle,
-                                        color: AppColor.kPlaceholder2,
-                                      ),
-                                      child: Center(
-                                        child: SvgPicture.asset(
-                                          'assets/images/image_placeholder.svg',
-                                          width: 24.w,
-                                        ),
-                                      ),
-                                    ),
-                                    SizedBox(
-                                      width: 16.w,
-                                    )
-                                  ],
-                                ),
-                              ),
-                            )
-                          ],
-                        ),
-                      ),
-                    ),
-                    child: SvgPicture.asset(
-                      'assets/images/share.svg',
-                      width: 24.w,
-                    ),
-                  )
                 ],
               ),
             ),
@@ -447,3 +343,159 @@ class DetailScreen extends StatelessWidget {
     );
   }
 }
+
+
+/**
+ * DRAFT CODE FORE DONATED BY AVATAR ICONS:
+ *  child:   Expanded(
+                      child: Container(
+                          // child: RatingBar.builder(
+                          //   initialRating: 3,
+                          //   minRating: 1,
+                          //   direction: Axis.horizontal,
+                          //   allowHalfRating: false,
+                          //   itemCount: 5,
+                          //   itemPadding: EdgeInsets.symmetric(horizontal: 4.0),
+                          //   itemBuilder: (context, _) => Icon(
+                          //     Icons.star,
+                          //     color: Colors.amber,
+                          //   ),
+                          //   onRatingUpdate: (rating) {
+                          //     print(rating);
+                          //   },
+                          // ),
+                          // child: Stack(
+                          //   children: [
+                          //     Container(
+                          //       width: 48.w,
+                          //       height: 48.w,
+                          //       decoration: BoxDecoration(
+                          //           shape: BoxShape.circle,
+                          //           color: AppColor.kBlue,
+                          //           border: Border.all(
+                          //             color: AppColor.kForthColor,
+                          //             width: 4.sp,
+                          //           )),
+                          //       child: Center(
+                          //         child: SvgPicture.asset(
+                          //           'assets/images/image_placeholder.svg',
+                          //           width: 16.w,
+                          //         ),
+                          //       ),
+                          //     ),
+                          //     Positioned(
+                          //       left: 24.w,
+                          //       child: Container(
+                          //         width: 48.w,
+                          //         height: 48.w,
+                          //         decoration: BoxDecoration(
+                          //             shape: BoxShape.circle,
+                          //             color: AppColor.kThirdColor,
+                          //             border: Border.all(
+                          //               color: AppColor.kForthColor,
+                          //               width: 4.sp,
+                          //             )),
+                          //         child: Center(
+                          //           child: SvgPicture.asset(
+                          //             'assets/images/image_placeholder.svg',
+                          //             width: 16.w,
+                          //           ),
+                          //         ),
+                          //       ),
+                          //     ),
+                          //     Positioned(
+                          //       left: 48.w,
+                          //       child: Container(
+                          //         width: 48.w,
+                          //         height: 48.w,
+                          //         decoration: BoxDecoration(
+                          //             shape: BoxShape.circle,
+                          //             color: Colors.white,
+                          //             border: Border.all(
+                          //               color: AppColor.kForthColor,
+                          //               width: 4.sp,
+                          //             )),
+                          //         child: Center(
+                          //           child: Text(
+                          //             '99+',
+                          //             style: TextStyle(
+                          //               color: AppColor.kForthColor,
+                          //               fontWeight: FontWeight.bold,
+                          //             ),
+                          //           ),
+                          //         ),
+                          //       ),
+                          //     )
+                          //   ],
+                          // ),
+                          ),
+                    ),
+
+
+              /**DRAFT CODE FOR SHARE BUTTON: */
+               // GestureDetector(
+                  //   onTap: () => showModalBottomSheet(
+                  //     context: context,
+                  //     isScrollControlled: true,
+                  //     shape: RoundedRectangleBorder(
+                  //       borderRadius: BorderRadius.circular(32.r),
+                  //     ),
+                  //     builder: (_) => Padding(
+                  //       padding: EdgeInsets.only(
+                  //         bottom: MediaQuery.of(context).viewPadding.bottom,
+                  //         top: 32.h,
+                  //         left: 16.w,
+                  //         right: 16.w,
+                  //       ),
+                  //       child: Column(
+                  //         mainAxisSize: MainAxisSize.min,
+                  //         children: [
+                  //           Text(
+                  //             'Share this by...',
+                  //             style: Theme.of(context)
+                  //                 .textTheme
+                  //                 .headline6!
+                  //                 .copyWith(
+                  //                   fontWeight: FontWeight.bold,
+                  //                 ),
+                  //           ),
+                  //           SizedBox(
+                  //             height: 8.h,
+                  //           ),
+                  //           Row(
+                  //             mainAxisAlignment: MainAxisAlignment.center,
+                  //             children: List.generate(
+                  //               3,
+                  //               (index) => Row(
+                  //                 children: [
+                  //                   Container(
+                  //                     width: 48.w,
+                  //                     height: 48.w,
+                  //                     decoration: BoxDecoration(
+                  //                       shape: BoxShape.circle,
+                  //                       color: AppColor.kPlaceholder2,
+                  //                     ),
+                  //                     child: Center(
+                  //                       child: SvgPicture.asset(
+                  //                         'assets/images/image_placeholder.svg',
+                  //                         width: 24.w,
+                  //                       ),
+                  //                     ),
+                  //                   ),
+                  //                   SizedBox(
+                  //                     width: 16.w,
+                  //                   )
+                  //                 ],
+                  //               ),
+                  //             ),
+                  //           )
+                  //         ],
+                  //       ),
+                  //     ),
+                  //   ),
+                  //   child: SvgPicture.asset(
+                  //     'assets/images/share.svg',
+                  //     width: 24.w,
+                  //   ),
+                  // )
+ */

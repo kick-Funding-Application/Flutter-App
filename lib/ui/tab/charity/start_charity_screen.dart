@@ -8,6 +8,10 @@ import '../../../../theme/app_color.dart';
 import '../widgets/charity/category_card.dart';
 import '../widgets/charity/charity_screen_path.dart';
 
+/** NO PHONE , NO ADDRESS, NOSOCIAL, ONE CATEGORY,NO PROFFESSION , 
+ * 
+ * TITLE, TAG, TARGET,DEADLINE,PHOTO,DESCRIPTION,
+ */
 class StartCharityScreen extends StatefulWidget {
   const StartCharityScreen();
 

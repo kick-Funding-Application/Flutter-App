@@ -4,8 +4,8 @@ import 'constants.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:country_picker/country_picker.dart';
 
-class CountryInputField extends StatefulWidget {
-  const CountryInputField(
+class countrycodepicker extends StatefulWidget {
+  const countrycodepicker(
       {required this.onChanged,
       required this.onSaved,
       this.validateStatus,
@@ -18,19 +18,10 @@ class CountryInputField extends StatefulWidget {
   final int height;
   final Color color;
   @override
-  _CountryInputFieldState createState() => _CountryInputFieldState();
+  _countrycodepickerState createState() => _countrycodepickerState();
 }
 
-class _CountryInputFieldState extends State<CountryInputField> {
-  List<String> _countries = [
-    'Egypt',
-    'Saudi Arabia',
-    'Syria',
-    'Iraq',
-    'Yemen',
-    // Add more countries as needed
-  ];
-
+class _countrycodepickerState extends State<countrycodepicker> {
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -56,13 +47,13 @@ class _CountryInputFieldState extends State<CountryInputField> {
                   borderRadius: BorderRadius.circular(8.r),
                   borderSide: BorderSide.none,
                 ),
-                hintText: 'choose your country',
+                hintText: '',
                 hintStyle: Theme.of(context).textTheme.bodyText1!.copyWith(
                       color: AppColor.kTextColor1,
                       fontSize: 10,
                     ),
                 contentPadding: EdgeInsets.symmetric(
-                  horizontal: 12.w,
+                  horizontal: 5.w,
                   vertical: widget.height.h,
                 ),
               ),
@@ -74,7 +65,7 @@ class _CountryInputFieldState extends State<CountryInputField> {
                       true, // optional. Shows phone code before the country name.
                   onSelect: (Country country) {
                     setState(() {
-                      constant.country = country.name;
+                      constant.country = country.phoneCode;
                     });
 
                     print('Select country: ${country.displayName}');
@@ -86,35 +77,6 @@ class _CountryInputFieldState extends State<CountryInputField> {
           ),
         ],
       ),
-    );
-  }
-
-  void _openCountryPicker() {
-    showDialog(
-      context: context,
-      builder: (BuildContext context) {
-        return AlertDialog(
-          title: Text('Select a Country'),
-          content: DropdownButton<String>(
-            value: constant.country,
-            onChanged: (String? value) {
-              setState(() {
-                constant.country = value!;
-              });
-              Navigator.of(context).pop();
-            },
-            items: _countries.map<DropdownMenuItem<String>>((String value) {
-              return DropdownMenuItem<String>(
-                value: value,
-                child: Text(
-                  value,
-                  style: TextStyle(color: AppColor.kTextColor1),
-                ),
-              );
-            }).toList(),
-          ),
-        );
-      },
     );
   }
 }

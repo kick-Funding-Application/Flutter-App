@@ -4,6 +4,7 @@ import 'package:kickfunding/initials/SplashScreen.dart';
 import 'package:kickfunding/routes/routes.dart';
 import 'package:kickfunding/theme/app_theme.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:google_fonts/google_fonts.dart';
 
 import 'auth/login_screen.dart';
 import 'auth/signup_screen.dart';
@@ -21,7 +22,7 @@ void main() async {
 }
 
 class MyApp extends StatelessWidget {
-   bool isLoggedIn;
+  bool isLoggedIn;
 
   MyApp({required this.isLoggedIn});
   @override

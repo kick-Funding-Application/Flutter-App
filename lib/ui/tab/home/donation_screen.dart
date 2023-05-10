@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-
+import 'package:kickfunding/ui/tab/widgets/profile/constants.dart';
 import '../../../../bloc/payment/payment_bloc.dart';
 import '../../../../routes/routes.dart';
 import '../../../../theme/app_color.dart';
@@ -99,13 +99,13 @@ class DonationScreen extends StatelessWidget {
                               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                               children: [
                                 Text(
-                                  'Help our buddy get better education',
+                                  'Project title',
                                   style: TextStyle(
                                     fontWeight: FontWeight.w900,
                                   ),
                                 ),
                                 Text(
-                                  'By: White Hat Organization',
+                                  'OWNER:',
                                   style: TextStyle(
                                     color: AppColor.kTextColor1,
                                   ),
@@ -116,31 +116,31 @@ class DonationScreen extends StatelessWidget {
                         ],
                       ),
                     ),
-                    Spacer(),
-                    ElevatedButton(
-                      style: ButtonStyle(
-                        backgroundColor: MaterialStateProperty.all(
-                          AppColor.kPrimaryColor,
-                        ),
-                        shape: MaterialStateProperty.all(
-                          RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(
-                              8.r,
-                            ),
-                          ),
-                        ),
-                        minimumSize: MaterialStateProperty.all(
-                          Size(
-                            double.infinity,
-                            56.h,
-                          ),
-                        ),
-                      ),
-                      onPressed: () {},
-                      child: Text(
-                        'Donate as anonymous',
-                      ),
-                    ),
+                    // Spacer(),
+                    // ElevatedButton(
+                    //   style: ButtonStyle(
+                    //     backgroundColor: MaterialStateProperty.all(
+                    //       AppColor.kPrimaryColor,
+                    //     ),
+                    //     shape: MaterialStateProperty.all(
+                    //       RoundedRectangleBorder(
+                    //         borderRadius: BorderRadius.circular(
+                    //           8.r,
+                    //         ),
+                    //       ),
+                    //     ),
+                    //     minimumSize: MaterialStateProperty.all(
+                    //       Size(
+                    //         double.infinity,
+                    //         56.h,
+                    //       ),
+                    //     ),
+                    //   ),
+                    //   onPressed: () {},
+                    //   child: Text(
+                    //     'Donate as anonymous',
+                    //   ),
+                    // ),
                     Spacer(),
                     Text(
                       'Payment Method',
@@ -176,7 +176,7 @@ class DonationScreen extends StatelessWidget {
                             style: Theme.of(context).textTheme.headline6),
                         Spacer(),
                         Text(
-                          '\$$total',
+                          '\$${constant.donation}',
                           style:
                               Theme.of(context).textTheme.headline5!.copyWith(
                                     fontWeight: FontWeight.bold,

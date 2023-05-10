@@ -14,8 +14,12 @@ class BirthdateInputField extends StatefulWidget {
     this.controller,
     required this.validateStatus,
     required this.onSaved,
+    required this.height,
+    required this.color,
   }) : super(key: key);
 
+  final int height;
+  final Color color;
   final String title;
   final String? assetName;
   final void Function()? onTap;
@@ -49,6 +53,7 @@ class _BirthdateInputFieldState extends State<BirthdateInputField> {
   Widget build(BuildContext context) {
     return Container(
       width: double.infinity,
+      //  height: 100.h,
       // padding: EdgeInsets.symmetric(horizontal: 16.0),
       child: Row(
         children: [
@@ -63,18 +68,19 @@ class _BirthdateInputFieldState extends State<BirthdateInputField> {
               ),
               decoration: InputDecoration(
                 filled: true,
-                fillColor: AppColor.kPlaceholder2,
+                fillColor: widget.color,
                 border: OutlineInputBorder(
                   borderRadius: BorderRadius.circular(8.r),
                   borderSide: BorderSide.none,
                 ),
-                hintText: widget.hintText ?? 'Birthdate',
+                hintText: widget.hintText ?? '',
                 hintStyle: Theme.of(context).textTheme.bodyText1!.copyWith(
                       color: AppColor.kTextColor1,
+                      fontSize: 14,
                     ),
                 contentPadding: EdgeInsets.symmetric(
                   horizontal: 12.w,
-                  vertical: 8.h,
+                  vertical: widget.height.h,
                 ),
               ),
               readOnly: true,

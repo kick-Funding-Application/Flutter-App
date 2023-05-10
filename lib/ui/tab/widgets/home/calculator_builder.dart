@@ -6,6 +6,7 @@ import '../../../../routes/routes.dart';
 import '../../../../theme/app_color.dart';
 
 import 'calculator.dart';
+import 'pushdonation.dart';
 
 class CalculatorBuilder extends StatelessWidget {
   const CalculatorBuilder({
@@ -23,7 +24,7 @@ class CalculatorBuilder extends StatelessWidget {
       child: Column(
         mainAxisSize: MainAxisSize.min,
         children: [
-          Calculator((value) => finalValue = value),
+         pushdonation((value) => finalValue = value),
           Padding(
             padding: EdgeInsets.symmetric(
               horizontal: 16.0.w,

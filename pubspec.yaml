@@ -17,13 +17,19 @@ dependencies:
   dotted_border: ^2.0.0+3
   cupertino_icons: ^1.0.5
   flutter_svg: ^2.0.4
-  google_fonts: ^4.0.3
+  google_fonts: ^4.0.4
   intl: ^0.18.0
   flutter_bloc: ^7.1.0
   #flutter_bloc: ^8.1.2
   equatable: ^2.0.5
   provider: ^6.0.5
   shared_preferences: ^2.1.0
+  country_list_pick: ^1.0.1+6
+  csc_picker: ^0.2.7
+  country_picker: ^2.0.20
+  flutter_rating_bar: ^4.0.1
+  intl_phone_number_input: ^0.7.3+1
+  image_picker: ^0.8.7+4
   
 
 dev_dependencies:
@@ -41,6 +47,7 @@ flutter:
 
   assets:
     - assets/images/
+    - assets/fonts/
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware

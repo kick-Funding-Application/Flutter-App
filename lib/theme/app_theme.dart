@@ -61,7 +61,7 @@ class AppTheme {
           ),
         ),
       ),
-      textTheme: GoogleFonts.openSansTextTheme(
+      textTheme: GoogleFonts.latoTextTheme(
         TextTheme().copyWith(
           headline1: TextStyle(
             fontSize: 32.sp,

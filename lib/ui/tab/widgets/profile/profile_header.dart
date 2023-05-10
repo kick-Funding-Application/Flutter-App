@@ -11,42 +11,46 @@ class ProfileHeader extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return SingleChildScrollView(
-      physics: ScrollPhysics(),
-      child: Column(
-        children: [
-          Row(
-            children: [
-              GestureDetector(
-                onTap: () {
-                  BlocProvider.of<ProfileBloc>(context).add(SetHome());
-                },
-                child: SizedBox(
-                  width: 24.w,
-                  child: SvgPicture.asset(
-                    'assets/images/back.svg',
+    return ListView(
+      physics: AlwaysScrollableScrollPhysics(),
+      scrollDirection: Axis.vertical,
+      shrinkWrap: true,
+      children: [
+        Column(
+          children: [
+            Row(
+              children: [
+                GestureDetector(
+                  onTap: () {
+                    BlocProvider.of<ProfileBloc>(context).add(SetHome());
+                  },
+                  child: SizedBox(
                     width: 24.w,
-                    color: AppColor.kTitle,
+                    child: SvgPicture.asset(
+                      'assets/images/back.svg',
+                      width: 24.w,
+                      color: AppColor.kTitle,
+                    ),
                   ),
                 ),
-              ),
-              Expanded(
-                child: Text(
-                  'Edit Profile',
-                  style: Theme.of(context).textTheme.headline5!.copyWith(
-                        color: AppColor.kTitle,
-                        fontWeight: FontWeight.bold,
-                      ),
-                  textAlign: TextAlign.center,
+                Expanded(
+                  child: Text(
+                    'Edit Profile',
+                    style: Theme.of(context).textTheme.headline5!.copyWith(
+                          color: AppColor.kTitle,
+                          fontWeight: FontWeight.bold,
+                        ),
+                    textAlign: TextAlign.center,
+                  ),
                 ),
-              ),
-              SizedBox(
-                width: 24.w,
-              )
-            ],
-          ),
-        ],
-      ),
+                SizedBox(
+                  width: 24.w,
+                )
+              ],
+            ),
+          ],
+        ),
+      ],
     );
   }
 }

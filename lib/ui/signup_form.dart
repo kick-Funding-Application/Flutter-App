@@ -1,11 +1,18 @@
+import 'dart:io';
+import 'package:image_picker/image_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-
 import '../../../theme/app_color.dart';
 import '../routes/routes.dart';
 import 'custom_input_field.dart';
 import 'dart:convert';
+import 'package:country_picker/country_picker.dart';
 import 'package:http/http.dart' as http;
+import 'tab/widgets/profile/constants.dart';
+import 'tab/widgets/profile/birthdate.dart';
+import 'tab/widgets/profile/country.dart';
+import 'tab/widgets/profile/phone.dart';
+import 'tab/widgets/profile/uploadphoto.dart';
 
 class SignupForm extends StatefulWidget {
   const SignupForm({
@@ -30,6 +37,7 @@ var phone = "";
 var last_name = "";
 var age = "";
 var gender = "";
+
 var obsecurepassword = true;
 Color iconcolor = Colors.grey;
 /* Variables */
@@ -79,174 +87,243 @@ Future SignUp(BuildContext cont) async {
       print("Registeration Failed");
     }
   }
+
   /**removecomment when online */
 }
 
+String _selectedCountry = '';
+
+void _updateSelectedCountry(String value) {
+  // setState(() {
+  //   _selectedCountry = value;
+  // });
+}
+
+void _submitForm() {
+  if (_formKey1.currentState!.validate()) {
+    _formKey1.currentState!.save();
+
+    print('Selected Country: ${constant.country}');
+  }
+}
+
 class _SignupFormState extends State<SignupForm> {
+  late String countryValue;
   @override
   Widget build(BuildContext context) {
     return Form(
       key: _formKey1,
       child: Container(
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Text(
-              'Create New',
-              style: Theme.of(context).textTheme.headline3!.copyWith(
-                    color: AppColor.kForthColor,
-                  ),
-            ),
-            Text(
-              'Account',
-              style: Theme.of(context).textTheme.headline3!.copyWith(
-                    color: AppColor.kForthColor,
-                  ),
-            ),
-            SizedBox(
-              height: 40.h,
-            ),
-            CustomInputField(
-              hintText: 'Email',
-              textInputAction: TextInputAction.next,
-              onChanged: (value) {
-                setState(() {
-                  email = value;
-                });
-              },
-              validateStatus: (value) {
-                if (value!.isEmpty) {
-                  return 'Field must not be empty';
-                }
-                return null;
-              },
-            ),
-            SizedBox(
-              height: 8.h,
-            ),
-            CustomInputField(
-              hintText: 'First Name',
-              textInputAction: TextInputAction.next,
-              onChanged: (value) {
-                setState(() {
-                  first_name = value;
-                });
-              },
-              validateStatus: (value) {
-                if (value!.isEmpty) {
-                  return 'Field must not be empty';
-                }
-                return null;
-              },
-            ),
-            SizedBox(
-              height: 8.h,
-            ),
-            CustomInputField(
-              hintText: 'Last Name',
-              textInputAction: TextInputAction.next,
-              onChanged: (value) {
-                setState(() {
-                  last_name = value;
-                });
-              },
-              validateStatus: (value) {
-                if (value!.isEmpty) {
-                  return 'Field must not be empty';
-                }
-                return null;
-              },
-            ),
-            SizedBox(
-              height: 8.h,
-            ),
-            CustomInputField(
-              hintText: 'Username',
-              textInputAction: TextInputAction.next,
-              onChanged: (value) {
-                setState(() {
-                  username = value;
-                });
-              },
-              validateStatus: (value) {
-                if (value!.isEmpty) {
-                  return 'Field must not be empty';
-                }
-                return null;
-              },
-            ),
-            SizedBox(
-              height: 8.h,
-            ),
-            CustomInputField(
-              hintText: 'Password',
-              isPassword: obsecurepassword,
-              textInputAction: TextInputAction.done,
-              sufficon: IconButton(
-                icon: Icon(
-                  obsecurepassword ? Icons.visibility : Icons.visibility_off,
-                  color: iconcolor,
-                ),
-                onPressed: () {
+        child: SingleChildScrollView(
+          //   physics: AlwaysScrollableScrollPhysics(),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Text(
+                'Create New',
+                style: Theme.of(context).textTheme.headline3!.copyWith(
+                      color: AppColor.kForthColor,
+                    ),
+              ),
+              Text(
+                'Account',
+                style: Theme.of(context).textTheme.headline3!.copyWith(
+                      color: AppColor.kForthColor,
+                    ),
+              ),
+              SizedBox(
+                height: 30.h,
+              ),
+              CustomInputField(
+                hintText: 'Email',
+                textInputAction: TextInputAction.next,
+                onChanged: (value) {
                   setState(() {
-                    if (iconcolor == Colors.grey) {
-                      iconcolor = AppColor.kPrimaryColor;
-                    } else {
-                      iconcolor = Colors.grey;
-                    }
-                    obsecurepassword = !obsecurepassword;
+                    email = value;
                   });
                 },
+                validateStatus: (value) {
+                  if (value!.isEmpty) {
+                    return 'Field must not be empty';
+                  }
+                  return null;
+                },
               ),
-              onChanged: (value) {
-                setState(() {
-                  password = value;
-                });
-              },
-              validateStatus: (value) {
-                if (value!.isEmpty) {
-                  return 'Field must not be empty';
-                }
-                return null;
-              },
-            ),
-            SizedBox(
-              height: 40.h,
-            ),
-            ElevatedButton(
-              style: ButtonStyle(
-                backgroundColor: MaterialStateProperty.all(
-                  AppColor.kAccentColor,
+              SizedBox(
+                height: 8.h,
+              ),
+              CustomInputField(
+                hintText: 'First Name',
+                textInputAction: TextInputAction.next,
+                onChanged: (value) {
+                  setState(() {
+                    first_name = value;
+                  });
+                },
+                validateStatus: (value) {
+                  if (value!.isEmpty) {
+                    return 'Field must not be empty';
+                  }
+                  return null;
+                },
+              ),
+              SizedBox(
+                height: 8.h,
+              ),
+              CustomInputField(
+                hintText: 'Last Name',
+                textInputAction: TextInputAction.next,
+                onChanged: (value) {
+                  setState(() {
+                    last_name = value;
+                  });
+                },
+                validateStatus: (value) {
+                  if (value!.isEmpty) {
+                    return 'Field must not be empty';
+                  }
+                  return null;
+                },
+              ),
+              SizedBox(
+                height: 8.h,
+              ),
+              CustomInputField(
+                hintText: 'Username',
+                textInputAction: TextInputAction.next,
+                onChanged: (value) {
+                  setState(() {
+                    username = value;
+                  });
+                },
+                validateStatus: (value) {
+                  if (value!.isEmpty) {
+                    return 'Field must not be empty';
+                  }
+                  return null;
+                },
+              ),
+              SizedBox(
+                height: 8.h,
+              ),
+              Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  // Text(
+                  //   'Country',
+                  //   style: TextStyle(),
+                  // ),
+                  // SizedBox(
+                  //   height: 2.h,
+                  // ),
+                  CountryInputField(
+                    validateStatus: (value) {},
+                    onChanged: _updateSelectedCountry,
+                    onSaved: _updateSelectedCountry,
+                    color: AppColor.kPlaceholder1,
+                    height: 10,
+                  ),
+                ],
+              ),
+              SizedBox(
+                height: 8.h,
+              ),
+              IntlPhoneField(),
+              SizedBox(
+                height: 8.h,
+              ),
+              BirthdateInputField(
+                validateStatus: (value) {},
+                onChanged: (String value) {
+                  setState(() {});
+                },
+                title: 'birth',
+                onSaved: (String value) {
+                  setState(() {});
+                },
+                color: AppColor.kPlaceholder1,
+                height: 10,
+                hintText: 'Birthdate',
+              ),
+              SizedBox(
+                height: 8.h,
+              ),
+              CustomInputField(
+                hintText: 'Password',
+                isPassword: obsecurepassword,
+                textInputAction: TextInputAction.done,
+                sufficon: IconButton(
+                  icon: Icon(
+                    obsecurepassword ? Icons.visibility : Icons.visibility_off,
+                    color: iconcolor,
+                  ),
+                  onPressed: () {
+                    setState(() {
+                      if (iconcolor == Colors.grey) {
+                        iconcolor = AppColor.kPrimaryColor;
+                      } else {
+                        iconcolor = Colors.grey;
+                      }
+                      obsecurepassword = !obsecurepassword;
+                    });
+                  },
                 ),
-                shape: MaterialStateProperty.all(
-                  RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(
-                      8.r,
+                onChanged: (value) {
+                  setState(() {
+                    password = value;
+                  });
+                },
+                validateStatus: (value) {
+                  if (value!.isEmpty) {
+                    return 'Field must not be empty';
+                  }
+                  return null;
+                },
+              ),
+              SizedBox(
+                height: 10.h,
+              ),
+              uploadpicture(
+                buttoncolor: AppColor.kPlaceholder1,
+                height: 50,
+              ),
+              SizedBox(
+                height: 40.h,
+              ),
+              ElevatedButton(
+                style: ButtonStyle(
+                  backgroundColor: MaterialStateProperty.all(
+                    AppColor.kAccentColor,
+                  ),
+                  shape: MaterialStateProperty.all(
+                    RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(
+                        8.r,
+                      ),
+                    ),
+                  ),
+                  minimumSize: MaterialStateProperty.all(
+                    Size(
+                      double.infinity,
+                      56.h,
                     ),
                   ),
                 ),
-                minimumSize: MaterialStateProperty.all(
-                  Size(
-                    double.infinity,
-                    56.h,
-                  ),
+                onPressed: () {
+                  // if (_formKey1.currentState!.validate()) {
+                  //   print('successful');
+                  //   Navigator.of(context).pushReplacementNamed(
+                  //     RouteGenerator.login,
+                  //   );
+                  //   //   SignUp(context);
+                  // }
+                },
+                child: Text(
+                  'Create Account',
                 ),
               ),
-              onPressed: () {
-                if (_formKey1.currentState!.validate()) {
-                  print('successful');
-                  Navigator.of(context).pushReplacementNamed(
-                    RouteGenerator.login,
-                  );
-                  //   SignUp(context);
-                }
-                ;
-              },
-              child: Text(
-                'Create Account',
-              ),
-            ),
-          ],
+            ],
+          ),
         ),
       ),
     );

@@ -22,7 +22,7 @@ class LoginScreen extends StatelessWidget {
               Text(
                 'KickFunding',
                 style: Theme.of(context).textTheme.headline1!.copyWith(
-                      color: Colors.white,
+                      color: AppColor.kAccentColor,
                     ),
               ),
               SizedBox(

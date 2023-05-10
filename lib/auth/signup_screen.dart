@@ -19,7 +19,7 @@ class SignupScreen extends StatelessWidget {
               Text(
                 'KickFunding',
                 style: Theme.of(context).textTheme.headline1!.copyWith(
-                      color: Colors.white,
+                      color: AppColor.kAccentColor,
                     ),
               ),
               SizedBox(
@@ -55,68 +55,76 @@ class SignupScreen extends StatelessWidget {
                         ],
                       ),
                     ),
-                    Container(
-                      width: double.infinity,
-                      padding: EdgeInsets.symmetric(
-                        horizontal: 16.w,
-                        vertical: 24.h,
-                      ),
-                      decoration: BoxDecoration(
-                        color: Colors.white,
-                        borderRadius: BorderRadius.circular(
-                          16.r,
-                        ),
-                        boxShadow: [
-                          BoxShadow(
-                            color: AppColor.kBlue.withOpacity(
-                              0.5,
-                            ),
-                            offset: Offset(
-                              0,
-                              2.h,
-                            ),
-                            blurRadius: 10,
+                    Column(
+                      children: [
+                        Container(
+                          height: 750.h,
+                          width: double.infinity,
+                          padding: EdgeInsets.symmetric(
+                            horizontal: 16.w,
+                            vertical: 24.h,
                           ),
-                        ],
-                      ),
-                      child: Column(
-                        children: [
-                          SignupForm(),
-                          SizedBox(
-                            height: 40.h,
-                          ),
-                          GestureDetector(
-                            onTap: () =>
-                                Navigator.of(context).pushReplacementNamed(
-                              RouteGenerator.login,
+                          decoration: BoxDecoration(
+                            color: Colors.white,
+                            borderRadius: BorderRadius.circular(
+                              16.r,
                             ),
-                            child: Row(
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              children: [
-                                Text(
-                                  'Already have account? ',
-                                  style: Theme.of(context)
-                                      .textTheme
-                                      .bodyText1!
-                                      .copyWith(
-                                        color: AppColor.kTextColor1,
-                                      ),
+                            boxShadow: [
+                              BoxShadow(
+                                color: AppColor.kBlue.withOpacity(
+                                  0.5,
                                 ),
-                                Text(
-                                  'Sign in',
-                                  style: Theme.of(context)
-                                      .textTheme
-                                      .bodyText1!
-                                      .copyWith(
-                                        color: AppColor.kAccentColor,
-                                        fontWeight: FontWeight.bold,
+                                offset: Offset(
+                                  0,
+                                  2.h,
+                                ),
+                                blurRadius: 10,
+                              ),
+                            ],
+                          ),
+                          child: SingleChildScrollView(
+                            physics: ScrollPhysics(),
+                            child: Column(
+                              children: [
+                                SignupForm(),
+                                SizedBox(
+                                  height: 15.h,
+                                ),
+                                GestureDetector(
+                                  onTap: () => Navigator.of(context)
+                                      .pushReplacementNamed(
+                                    RouteGenerator.login,
+                                  ),
+                                  child: Row(
+                                    mainAxisAlignment: MainAxisAlignment.center,
+                                    children: [
+                                      Text(
+                                        'Already have account? ',
+                                        style: Theme.of(context)
+                                            .textTheme
+                                            .bodyText1!
+                                            .copyWith(
+                                              color: AppColor.kTextColor1,
+                                            ),
                                       ),
-                                )
+                                      Text(
+                                        'Sign in',
+                                        style: Theme.of(context)
+                                            .textTheme
+                                            .bodyText1!
+                                            .copyWith(
+                                              color: AppColor.kAccentColor,
+                                              fontWeight: FontWeight.bold,
+                                            ),
+                                      )
+                                    ],
+                                  ),
+                                ),
                               ],
                             ),
                           ),
-                        ],
-                      ),
+                        ),
+                      ],
                     ),
                   ],
                 ),
