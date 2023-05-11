@@ -176,7 +176,7 @@ class DonationScreen extends StatelessWidget {
                             style: Theme.of(context).textTheme.headline6),
                         Spacer(),
                         Text(
-                          '\$${constant.donation}',
+                          '\$$total',
                           style:
                               Theme.of(context).textTheme.headline5!.copyWith(
                                     fontWeight: FontWeight.bold,

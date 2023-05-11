@@ -134,48 +134,56 @@ class _SignupFormState extends State<SignupForm> {
               SizedBox(
                 height: 30.h,
               ),
+              Row(
+                children: [
+                  Expanded(
+                    child: CustomInputField(
+                      hintText: 'First Name',
+                      textInputAction: TextInputAction.next,
+                      onChanged: (value) {
+                        setState(() {
+                          first_name = value;
+                        });
+                      },
+                      validateStatus: (value) {
+                        if (value!.isEmpty) {
+                          return 'Field must not be empty';
+                        }
+                        return null;
+                      },
+                    ),
+                  ),
+                  SizedBox(
+                    width: 10.w,
+                  ),
+                  Expanded(
+                    child: CustomInputField(
+                      hintText: 'Last Name',
+                      textInputAction: TextInputAction.next,
+                      onChanged: (value) {
+                        setState(() {
+                          last_name = value;
+                        });
+                      },
+                      validateStatus: (value) {
+                        if (value!.isEmpty) {
+                          return 'Field must not be empty';
+                        }
+                        return null;
+                      },
+                    ),
+                  ),
+                ],
+              ),
+              SizedBox(
+                height: 8.h,
+              ),
               CustomInputField(
                 hintText: 'Email',
                 textInputAction: TextInputAction.next,
                 onChanged: (value) {
                   setState(() {
                     email = value;
-                  });
-                },
-                validateStatus: (value) {
-                  if (value!.isEmpty) {
-                    return 'Field must not be empty';
-                  }
-                  return null;
-                },
-              ),
-              SizedBox(
-                height: 8.h,
-              ),
-              CustomInputField(
-                hintText: 'First Name',
-                textInputAction: TextInputAction.next,
-                onChanged: (value) {
-                  setState(() {
-                    first_name = value;
-                  });
-                },
-                validateStatus: (value) {
-                  if (value!.isEmpty) {
-                    return 'Field must not be empty';
-                  }
-                  return null;
-                },
-              ),
-              SizedBox(
-                height: 8.h,
-              ),
-              CustomInputField(
-                hintText: 'Last Name',
-                textInputAction: TextInputAction.next,
-                onChanged: (value) {
-                  setState(() {
-                    last_name = value;
                   });
                 },
                 validateStatus: (value) {

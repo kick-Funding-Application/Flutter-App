@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
 class charityform {
-  static var category = "";
+  static var category = "Education";
   static var profession = "";
   static var institute = "";
   static var socialacc = "";

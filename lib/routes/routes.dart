@@ -93,6 +93,7 @@ class RouteGenerator {
         return MaterialPageRoute(
           builder: (_) => StepFourScreen(),
         );
+
       default:
         throw RouteException('Route not found');
     }
