@@ -2,15 +2,13 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 
+import '../../../../models/result.dart';
 import '../../../../theme/app_color.dart';
 
 class IntroCard extends StatefulWidget {
-  IntroCard( {required this.title, required this.Owner, required this.category, required this.Date});
-  final String title;
-  final String category;
-  final String Owner;
-  final DateTime Date;
+  const IntroCard(this.result);
 
+  final Result result;
   @override
   State<IntroCard> createState() => _IntroCardState();
 }
@@ -64,7 +62,7 @@ class _IntroCardState extends State<IntroCard> {
                       ),
                     ),
                     child: Text(
-                      '${widget.category}',
+                      '${widget.result.category}',
                       style: TextStyle(
                         color: Colors.white,
                       ),
@@ -81,7 +79,7 @@ class _IntroCardState extends State<IntroCard> {
                     height: 8.h,
                   ),
                   Text(
-                    '${widget.title}',
+                    '${widget.result.title}',
                     style: Theme.of(context).textTheme.headline6!.copyWith(
                           fontWeight: FontWeight.bold,
                         ),
@@ -113,13 +111,13 @@ class _IntroCardState extends State<IntroCard> {
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           Text(
-                            '${widget.Owner}',
+                            '${widget.result.organizer}',
                             style: TextStyle(
                               fontWeight: FontWeight.bold,
                             ),
                           ),
                           Text(
-                            '${widget.Date}',
+                            '${widget.result.start_date}',
                             style: TextStyle(
                               color: AppColor.kTextColor1,
                             ),

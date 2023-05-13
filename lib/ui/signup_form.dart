@@ -1,12 +1,15 @@
+//import 'dart:io';
+//import 'package:image_picker/image_picker.dart';
 import 'dart:io';
-import 'package:image_picker/image_picker.dart';
+import 'dart:math';
+import 'package:http_parser/http_parser.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import '../../../theme/app_color.dart';
 import '../routes/routes.dart';
 import 'custom_input_field.dart';
 import 'dart:convert';
-import 'package:country_picker/country_picker.dart';
+//import 'package:country_picker/country_picker.dart';
 import 'package:http/http.dart' as http;
 import 'tab/widgets/profile/constants.dart';
 import 'tab/widgets/profile/birthdate.dart';
@@ -29,74 +32,91 @@ GlobalKey<FormState> _formKey1 = GlobalKey<FormState>();
 
 var token = "";
 var email = "";
-var password = "";
+var password1 = "";
+var password2 = "";
 var first_name = "";
 var username = "";
-var id = "";
-var phone = "";
+//var id = "";
+var phoneno = constant.phone;
 var last_name = "";
-var age = "";
-var gender = "";
-
+//var age = "";
+//var gender = "";
+//dynamic photo = constant.image;
+String selectedCountry = constant.country;
+String birthdate = constant.birthdate.toString();
 var obsecurepassword = true;
 Color iconcolor = Colors.grey;
 /* Variables */
 Future SignUp(BuildContext cont) async {
+  // String boundary =
+  //     '----WebKitFormBoundary${Random().nextInt(1000000000).toString()}';
+  // var request = http.MultipartRequest(
+  //     'POST',
+  //     Uri.parse(
+  //         "https://73ec-197-54-244-163.ngrok-free.app/api/dj-rest-auth/registration/"));
+  // request.headers['content-Type'] = 'multipart/form-data; boundary=$boundary';
+
+  // // Add the image file to the request
+  // if (photo != null) {
+  //   var photoFile = await http.MultipartFile.fromPath(
+  //       'user_image', constant.photofile,
+  //       contentType: MediaType('image', 'jpeg'));
+  //   request.files.add(photoFile);
+  // }
+
+  // // Add other fields to the request body
+  // request.fields['country'] = selectedCountry;
+  // request.fields['birth_date'] = birthdate;
+  // request.fields['email'] = email;
+  // request.fields['password1'] = password1;
+  // request.fields['password2'] = password2;
+  // request.fields['first_name'] = first_name;
+  // request.fields['last_name'] = last_name;
+  // request.fields['username'] = username;
+  // request.fields['phone_number'] = phoneno;
+
+  // // Send the request
+  // var response = await request.send();
+  // var result = await response.stream.bytesToString();
+  // print(result);
+
   /**removecomment when online */
   Map<String, dynamic> body = {
-    "id": id,
+    "country": selectedCountry,
+    "birth_date": birthdate,
+    
     "email": email,
-    "password": password,
+    "password1": password1,
+    "password2": password2,
     "first_name": first_name,
     "last_name": last_name,
     "username": username,
-    "phone_number": phone,
-    "age": age,
+    "phone_number": phoneno,
   };
   String jsonBody = json.encode(body);
   final encoding = Encoding.getByName('utf-8');
-  if (email == "" ||
-      password == "" ||
-      first_name == "" ||
-      username == "" ||
-      phone == "" ||
-      last_name == "" ||
-      age == "") {
-    print('Fields have not to be empty');
+
+  var url = Uri.parse(
+      "https://73ec-197-54-244-163.ngrok-free.app/api/dj-rest-auth/registration/");
+  var response = await http.post(url,
+      headers: {'content-Type': 'application/json'},
+      body: jsonBody,
+      encoding: encoding);
+  var result = response.body;
+  print(result);
+
+  print('Registration successful');
+
+  if (response.statusCode == 200) {
+    print("Registeration succeeded");
+    Navigator.of(cont).pushReplacementNamed(
+      RouteGenerator.splash,
+    );
   } else {
-    var url =
-        Uri.parse("https://1a62-102-186-239-195.eu.ngrok.io/caregiver/signup");
-    var response = await http.post(url,
-        headers: {'content-Type': 'application/json'},
-        body: jsonBody,
-        encoding: encoding);
-    var result = response.body;
-    print(result);
-
-    print('Registration successful');
-    print(result);
-
-    var data = json.decode(response.body);
-    if (data["message"] == "Success") {
-      token = data["access_token"];
-      print("Registeration succeeded");
-      Navigator.of(cont).pushReplacementNamed(
-        RouteGenerator.main,
-      );
-    } else {
-      print("Registeration Failed");
-    }
+    print("Registeration Failed");
   }
 
   /**removecomment when online */
-}
-
-String _selectedCountry = '';
-
-void _updateSelectedCountry(String value) {
-  // setState(() {
-  //   _selectedCountry = value;
-  // });
 }
 
 void _submitForm() {
@@ -225,7 +245,12 @@ class _SignupFormState extends State<SignupForm> {
                   //   height: 2.h,
                   // ),
                   CountryInputField(
-                    validateStatus: (value) {},
+                    validateStatus: (value) {
+                      if (value!.isEmpty) {
+                        return 'Field must not be empty';
+                      }
+                      return null;
+                    },
                     onChanged: _updateSelectedCountry,
                     onSaved: _updateSelectedCountry,
                     color: AppColor.kPlaceholder1,
@@ -241,10 +266,13 @@ class _SignupFormState extends State<SignupForm> {
                 height: 8.h,
               ),
               BirthdateInputField(
-                validateStatus: (value) {},
-                onChanged: (String value) {
-                  setState(() {});
+                validateStatus: (value) {
+                  if (value!.isEmpty) {
+                    return 'Field must not be empty';
+                  }
+                  return null;
                 },
+                onChanged: (value) {},
                 title: 'birth',
                 onSaved: (String value) {
                   setState(() {});
@@ -278,7 +306,7 @@ class _SignupFormState extends State<SignupForm> {
                 ),
                 onChanged: (value) {
                   setState(() {
-                    password = value;
+                    password1 = value;
                   });
                 },
                 validateStatus: (value) {
@@ -291,13 +319,48 @@ class _SignupFormState extends State<SignupForm> {
               SizedBox(
                 height: 10.h,
               ),
-              uploadpicture(
-                buttoncolor: AppColor.kPlaceholder1,
-                height: 50,
+              CustomInputField(
+                hintText: 'Password',
+                isPassword: obsecurepassword,
+                textInputAction: TextInputAction.done,
+                sufficon: IconButton(
+                  icon: Icon(
+                    obsecurepassword ? Icons.visibility : Icons.visibility_off,
+                    color: iconcolor,
+                  ),
+                  onPressed: () {
+                    setState(() {
+                      if (iconcolor == Colors.grey) {
+                        iconcolor = AppColor.kPrimaryColor;
+                      } else {
+                        iconcolor = Colors.grey;
+                      }
+                      obsecurepassword = !obsecurepassword;
+                    });
+                  },
+                ),
+                onChanged: (value) {
+                  setState(() {
+                    password2 = value;
+                  });
+                },
+                validateStatus: (value) {
+                  if (value!.isEmpty) {
+                    return 'Field must not be empty';
+                  }
+                  return null;
+                },
               ),
               SizedBox(
-                height: 40.h,
+                height: 10.h,
               ),
+              // uploadpicture(
+              //   buttoncolor: AppColor.kPlaceholder1,
+              //   height: 50,
+              // ),
+              // SizedBox(
+              //   height: 40.h,
+              // ),
               ElevatedButton(
                 style: ButtonStyle(
                   backgroundColor: MaterialStateProperty.all(
@@ -318,13 +381,12 @@ class _SignupFormState extends State<SignupForm> {
                   ),
                 ),
                 onPressed: () {
-                  // if (_formKey1.currentState!.validate()) {
-                  //   print('successful');
-                  //   Navigator.of(context).pushReplacementNamed(
-                  //     RouteGenerator.login,
-                  //   );
-                  //   //   SignUp(context);
-                  // }
+                  if (_formKey1.currentState!.validate()) {
+                    print(
+                        '${email},${password1},${selectedCountry},${phoneno},${birthdate},${first_name},${last_name},${username},${password2}');
+                    print(constant.image);
+                    SignUp(context);
+                  }
                 },
                 child: Text(
                   'Create Account',
@@ -335,5 +397,11 @@ class _SignupFormState extends State<SignupForm> {
         ),
       ),
     );
+  }
+
+  void _updateSelectedCountry(String value) {
+    setState(() {
+      selectedCountry = value;
+    });
   }
 }

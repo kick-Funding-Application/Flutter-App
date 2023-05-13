@@ -84,33 +84,29 @@ class ResultScreen extends StatelessWidget {
                                 Row(
                                   crossAxisAlignment: CrossAxisAlignment.end,
                                   children: [
-                                    ...List.generate(
-                                      result.categories.length,
-                                      (index) => Row(
-                                        children: [
-                                          Container(
-                                            padding: EdgeInsets.all(
-                                              8.w,
-                                            ),
-                                            decoration: BoxDecoration(
-                                              color: AppColor.kPlaceholder2,
-                                              borderRadius:
-                                                  BorderRadius.circular(
-                                                8.r,
-                                              ),
-                                            ),
-                                            child: Text(
-                                              result.categories[index],
-                                              style: TextStyle(
-                                                color: AppColor.kTextColor1,
-                                              ),
+                                    Row(
+                                      children: [
+                                        Container(
+                                          padding: EdgeInsets.all(
+                                            8.w,
+                                          ),
+                                          decoration: BoxDecoration(
+                                            color: AppColor.kPlaceholder2,
+                                            borderRadius: BorderRadius.circular(
+                                              8.r,
                                             ),
                                           ),
-                                          SizedBox(
-                                            width: 8.w,
-                                          )
-                                        ],
-                                      ),
+                                          child: Text(
+                                            result.category,
+                                            style: TextStyle(
+                                              color: AppColor.kTextColor1,
+                                            ),
+                                          ),
+                                        ),
+                                        SizedBox(
+                                          width: 8.w,
+                                        )
+                                      ],
                                     ),
                                     Spacer(),
                                     Text(
@@ -224,7 +220,7 @@ class ResultScreen extends StatelessWidget {
                                 ),
                                 Spacer(),
                                 Text(
-                                  result.desc,
+                                  result.details,
                                   style: Theme.of(context)
                                       .textTheme
                                       .bodyText2!

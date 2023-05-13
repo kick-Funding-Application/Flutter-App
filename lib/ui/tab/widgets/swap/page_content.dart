@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:intl/intl.dart';
+//import 'package:intl/intl.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
 import '../../../../bloc/swap/swap_bloc.dart';
 import '../../../../models/donation.dart';
-import '../../../../models/donator.dart';
+//import '../../../../models/donator.dart';
 import '../../../../theme/app_color.dart';
 
 import 'charity_card.dart';

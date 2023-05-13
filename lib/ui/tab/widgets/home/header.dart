@@ -3,6 +3,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 
 import '../../../../theme/app_color.dart';
+import '../profile/constants.dart';
 
 class Header extends StatelessWidget {
   const Header();
@@ -23,7 +24,7 @@ class Header extends StatelessWidget {
                   'Hello!',
                 ),
                 Text(
-                  'Zahraa',
+                  '${constant.Username}',
                   style: Theme.of(context).textTheme.headline6!.copyWith(
                         color: AppColor.kTitle,
                         fontWeight: FontWeight.bold,

@@ -24,7 +24,7 @@ class CalculatorBuilder extends StatelessWidget {
       child: Column(
         mainAxisSize: MainAxisSize.min,
         children: [
-          Calculator((value) => finalValue = value),
+          pushdonation((value) => finalValue = value),
           Padding(
             padding: EdgeInsets.symmetric(
               horizontal: 16.0.w,

@@ -1,12 +1,13 @@
 import 'package:intl_phone_number_input/intl_phone_number_input.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-
+import 'constants.dart';
 import '../../../../theme/app_color.dart';
 
 class IntlPhoneField extends StatefulWidget {
-  const IntlPhoneField({super.key, this.controller});
+  const IntlPhoneField({super.key, this.controller, this.validateStatus});
   final controller;
+  final FormFieldValidator? validateStatus;
   @override
   State<IntlPhoneField> createState() => _IntlPhoneFieldState();
 }
@@ -31,6 +32,7 @@ class _IntlPhoneFieldState extends State<IntlPhoneField> {
         children: <Widget>[
           InternationalPhoneNumberInput(
             onInputChanged: (PhoneNumber number) {
+              constant.phone = number.phoneNumber.toString();
               print(number.phoneNumber);
             },
             onInputValidated: (bool value) {
@@ -40,7 +42,7 @@ class _IntlPhoneFieldState extends State<IntlPhoneField> {
               selectorType: PhoneInputSelectorType.BOTTOM_SHEET,
             ),
             ignoreBlank: false,
-            autoValidateMode: AutovalidateMode.disabled,
+            autoValidateMode: AutovalidateMode.onUserInteraction,
             selectorTextStyle: TextStyle(color: AppColor.kTextColor1),
             initialValue: number,
             textFieldController: widget.controller,

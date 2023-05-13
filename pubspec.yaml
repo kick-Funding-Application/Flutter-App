@@ -8,11 +8,13 @@ publish_to: 'none' # Remove this line if you wish to publish to pub.dev
 version: 1.0.0+1
 
 environment:
-  sdk: '>=2.19.2 <3.0.0'
+  sdk: ">=2.21.0 <3.0.0"
 
 dependencies:
   flutter:
     sdk: flutter
+  flutter_image_compress: ^2.0.3
+  image: ^4.0.17
   flutter_screenutil: ^5.7.0
   dotted_border: ^2.0.0+3
   cupertino_icons: ^1.0.5
@@ -31,11 +33,13 @@ dependencies:
   intl_phone_number_input: ^0.7.3+1
   image_picker: ^0.8.7+4
   dropdown_button2: ^1.9.2
+  flutter_stripe: ^9.1.1
+
 
 dev_dependencies:
   flutter_test:
     sdk: flutter
-
+    
   
   flutter_lints: ^2.0.0
 

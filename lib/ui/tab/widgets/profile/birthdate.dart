@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:kickfunding/ui/tab/widgets/profile/constants.dart';
 import '../../../../theme/app_color.dart';
 
 class BirthdateInputField extends StatefulWidget {
@@ -34,7 +35,7 @@ class BirthdateInputField extends StatefulWidget {
 }
 
 class _BirthdateInputFieldState extends State<BirthdateInputField> {
-  DateTime _selectedDate = DateTime(2023, 4, 5);
+  DateTime _selectedDate = constant.birthdate;
   TextEditingController? _dateController;
 
   @override
@@ -105,6 +106,7 @@ class _BirthdateInputFieldState extends State<BirthdateInputField> {
     if (picked != null && picked != _selectedDate) {
       setState(() {
         _selectedDate = picked;
+        constant.birthdate = picked;
         _dateController?.text = DateFormat('yyyy-MM-dd').format(_selectedDate);
         widget.onSaved(_dateController?.text ?? '');
       });

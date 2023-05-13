@@ -1,13 +1,18 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-
+import '/ui/tab/widgets/profile/constants.dart';
 import '../../../theme/app_color.dart';
 import '../routes/routes.dart';
 import '../ui/signup_form.dart';
 
-class SignupScreen extends StatelessWidget {
+class SignupScreen extends StatefulWidget {
   const SignupScreen();
 
+  @override
+  State<SignupScreen> createState() => _SignupScreenState();
+}
+
+class _SignupScreenState extends State<SignupScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -91,10 +96,15 @@ class SignupScreen extends StatelessWidget {
                                   height: 15.h,
                                 ),
                                 GestureDetector(
-                                  onTap: () => Navigator.of(context)
-                                      .pushReplacementNamed(
-                                    RouteGenerator.login,
-                                  ),
+                                  onTap: () {
+                                    setState(() {
+                                      constant.photofile = 'Upload Picture';
+                                    });
+
+                                    Navigator.of(context).pushReplacementNamed(
+                                      RouteGenerator.login,
+                                    );
+                                  },
                                   child: Row(
                                     mainAxisAlignment: MainAxisAlignment.center,
                                     children: [

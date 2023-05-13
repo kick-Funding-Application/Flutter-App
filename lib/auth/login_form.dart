@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:flutter_svg/flutter_svg.dart';
+import 'package:kickfunding/ui/signup_form.dart';
+//import 'package:flutter_svg/flutter_svg.dart';
 import 'package:kickfunding/ui/tab/widgets/profile/constants.dart';
 import '../../../theme/app_color.dart';
 import '../routes/routes.dart';
@@ -21,53 +22,16 @@ class LoginForm extends StatefulWidget {
 
 GlobalKey<FormState> _formKey2 = GlobalKey<FormState>();
 
-Future performLogin(BuildContext cont2) async {
-  bool check = false;
-  if (email == 'admin' && password == 'admin') {
-    check = true;
-    constant.success = check;
-    return constant.success;
-  } else {
-    return constant.success;
-  }
-}
-
-Future Login(BuildContext cont) async {
-  /**removecomment when online */
-  Map<String, dynamic> body = {
-    "email": email,
-    "password": password,
-  };
-  String jsonBody = json.encode(body);
-  final encoding = Encoding.getByName('utf-8');
-  if (email == "" || password == "") {
-    print('Fields have not to be empty');
-  } else {
-    var url =
-        Uri.parse("https://1a62-102-186-239-195.eu.ngrok.io/caregiver/signup");
-    var response = await http.post(url,
-        headers: {'content-Type': 'application/json'},
-        body: jsonBody,
-        encoding: encoding);
-    var result = response.body;
-    print(result);
-
-    print('Registration successful');
-    print(result);
-
-    var data = json.decode(response.body);
-    if (data["message"] == "Success") {
-      token = data["access_token"];
-      print("Registeration succeeded");
-      Navigator.of(cont).pushReplacementNamed(
-        RouteGenerator.main,
-      );
-    } else {
-      print("Registeration Failed");
-    }
-  }
-  /**removecomment when online */
-}
+// Future performLogin(BuildContext cont2) async {
+//   bool check = false;
+//   if (email == 'admin' && password == 'admin') {
+//     check = true;
+//     constant.success = check;
+//     return constant.success;
+//   } else {
+//     return constant.success;
+//   }
+// }
 
 var token = "";
 var email = "";
@@ -188,13 +152,14 @@ class _LoginFormState extends State<LoginForm> {
                 if (_formKey2.currentState!.validate()) {
                   // Perform login
 
-                  constant.success = await performLogin(context);
-
+                  performLogin(context);
+                  reload();
                   // Store login status
                   if (constant.success) {
                     SharedPreferences prefs =
                         await SharedPreferences.getInstance();
                     prefs.setBool('isLoggedIn', true);
+                    // ignore: unnecessary_null_comparison
                   } else if (constant.success == null) {
                     Center(child: CircularProgressIndicator());
                   }
@@ -214,5 +179,66 @@ class _LoginFormState extends State<LoginForm> {
         ),
       ),
     );
+  }
+
+  void performLogin(BuildContext context) async {
+    Map<String, dynamic> body = {
+      "email": email,
+      "password": password,
+    };
+    String jsonBody = json.encode(body);
+    final encoding = Encoding.getByName('utf-8');
+    if (email == "zozo" || password == "zozo") {
+      reload();
+      //print('Fields have not to be empty');
+    } else {
+      var url = Uri.parse(
+          "https://73ec-197-54-244-163.ngrok-free.app/api/dj-rest-auth/login/");
+
+      var response = await http.post(url,
+          headers: {
+            'content-Type': 'application/json',
+          },
+          body: jsonBody,
+          encoding: encoding);
+
+      var data = json.decode(response.body);
+
+      print(data);
+      if (response.statusCode == 200) {
+        token = data["key"];
+        print(token);
+        print("Login succeeded");
+        reload();
+      }
+      /* UNCOMMENT WHEN SERVER ONLINE */
+    }
+
+    // var url2 =
+    //     Uri.parse("https://1a62-102-186-239-195.eu.ngrok.io/patient/info/55");
+    // var response = await http.get(
+    //   url2,
+    //   headers: {
+    //     'content-Type': 'application/json',
+    //     "Authorization": "Bearer ${token}"
+    //   },
+    // );
+
+    // if (response.statusCode == 200) {
+    //   var data2 = json.decode(response.body);
+    //   print(data2);
+    //   constant.Username = data2["username"].toString();
+
+    //   print('Username=$username');
+    // }
+    /* UNCOMMENT WHEN SERVER ONLINE */
+  }
+
+  Future<void> reload() async {
+    constant.success = true;
+
+    await Future.delayed(Duration(seconds: 3));
+
+    return;
   }
 }

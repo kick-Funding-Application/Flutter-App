@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:http/http.dart' as http;
+import 'package:kickfunding/models/result.dart';
 import 'dart:convert';
 import '../../../../theme/app_animation.dart';
 import '../../../../theme/app_color.dart';
@@ -17,29 +18,170 @@ class SearchScreen extends StatefulWidget {
   _SearchScreenState createState() => _SearchScreenState();
 }
 
-final List<dynamic> results = [
-  '',
-  '',
-  '',
-  '',
-];
+final List<dynamic> results = [];
 
 class _SearchScreenState extends State<SearchScreen> {
-  late Future<List<dynamic>> _futureData;
-
   @override
   void initState() {
     super.initState();
-    _futureData = getData();
+
     controller = TextEditingController();
     super.initState();
   }
 
-  Future<List<dynamic>> getData() async {
+  Future getData() async {
     var url = Uri.parse("https://dummyjson.com/quotes");
     var response = await http.get(url);
     var responsebody = jsonDecode(response.body);
-    print(responsebody["quotes"][1]);
+    print(responsebody["quotes"][1]["id"]);
+    //return responsebody["quotes"];
+
+// Make the HTTP GET request
+    final response2 =
+        await http.get(Uri.parse('http://example.com/api/urgents'));
+
+/**FOR TEST */
+
+    String test =
+        '''
+    [
+      {    "title": "Title of project",
+    "target": "500.00",
+    "percent": "50",
+    "assetName": "assets/images/image_placeholder.svg",
+    "category": "Education",
+    "organizer": "Organizer",
+    "remaining": "250.00",
+    "rate": "0.0",
+    "details": "details",
+    "end_date": "2024-05-26",
+    "start_date": "2022-02-01",
+    "days": "10",
+    "tags": "help"},
+      {"title": "Title of project",
+    "target": "500.00",
+    "percent": "50",
+    "assetName": "assets/images/image_placeholder.svg",
+    "category": "Education",
+    "organizer": "Organizer",
+    "remaining": "250.00",
+    "rate": "0.0",
+    "details": "details",
+    "end_date": "2024-05-26",
+    "start_date": "2022-02-01",
+    "days": "10",
+    "tags": "help"},
+      {"title": "Title of project",
+    "target": "500.00",
+    "percent": "50",
+    "assetName": "assets/images/image_placeholder.svg",
+    "category": "Education",
+    "organizer": "Organizer",
+    "remaining": "200.00",
+    "rate": "0.0",
+    "details": "details..",
+    "end_date": "2024-05-26",
+    "start_date": "2022-02-01",
+    "days": "10",
+    "tags": "help"},
+    {"title": "Zahraa",
+    "target": "1000.00",
+    "percent": "50",
+    "assetName": "assets/images/image_placeholder.svg",
+    "category": "Education",
+    "organizer": "Organizer",
+    "remaining": "100.00",
+    "rate": "0.0",
+    "details": "details..",
+    "end_date": "2024-05-26",
+    "start_date": "2022-02-01",
+    "days": "10",
+    "tags": "help"}
+    ]
+  '''; // Example JSON data
+
+    List<dynamic> jsonData = json.decode(test);
+    results.clear();
+
+    for (var data in jsonData) {
+      double target = double.parse(data['target']);
+      double remaining = double.parse(data['remaining']);
+      double percent = ((target - remaining) / target) * 100;
+      DateTime end_date = DateTime.parse(data['end_date']).toLocal();
+      DateTime currentDate = DateTime.now().toLocal();
+      Duration remainingDuration = end_date.difference(currentDate);
+      int days = remainingDuration.inDays;
+      Result result = Result(
+        title: data['title'],
+        target: data['target'],
+        percent: percent
+            .toStringAsFixed(2), // Convert to string with 2 decimal places
+        assetName: data['assetName'],
+        category: data['category'],
+        organizer: data['organizer'],
+        remaining: data['remaining'],
+        rate: double.parse(data['rate'].toString()),
+        details: data['details'],
+        end_date: data['end_date'],
+        start_date: data['start_date'],
+        days: days,
+        tags: data['tags'],
+      );
+
+      results.add(result);
+    }
+
+/**FOR TEST */
+
+    // if (response2.statusCode == 200) {
+    //   // Parse the JSON response
+    //   final jsonData = json.decode(response2.body);
+
+    //   // Iterate over the parsed data and append to the urgents list
+    //   for (var data in jsonData) {
+    //     double target = double.parse(data['target']);
+    //     double remaining = double.parse(data['remaining']);
+    //     double percent = ((target - remaining) / target) * 100;
+    //     DateTime end_date = DateTime.parse(data['end_date']).toLocal();
+    //     DateTime currentDate = DateTime.now().toLocal();
+    //     Duration remainingDuration = end_date.difference(currentDate);
+    //     int days = remainingDuration.inDays;
+    //     Urgent urgent = Urgent(
+    //       title: data['title'],
+    //       target: data['target'],
+    //       percent: percent
+    //           .toStringAsFixed(2), // Convert to string with 2 decimal places
+    //       assetName: data['assetName'],
+    //       category: data['category'],
+    //       organizer: data['organizer'],
+    //       remaining: data['remaining'],
+    //       rate: double.parse(data['rate'].toString()),
+    //       details: data['details'],
+    //       end_date: data['end_date'],
+    //       start_date: data['start_date'],
+    //       days: days,
+    //       tags: data['tags'],
+    //     );
+
+    //     urgents.add(urgent);
+    //   }
+
+    // }
+
+    /*remove this comments*/
+//   var url = Uri.parse("https://1a62-102-186-239-195.eu.ngrok.io/chair/data/55");
+//   var response = await http.get(
+//     url,
+//     headers: {
+//       'content-Type': 'application/json',
+//       "Authorization": "Bearer ${constant.token}"
+//     },
+//   );
+
+//   var data = json.decode(response.body);
+//   print(data);
+//  // var heartint = data["pulse_rate"];
+    /*remove this comments*/
     return responsebody["quotes"];
   }
 
@@ -121,7 +263,7 @@ class _SearchScreenState extends State<SearchScreen> {
               ),
               Padding(
                 padding: EdgeInsets.symmetric(horizontal: 16.0.w),
-                child: SearchBar(
+                child: searchBarWidget(
                   controller: controller,
                   onTap: () {
                     setState(() {
@@ -143,9 +285,9 @@ class _SearchScreenState extends State<SearchScreen> {
   }
 
   Widget _buildResult() {
-    return FutureBuilder<List<dynamic>>(
-        future: _futureData,
-        builder: (BuildContext context, AsyncSnapshot<List<dynamic>> snapshot) {
+    return FutureBuilder(
+        future: getData(),
+        builder: (BuildContext context, AsyncSnapshot snapshot) {
           if (snapshot.connectionState == ConnectionState.waiting) {
             return Center(child: CircularProgressIndicator());
           } else if (snapshot.hasError) {
@@ -199,47 +341,44 @@ class _SearchScreenState extends State<SearchScreen> {
   }
 
   Widget _buildSearching(BuildContext context) {
-    return FutureBuilder<List<dynamic>>(
-        future: _futureData,
-        builder: (BuildContext context, AsyncSnapshot<List<dynamic>> snapshot) {
-          if (snapshot.connectionState == ConnectionState.waiting) {
-            return Center(child: CircularProgressIndicator());
-          } else if (snapshot.hasError) {
-            return Text('Error: ${snapshot.error}');
-          } else if (snapshot.hasData) {
-            return Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Category(),
-                SizedBox(
-                  height: 16.h,
-                ),
-                Padding(
-                  padding: EdgeInsets.symmetric(
-                    horizontal: 16.0.w,
-                  ),
-                  child: Column(
-                    children: [
-                      ListView.builder(
-                          scrollDirection: Axis.vertical,
-                          physics: ScrollPhysics(),
-                          shrinkWrap: true,
-                          itemCount: snapshot.data!.length,
-                          itemBuilder: (context, i) {
-                            return IntroCard(
-                                title: 'Title',
-                                category: 'Category',
-                                Owner: 'Qwner',
-                                Date: (DateTime(2023, 5, 4)));
-                          }),
-                    ],
-                  ),
-                ),
-              ],
-            );
-          } else {
-            return Center(child: CircularProgressIndicator());
-          }
-        });
+    return //FutureBuilder<List<dynamic>>(
+        FutureBuilder(
+            future: getData(),
+            builder: (BuildContext context, AsyncSnapshot snapshot) {
+              if (snapshot.connectionState == ConnectionState.waiting) {
+                return Center(child: CircularProgressIndicator());
+              } else if (snapshot.hasError) {
+                return Text('Error: ${snapshot.error}');
+              } else if (snapshot.hasData) {
+                return Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Category(),
+                    SizedBox(
+                      height: 16.h,
+                    ),
+                    Padding(
+                      padding: EdgeInsets.symmetric(
+                        horizontal: 16.0.w,
+                      ),
+                      child: Column(
+                        children: [
+                          ListView.builder(
+                              scrollDirection: Axis.vertical,
+                              physics: ScrollPhysics(),
+                              shrinkWrap: true,
+                              itemCount: results.length,
+                              itemBuilder: (context, i) {
+                                return IntroCard(results[i]);
+                              }),
+                        ],
+                      ),
+                    ),
+                  ],
+                );
+              } else {
+                return Center(child: CircularProgressIndicator());
+              }
+            });
   }
 }

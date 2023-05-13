@@ -4,8 +4,8 @@ import 'package:flutter_svg/flutter_svg.dart';
 
 import '../../../../theme/app_color.dart';
 
-class SearchBar extends StatelessWidget {
-  const SearchBar({
+class searchBarWidget extends StatefulWidget {
+  const searchBarWidget({
     this.textInputAction,
     this.onSubmitted,
     this.onTap,
@@ -20,13 +20,18 @@ class SearchBar extends StatelessWidget {
   final String? hintText;
 
   @override
+  State<searchBarWidget> createState() => _searchBarWidgetState();
+}
+
+class _searchBarWidgetState extends State<searchBarWidget> {
+  @override
   Widget build(BuildContext context) {
     return Stack(
       children: [
         TextField(
-          controller: controller,
-          textInputAction: textInputAction,
-          onSubmitted: onSubmitted,
+          controller: widget.controller,
+          textInputAction: widget.textInputAction,
+          onSubmitted: widget.onSubmitted,
           cursorColor: AppColor.kPrimaryColor,
           style: Theme.of(context).textTheme.bodyText2,
           decoration: InputDecoration(
@@ -38,7 +43,7 @@ class SearchBar extends StatelessWidget {
                 ),
                 borderSide: BorderSide.none,
               ),
-              hintText: hintText,
+              hintText: widget.hintText,
               hintStyle: TextStyle(
                 color: AppColor.kTextColor1,
                 fontSize: 14.sp,
@@ -54,7 +59,7 @@ class SearchBar extends StatelessWidget {
           right: 8.w,
           child: Center(
             child: GestureDetector(
-              onTap: onTap,
+              onTap: widget.onTap,
               child: Container(
                 width: 40.h,
                 height: 40.h,

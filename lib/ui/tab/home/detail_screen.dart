@@ -4,13 +4,24 @@ import 'package:flutter_svg/svg.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import '../../../../models/urgent.dart';
 import '../../../../theme/app_color.dart';
+import '../../../routes/routes.dart';
 import '../widgets/home/calculator_builder.dart';
 import 'rate.dart';
+import 'dart:convert';
+import 'package:http/http.dart' as http;
 
-class DetailScreen extends StatelessWidget {
+class DetailScreen extends StatefulWidget {
   DetailScreen(this.urgent);
 
   final Urgent urgent;
+
+  @override
+  State<DetailScreen> createState() => _DetailScreenState();
+}
+
+var rate;
+
+class _DetailScreenState extends State<DetailScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -52,7 +63,7 @@ class DetailScreen extends StatelessWidget {
                           ),
                           child: Center(
                             child: SvgPicture.asset(
-                              urgent.assetName,
+                              widget.urgent.assetName,
                               width: 100.w,
                             ),
                           ),
@@ -84,37 +95,33 @@ class DetailScreen extends StatelessWidget {
                                 Row(
                                   crossAxisAlignment: CrossAxisAlignment.end,
                                   children: [
-                                    ...List.generate(
-                                      urgent.categories.length,
-                                      (index) => Row(
-                                        children: [
-                                          Container(
-                                            padding: EdgeInsets.all(
-                                              8.w,
-                                            ),
-                                            decoration: BoxDecoration(
-                                              color: AppColor.kPlaceholder2,
-                                              borderRadius:
-                                                  BorderRadius.circular(
-                                                8.r,
-                                              ),
-                                            ),
-                                            child: Text(
-                                              urgent.categories[index],
-                                              style: TextStyle(
-                                                color: AppColor.kTextColor1,
-                                              ),
+                                    Row(
+                                      children: [
+                                        Container(
+                                          padding: EdgeInsets.all(
+                                            8.w,
+                                          ),
+                                          decoration: BoxDecoration(
+                                            color: AppColor.kPlaceholder2,
+                                            borderRadius: BorderRadius.circular(
+                                              8.r,
                                             ),
                                           ),
-                                          SizedBox(
-                                            width: 8.w,
-                                          )
-                                        ],
-                                      ),
+                                          child: Text(
+                                            widget.urgent.category,
+                                            style: TextStyle(
+                                              color: AppColor.kTextColor1,
+                                            ),
+                                          ),
+                                        ),
+                                        SizedBox(
+                                          width: 8.w,
+                                        )
+                                      ],
                                     ),
                                     Spacer(),
                                     Text(
-                                      '${urgent.days} Days left',
+                                      '${widget.urgent.days} Days left',
                                       style: TextStyle(
                                         color: AppColor.kAccentColor,
                                         fontWeight: FontWeight.bold,
@@ -124,7 +131,7 @@ class DetailScreen extends StatelessWidget {
                                 ),
                                 Spacer(),
                                 Text(
-                                  urgent.title,
+                                  widget.urgent.title,
                                   style: Theme.of(context)
                                       .textTheme
                                       .headline4!
@@ -134,7 +141,7 @@ class DetailScreen extends StatelessWidget {
                                 ),
                                 Spacer(),
                                 Text(
-                                  'By: ${urgent.organizer}',
+                                  'By: ${widget.urgent.organizer}',
                                   style: Theme.of(context)
                                       .textTheme
                                       .bodyText1!
@@ -147,7 +154,7 @@ class DetailScreen extends StatelessWidget {
                                   children: [
                                     Container(
                                       width: (1.sw - 36.w) *
-                                          double.parse(urgent.percent) /
+                                          double.parse(widget.urgent.percent) /
                                           100,
                                       height: 6.h,
                                       decoration: ShapeDecoration(
@@ -158,7 +165,9 @@ class DetailScreen extends StatelessWidget {
                                     Spacer(),
                                     Container(
                                       width: (1.sw - 36.w) *
-                                          (100 - double.parse(urgent.percent)) /
+                                          (100 -
+                                              double.parse(
+                                                  widget.urgent.percent)) /
                                           100,
                                       height: 6.h,
                                       decoration: ShapeDecoration(
@@ -185,7 +194,7 @@ class DetailScreen extends StatelessWidget {
                                               ),
                                         ),
                                         Text(
-                                          '\$${urgent.target}',
+                                          '\$${widget.urgent.target}',
                                           style: Theme.of(context)
                                               .textTheme
                                               .headline6!
@@ -210,7 +219,7 @@ class DetailScreen extends StatelessWidget {
                                               ),
                                         ),
                                         Text(
-                                          '\$${urgent.remaining}',
+                                          '\$${widget.urgent.remaining}',
                                           style: Theme.of(context)
                                               .textTheme
                                               .headline6!
@@ -224,7 +233,7 @@ class DetailScreen extends StatelessWidget {
                                 ),
                                 Spacer(),
                                 Text(
-                                  urgent.desc,
+                                  widget.urgent.details,
                                   style: Theme.of(context)
                                       .textTheme
                                       .bodyText2!
@@ -240,8 +249,11 @@ class DetailScreen extends StatelessWidget {
                                       Text('Rate Your Experience:'),
                                       RatingBar.builder(
                                         itemSize: 30,
-                                        initialRating: 3,
-                                        minRating: 1,
+                                        initialRating:
+                                            widget.urgent.rate != null
+                                                ? widget.urgent.rate!
+                                                : 0,
+                                        minRating: 0,
                                         direction: Axis.horizontal,
                                         allowHalfRating: false,
                                         itemCount: 5,
@@ -253,6 +265,10 @@ class DetailScreen extends StatelessWidget {
                                         ),
                                         onRatingUpdate: (rating) {
                                           print(rating);
+                                          setState(() {
+                                            rate = rating;
+                                          });
+                                          updateRate();
                                         },
                                       ),
                                     ],
@@ -327,7 +343,9 @@ class DetailScreen extends StatelessWidget {
               child: Row(
                 children: [
                   GestureDetector(
-                    onTap: () => Navigator.of(context).pop(),
+                    onTap: () => Navigator.of(context).pushReplacementNamed(
+                      RouteGenerator.main,
+                    ),
                     child: SvgPicture.asset(
                       'assets/images/back.svg',
                       width: 24.w,
@@ -342,8 +360,31 @@ class DetailScreen extends StatelessWidget {
       ),
     );
   }
-}
 
+  void updateRate() async {
+    /**Remove when online */
+    // Map<String, dynamic> body = {
+    //   "value": rate,
+    // };
+    // String jsonBody = json.encode(body);
+    // final encoding = Encoding.getByName('utf-8');
+
+    // var url =
+    //     Uri.parse("https://1a62-102-186-239-195.eu.ngrok.io/caregiver/login");
+
+    // var response = await http.post(url,
+    //     headers: {
+    //       'content-Type': 'application/json',
+    //     },
+    //     body: jsonBody,
+    //     encoding: encoding);
+
+    // var data = json.decode(response.body);
+    // print(data);
+    /**Remove when online */
+    print(rate);
+  }
+}
 
 /**
  * DRAFT CODE FORE DONATED BY AVATAR ICONS:

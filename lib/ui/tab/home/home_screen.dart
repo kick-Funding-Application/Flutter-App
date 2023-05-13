@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
-
+import '../widgets/profile/constants.dart';
 import '../../../../models/urgent.dart';
 import '../../../../theme/app_color.dart';
 import 'package:http/http.dart' as http;
@@ -10,70 +10,160 @@ import '../widgets/category.dart';
 import '../widgets/home/header.dart';
 import '../widgets/home/urgent_card.dart';
 
-final List<Urgent> urgents = [
-  Urgent(
-    title: 'Title of project',
-    target: '500.00',
-    percent: '50',
-    assetName: 'assets/images/image_placeholder.svg',
-    categories: ['Children', 'Education'],
-    days: 40,
-    organizer: 'Organizer',
-    remaining: '250.00',
-    desc: 'details............'
-        '...........................'
-        '..............',
-    people: 99,
-  ),
-  Urgent(
-    title: 'Title of project',
-    target: '500.00',
-    percent: '50',
-    assetName: 'assets/images/image_placeholder.svg',
-    categories: ['Children', 'Education'],
-    days: 40,
-    organizer: 'Organizer',
-    remaining: '250.00',
-    desc: 'details............'
-        '........................... '
-        '..............',
-    people: 99,
-  ),
-  Urgent(
-    title: 'Title of project',
-    target: '500.00',
-    percent: '50',
-    assetName: 'assets/images/image_placeholder.svg',
-    categories: ['Children', 'Education'],
-    days: 40,
-    organizer: 'Organizer',
-    remaining: '250.00',
-    desc: 'details............'
-        '........................... '
-        '..............',
-    people: 99,
-  ),
-  Urgent(
-    title: 'Title of project',
-    target: '500.00',
-    percent: '50',
-    assetName: 'assets/images/image_placeholder.svg',
-    categories: ['Children', 'Education'],
-    days: 40,
-    organizer: 'Organizer',
-    remaining: '250.00',
-    desc: 'details............'
-        '........................... '
-        '..............',
-    people: 99,
-  ),
-];
+final List<Urgent> urgents = [];
 
 Future getData() async {
   var url = Uri.parse("https://dummyjson.com/quotes");
   var response = await http.get(url);
   var responsebody = jsonDecode(response.body);
-  print(responsebody["quotes"][1]);
+  print(responsebody["quotes"][1]["id"]);
+  //return responsebody["quotes"];
+
+// Make the HTTP GET request
+  final response2 = await http.get(Uri.parse('http://example.com/api/urgents'));
+
+/**FOR TEST */
+
+  String test =
+      '''
+    [
+      {    "title": "Title of project",
+    "target": "500.00",
+    "percent": "50",
+    "assetName": "assets/images/image_placeholder.svg",
+    "category": "Education",
+    "organizer": "Organizer",
+    "remaining": "250.00",
+    "rate": "0.0",
+    "details": "details",
+    "end_date": "2024-05-26",
+    "start_date": "2022-02-01",
+    "days": "10",
+    "tags": "help"},
+      {"title": "Title of project",
+    "target": "500.00",
+    "percent": "50",
+    "assetName": "assets/images/image_placeholder.svg",
+    "category": "Education",
+    "organizer": "Organizer",
+    "remaining": "250.00",
+    "rate": "0.0",
+    "details": "details",
+    "end_date": "2024-05-26",
+    "start_date": "2022-02-01",
+    "days": "10",
+    "tags": "help"},
+      {"title": "Title of project",
+    "target": "500.00",
+    "percent": "50",
+    "assetName": "assets/images/image_placeholder.svg",
+    "category": "Education",
+    "organizer": "Organizer",
+    "remaining": "200.00",
+    "rate": "0.0",
+    "details": "details..",
+    "end_date": "2024-05-26",
+    "start_date": "2022-02-01",
+    "days": "10",
+    "tags": "help"},
+    {"title": "Zahraa",
+    "target": "1000.00",
+    "percent": "50",
+    "assetName": "assets/images/image_placeholder.svg",
+    "category": "Education",
+    "organizer": "Organizer",
+    "remaining": "100.00",
+    "rate": "0.0",
+    "details": "details..",
+    "end_date": "2024-05-26",
+    "start_date": "2022-02-01",
+    "days": "10",
+    "tags": "help"}
+    ]
+  '''; // Example JSON data
+
+  List<dynamic> jsonData = json.decode(test);
+  urgents.clear();
+
+  for (var data in jsonData) {
+    double target = double.parse(data['target']);
+    double remaining = double.parse(data['remaining']);
+    double percent = ((target - remaining) / target) * 100;
+    DateTime end_date = DateTime.parse(data['end_date']).toLocal();
+    DateTime currentDate = DateTime.now().toLocal();
+    Duration remainingDuration = end_date.difference(currentDate);
+    int days = remainingDuration.inDays;
+    Urgent urgent = Urgent(
+      title: data['title'],
+      target: data['target'],
+      percent:
+          percent.toStringAsFixed(2), // Convert to string with 2 decimal places
+      assetName: data['assetName'],
+      category: data['category'],
+      organizer: data['organizer'],
+      remaining: data['remaining'],
+      rate: double.parse(data['rate'].toString()),
+      details: data['details'],
+      end_date: data['end_date'],
+      start_date: data['start_date'],
+      days: days,
+      tags: data['tags'],
+    );
+
+    urgents.add(urgent);
+  }
+
+/**FOR TEST */
+
+  // if (response2.statusCode == 200) {
+  //   // Parse the JSON response
+  //   final jsonData = json.decode(response2.body);
+
+  //   // Iterate over the parsed data and append to the urgents list
+  //   for (var data in jsonData) {
+  //     double target = double.parse(data['target']);
+  //     double remaining = double.parse(data['remaining']);
+  //     double percent = ((target - remaining) / target) * 100;
+  //     DateTime end_date = DateTime.parse(data['end_date']).toLocal();
+  //     DateTime currentDate = DateTime.now().toLocal();
+  //     Duration remainingDuration = end_date.difference(currentDate);
+  //     int days = remainingDuration.inDays;
+  //     Urgent urgent = Urgent(
+  //       title: data['title'],
+  //       target: data['target'],
+  //       percent: percent
+  //           .toStringAsFixed(2), // Convert to string with 2 decimal places
+  //       assetName: data['assetName'],
+  //       category: data['category'],
+  //       organizer: data['organizer'],
+  //       remaining: data['remaining'],
+  //       rate: double.parse(data['rate'].toString()),
+  //       details: data['details'],
+  //       end_date: data['end_date'],
+  //       start_date: data['start_date'],
+  //       days: days,
+  //       tags: data['tags'],
+  //     );
+
+  //     urgents.add(urgent);
+  //   }
+
+  // }
+
+  /*remove this comments*/
+//   var url = Uri.parse("https://1a62-102-186-239-195.eu.ngrok.io/chair/data/55");
+//   var response = await http.get(
+//     url,
+//     headers: {
+//       'content-Type': 'application/json',
+//       "Authorization": "Bearer ${constant.token}"
+//     },
+//   );
+
+//   var data = json.decode(response.body);
+//   print(data);
+//  // var heartint = data["pulse_rate"];
+  /*remove this comments*/
   return responsebody["quotes"];
 }
 
