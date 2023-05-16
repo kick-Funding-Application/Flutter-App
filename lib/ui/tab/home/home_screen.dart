@@ -9,8 +9,10 @@ import 'dart:convert';
 import '../widgets/category.dart';
 import '../widgets/home/header.dart';
 import '../widgets/home/urgent_card.dart';
+import '/initials/constants.dart';
 
 final List<Urgent> urgents = [];
+final List<dynamic> specificurgents = [];
 
 Future getData() async {
   var url = Uri.parse("https://dummyjson.com/quotes");
@@ -27,7 +29,33 @@ Future getData() async {
   String test =
       '''
     [
-      {    "title": "Title of project",
+      {    "title": "Hospital project",
+    "target": "500.00",
+    "percent": "50",
+    "assetName": "assets/images/image_placeholder.svg",
+    "category": "Health",
+    "organizer": "Organizer",
+    "remaining": "250.00",
+    "rate": "0.0",
+    "details": "details",
+    "end_date": "2024-05-26",
+    "start_date": "2022-02-01",
+    "days": "10",
+    "tags": "help"},
+     {    "title": "Save the environoment",
+    "target": "500.00",
+    "percent": "50",
+    "assetName": "assets/images/image_placeholder.svg",
+    "category": "Environment",
+    "organizer": "Organizer",
+    "remaining": "250.00",
+    "rate": "0.0",
+    "details": "details",
+    "end_date": "2024-05-26",
+    "start_date": "2022-02-01",
+    "days": "10",
+    "tags": "help"},
+      {"title": "Education project",
     "target": "500.00",
     "percent": "50",
     "assetName": "assets/images/image_placeholder.svg",
@@ -40,24 +68,11 @@ Future getData() async {
     "start_date": "2022-02-01",
     "days": "10",
     "tags": "help"},
-      {"title": "Title of project",
+      {"title": "Animal Project",
     "target": "500.00",
     "percent": "50",
     "assetName": "assets/images/image_placeholder.svg",
-    "category": "Education",
-    "organizer": "Organizer",
-    "remaining": "250.00",
-    "rate": "0.0",
-    "details": "details",
-    "end_date": "2024-05-26",
-    "start_date": "2022-02-01",
-    "days": "10",
-    "tags": "help"},
-      {"title": "Title of project",
-    "target": "500.00",
-    "percent": "50",
-    "assetName": "assets/images/image_placeholder.svg",
-    "category": "Education",
+    "category": "Animal",
     "organizer": "Organizer",
     "remaining": "200.00",
     "rate": "0.0",
@@ -66,7 +81,7 @@ Future getData() async {
     "start_date": "2022-02-01",
     "days": "10",
     "tags": "help"},
-    {"title": "Zahraa",
+    {"title": "School Project",
     "target": "1000.00",
     "percent": "50",
     "assetName": "assets/images/image_placeholder.svg",
@@ -84,6 +99,7 @@ Future getData() async {
 
   List<dynamic> jsonData = json.decode(test);
   urgents.clear();
+  specificurgents.clear();
 
   for (var data in jsonData) {
     double target = double.parse(data['target']);
@@ -111,6 +127,9 @@ Future getData() async {
     );
 
     urgents.add(urgent);
+    if (urgent.category == charityform.specificCategory) {
+      specificurgents.add(urgent);
+    }
   }
 
 /**FOR TEST */
@@ -164,7 +183,7 @@ Future getData() async {
 //   print(data);
 //  // var heartint = data["pulse_rate"];
   /*remove this comments*/
-  return responsebody["quotes"];
+  return specificurgents;
 }
 
 class HomeScreen extends StatefulWidget {
@@ -200,11 +219,11 @@ class _HomeScreenState extends State<HomeScreen> {
     super.initState();
   }
 
-  @override
-  void dispose() {
-    controller.dispose();
-    super.dispose();
-  }
+  // @override
+  // void dispose() {
+  //   controller.dispose();
+  //   super.dispose();
+  // }
 
   @override
   Widget build(BuildContext context) {
@@ -309,7 +328,14 @@ class _HomeScreenState extends State<HomeScreen> {
                     ),
                   ),
                   Spacer(),
-                  Category(),
+                  buildcategory(),
+                  // Category(
+                  //   onTap: () {
+                  //     setState(() {
+                  //       _buildurgent(context);
+                  //     });
+                  //   },
+                  // ),
                   Spacer(),
                   Padding(
                     padding: EdgeInsets.symmetric(
@@ -328,7 +354,7 @@ class _HomeScreenState extends State<HomeScreen> {
                         Row(
                           mainAxisSize: MainAxisSize.min,
                           children: List.generate(
-                            urgents.length,
+                            specificurgents.length,
                             (index) => Row(
                               children: [
                                 SizedBox(
@@ -352,33 +378,34 @@ class _HomeScreenState extends State<HomeScreen> {
                     ),
                   ),
                   Spacer(),
-                  Padding(
-                    padding: EdgeInsets.only(
-                      left: 16.0.w,
-                    ),
-                    child: SingleChildScrollView(
-                      controller: controller,
-                      scrollDirection: Axis.horizontal,
-                      padding: EdgeInsets.only(
-                        top: 8.h,
-                        bottom: 8.h,
-                        right: 8.w,
-                      ),
-                      child: Row(
-                        children: List.generate(
-                          urgents.length,
-                          (index) => Row(
-                            children: [
-                              UrgentCard(urgents[index]),
-                              SizedBox(
-                                width: 16.w,
-                              ),
-                            ],
-                          ),
-                        ),
-                      ),
-                    ),
-                  ),
+                  _buildurgent(context),
+                  // Padding(
+                  //   padding: EdgeInsets.only(
+                  //     left: 16.0.w,
+                  //   ),
+                  //   child: SingleChildScrollView(
+                  //     controller: controller,
+                  //     scrollDirection: Axis.horizontal,
+                  //     padding: EdgeInsets.only(
+                  //       top: 8.h,
+                  //       bottom: 8.h,
+                  //       right: 8.w,
+                  //     ),
+                  //     child: Row(
+                  //       children: List.generate(
+                  //         specificurgents.length,
+                  //         (index) => Row(
+                  //           children: [
+                  //             UrgentCard(specificurgents[index]),
+                  //             SizedBox(
+                  //               width: 16.w,
+                  //             ),
+                  //           ],
+                  //         ),
+                  //       ),
+                  //     ),
+                  //   ),
+                  // ),
                   Spacer(),
                 ],
               ),
@@ -387,5 +414,52 @@ class _HomeScreenState extends State<HomeScreen> {
             return Center(child: CircularProgressIndicator());
           }
         });
+  }
+
+  Widget buildcategory() {
+    return Category(onTap: () {
+      setState(() {
+        _buildurgent(context);
+      });
+    });
+  }
+
+  Widget _buildurgent(BuildContext context) {
+    return FutureBuilder(
+      future: getData(),
+      builder: (context, AsyncSnapshot snapshot) {
+        if (snapshot.hasData) {
+          return Padding(
+            padding: EdgeInsets.only(
+              left: 16.0.w,
+            ),
+            child: SingleChildScrollView(
+              controller: controller,
+              scrollDirection: Axis.horizontal,
+              padding: EdgeInsets.only(
+                top: 8.h,
+                bottom: 8.h,
+                right: 8.w,
+              ),
+              child: Row(
+                children: List.generate(
+                  specificurgents.length,
+                  (index) => Row(
+                    children: [
+                      UrgentCard(specificurgents[index]),
+                      SizedBox(
+                        width: 16.w,
+                      ),
+                    ],
+                  ),
+                ),
+              ),
+            ),
+          );
+        } else {
+          return Center(child: CircularProgressIndicator());
+        }
+      },
+    );
   }
 }

@@ -106,12 +106,16 @@ class uploadpicture extends StatefulWidget {
 File? _profilePicture;
 
 class _uploadpictureState extends State<uploadpicture> {
-  Future pickercamera() async {
-    final file = await ImagePicker().getImage(source: ImageSource.gallery);
-    setState(() {
-      _profilePicture = File(file!.path);
-      constant.photofile = _profilePicture!.path;
-    });
+  Future<void> pickercamera() async {
+    final XFile? file =
+        await ImagePicker().pickImage(source: ImageSource.gallery);
+    if (file != null) {
+      setState(() {
+        _profilePicture = File(file.path);
+        constant.image = _profilePicture;
+        constant.photofile = _profilePicture!.path;
+      });
+    }
   }
 
   @override

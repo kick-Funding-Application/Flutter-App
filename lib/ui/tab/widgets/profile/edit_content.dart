@@ -1,17 +1,21 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:kickfunding/auth/login_form.dart';
+import 'package:kickfunding/ui/tab/widgets/profile/uploadfirebase.dart';
+import '/ui/custom_input_field.dart';
 
+import '../../../../routes/routes.dart';
 import 'constants.dart';
 import '../../../../theme/app_color.dart';
 import '../charity/charity_input_field.dart';
 import 'birthdate.dart';
-
+import 'package:http/http.dart' as http;
+import 'dart:convert';
 import 'country.dart';
 import 'uploadphoto.dart';
 import 'dart:io';
 import 'package:image_picker/image_picker.dart';
-
 
 class EditContent extends StatefulWidget {
   const EditContent({super.key});
@@ -19,42 +23,99 @@ class EditContent extends StatefulWidget {
   @override
   State<EditContent> createState() => _EditContentState();
 }
-File? _profilePicture;
 
 class _EditContentState extends State<EditContent> {
-    Future pickercamera() async {
-    final file = await ImagePicker().getImage(source: ImageSource.gallery);
-    setState(() {
-      _profilePicture = File(file!.path);
-    });
+  File? _profilePicture;
+
+  Future<void> pickercamera() async {
+    final XFile? file =
+        await ImagePicker().pickImage(source: ImageSource.gallery);
+    if (file != null) {
+      setState(() {
+        _profilePicture = File(file.path);
+        constant.image = _profilePicture;
+        constant.photofile = _profilePicture!.path;
+      });
+    }
   }
+
   final _formKey = GlobalKey<FormState>();
+  late TextEditingController firstname;
+  late TextEditingController lastname;
+  late TextEditingController phone;
+
   String _selectedCountry = '';
+  var obsecurepassword = true;
+  var obsecurepassword2 = true;
+  Color iconcolor = Colors.grey;
+  Color iconcolor2 = Colors.grey;
+  var password1;
+  var password2;
+  @override
+  void initState() {
+    super.initState();
+    // Initialize the text controllers with existing data
+    firstname = TextEditingController(text: constant.first_name);
+    lastname = TextEditingController(text: constant.last_name);
+    phone = TextEditingController(text: constant.phoneuser);
+  }
+
+  // @override
+  // void dispose() {
+  //   firstname.dispose();
+  //   lastname.dispose();
+  //   phone.dispose();
+  //   super.dispose();
+  // }
 
   void _updateSelectedCountry(String value) {
     setState(() {
       _selectedCountry = value;
+      constant.country = value;
+      constant.countryuser = value;
     });
   }
 
-  void _submitForm() {
+  void _submitForm() async {
     if (_formKey.currentState!.validate()) {
       _formKey.currentState!.save();
 
-      print('Selected Country: ${constant.country}');
+      Map<String, dynamic> body = {
+        "country": constant.countryuser,
+        "birth_date": constant.bdateuser,
+        "first_name": constant.first_name,
+        "last_name": constant.last_name,
+        "username": constant.Username,
+        "phone_number": constant.phoneuser,
+        // "user_image": constant.image,
+      };
+      String jsonBody = json.encode(body);
+      final encoding = Encoding.getByName('utf-8');
+
+      var url = Uri.parse(
+          "https://d46b-197-54-154-137.ngrok-free.app/api/dj-rest-auth/user/");
+      var response = await http.put(url,
+          headers: {
+            'content-Type': 'application/json',
+            "Authorization": " Token ${token}"
+          },
+          body: jsonBody,
+          encoding: encoding);
+      var result = response.body;
+      print(result);
+
+      print('Profile Edited successfully');
+      saveprofile();
+
+      /**removecomment when online */
     }
   }
 
   /*Controllers*/
-  var firstname = TextEditingController();
-  var lastname = TextEditingController();
-  var email = TextEditingController();
-  var phone = TextEditingController();
+
   var birthdate;
   var country;
-  var phoneno;
-  var fname;
-  var lname;
+
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -84,25 +145,31 @@ class _EditContentState extends State<EditContent> {
                         color: AppColor.kForthColor,
                       ),
                       child: Center(
-                        child: SvgPicture.asset(
-                          'assets/images/image_placeholder.svg',
-                          width: 32.w,
+                        child: Container(
+                          decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(
+                              8.r,
+                            ),
+                            image: DecorationImage(
+                                image: NetworkImage(constant.urlprofile),
+                                fit: BoxFit.cover),
+                          ),
                         ),
                       ),
                     ),
-                    Positioned(
-                      right: -12.w,
-                      bottom: -12.w,
-                      child: GestureDetector(
-                        onTap: () {
-                          pickercamera();
-                        },
-                        child: SvgPicture.asset(
-                          'assets/images/edit.svg',
-                          width: 32.w,
-                        ),
-                      ),
-                    ),
+                    // Positioned(
+                    //   right: -12.w,
+                    //   bottom: -12.w,
+                    //   child: GestureDetector(
+                    //     onTap: () {
+
+                    //     },
+                    //     child: SvgPicture.asset(
+                    //       'assets/images/edit.svg',
+                    //       width: 32.w,
+                    //     ),
+                    //   ),
+                    // ),
                   ],
                 ),
               ),
@@ -116,10 +183,14 @@ class _EditContentState extends State<EditContent> {
                 Expanded(
                   child: CharityInputField(
                     'First Name',
-                    onchanged: (String value) {},
+                    onchanged: (String value) {
+                      setState(() {
+                        constant.first_name = value;
+                      });
+                    },
                     validateStatus: (value) {},
                     controller: firstname,
-                    hintText: '${fname}',
+                    hintText: 'first name',
                   ),
                 ),
                 SizedBox(
@@ -128,10 +199,14 @@ class _EditContentState extends State<EditContent> {
                 Expanded(
                   child: CharityInputField(
                     'Last Name',
-                    onchanged: (String value) {},
+                    onchanged: (String value) {
+                      setState(() {
+                        constant.last_name = value;
+                      });
+                    },
                     validateStatus: (value) {},
                     controller: lastname,
-                    hintText: '${lname}',
+                    hintText: 'last name',
                   ),
                 ),
               ],
@@ -146,10 +221,14 @@ class _EditContentState extends State<EditContent> {
             // SizedBox(height: 16.h),
             CharityInputField(
               'Phone Number',
-              onchanged: (String value) {},
+              onchanged: (String value) {
+                setState(() {
+                  constant.phoneuser = value;
+                });
+              },
               validateStatus: (value) {},
               controller: phone,
-              hintText: '${phoneno}',
+              hintText: 'phone',
             ),
             SizedBox(height: 26.h),
             Column(
@@ -188,13 +267,15 @@ class _EditContentState extends State<EditContent> {
                   onChanged: (String value) {
                     setState(() {
                       birthdate = value;
+                      constant.bdateuser = value;
                     });
                   },
                   title: 'birth',
-                  hintText: '${birthdate}',
+                  hintText: '${constant.bdateuser}',
                   onSaved: (String value) {
                     setState(() {
                       birthdate = value;
+                      constant.bdateuser = value;
                     });
                   },
                   height: 20,
@@ -203,8 +284,55 @@ class _EditContentState extends State<EditContent> {
               ],
             ),
             SizedBox(height: 26.h),
-            uploadpicture(
-              buttoncolor: AppColor.kPlaceholder2, height: 60,
+            Column(
+              children: [
+                ElevatedButton(
+                  style: ButtonStyle(
+                    backgroundColor: MaterialStateProperty.all(
+                      AppColor.kPlaceholder2,
+                    ),
+                    shape: MaterialStateProperty.all(
+                      RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(
+                          8.r,
+                        ),
+                      ),
+                    ),
+                    minimumSize: MaterialStateProperty.all(
+                      Size(
+                        double.infinity,
+                        55.h,
+                      ),
+                    ),
+                  ),
+                  onPressed: () {
+                    updatePassword(context);
+                  },
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Text(
+                        'Update Password',
+                        style: TextStyle(
+                            fontWeight: FontWeight.normal,
+                            color: AppColor.kTextColor1,
+                            fontSize: 13),
+                      ),
+                      Icon(
+                        Icons.lock,
+                        color: AppColor.kTextColor1,
+                      ),
+                    ],
+                  ),
+                ),
+              ],
+            ),
+            SizedBox(
+              height: 25,
+            ),
+            uploadfirebase(
+              buttoncolor: AppColor.kPlaceholder2,
+              height: 56,
             ),
             SizedBox(height: 26.h),
             Container(
@@ -229,10 +357,8 @@ class _EditContentState extends State<EditContent> {
                   ),
                 ),
                 onPressed: () {
-                  onPressed:
-                  _submitForm;
-                  print(birthdate);
-                  print(constant.country);
+                  //    _submitForm();
+                  saveprofile();
                 },
                 child: Text(
                   'Save Change',
@@ -244,6 +370,252 @@ class _EditContentState extends State<EditContent> {
               height: 40.h,
             ),
           ],
+        ),
+      ),
+    );
+  }
+
+  void saveprofile() {
+    showModalBottomSheet(
+      context: context,
+      isScrollControlled: true,
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(32.r),
+      ),
+      builder: (_) => Padding(
+        padding: EdgeInsets.only(
+          bottom: MediaQuery.of(context).viewPadding.bottom,
+          top: 32.h,
+          left: 16.w,
+          right: 16.w,
+        ),
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            SvgPicture.asset(
+              'assets/images/check.svg',
+            ),
+            SizedBox(
+              height: 8.h,
+            ),
+            Text(
+              'Profile Updated Successfully',
+              style: Theme.of(context).textTheme.headline4!.copyWith(
+                    fontWeight: FontWeight.bold,
+                  ),
+            ),
+            SizedBox(
+              height: 8.h,
+            ),
+            Text(
+              'Go Back to Home Page',
+              textAlign: TextAlign.center,
+            ),
+            SizedBox(
+              height: 64.h,
+            ),
+            ElevatedButton(
+              style: ButtonStyle(
+                backgroundColor: MaterialStateProperty.all(
+                  AppColor.kPrimaryColor,
+                ),
+                shape: MaterialStateProperty.all(
+                  RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(
+                      8.r,
+                    ),
+                  ),
+                ),
+                minimumSize: MaterialStateProperty.all(
+                  Size(
+                    double.infinity,
+                    56.h,
+                  ),
+                ),
+              ),
+              onPressed: () {
+                Navigator.pushNamedAndRemoveUntil(
+                    context, RouteGenerator.main, (route) => false);
+              },
+              child: Text(
+                'Home',
+              ),
+            )
+          ],
+        ),
+      ),
+    );
+  }
+
+  void savepassword() async {
+    // Map<String, dynamic> body = {
+    //   "password1": password1,
+    //   "password2": password2,
+    // };
+    // String jsonBody = json.encode(body);
+    // final encoding = Encoding.getByName('utf-8');
+
+    // var url = Uri.parse(
+    //     "https://73ec-197-54-244-163.ngrok-free.app/api/dj-rest-auth/registration/");
+    // var response = await http.post(url,
+    //     headers: {'content-Type': 'application/json'},
+    //     body: jsonBody,
+    //     encoding: encoding);
+    // var result = response.body;
+    // print(result);
+
+    print('Profile Edited successfully');
+  }
+
+  void updatePassword(context) {
+    showModalBottomSheet(
+      context: context,
+      isScrollControlled: true,
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(32.r),
+      ),
+      builder: (BuildContext context) => SingleChildScrollView(
+        child: Container(
+          height: 500,
+          child: Padding(
+            padding: EdgeInsets.only(
+              bottom: MediaQuery.of(context).viewInsets.bottom,
+              top: 32.h,
+              left: 16.w,
+              right: 16.w,
+            ),
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                SizedBox(
+                  height: 8.h,
+                ),
+                Text(
+                  'Update Password',
+                  style: Theme.of(context).textTheme.headline4!.copyWith(
+                        fontWeight: FontWeight.bold,
+                        color: AppColor.kPrimaryColor,
+                      ),
+                ),
+                SizedBox(
+                  height: 15.h,
+                ),
+                CustomInputField(
+                  hintText: 'New Password',
+                  backgroundcolor: AppColor.kPlaceholder1,
+                  isPassword: obsecurepassword,
+                  textInputAction: TextInputAction.next,
+                  sufficon: IconButton(
+                    icon: Icon(
+                      obsecurepassword
+                          ? Icons.visibility
+                          : Icons.visibility_off,
+                      color: iconcolor,
+                    ),
+                    onPressed: () {
+                      setState(() {
+                        if (iconcolor == Colors.grey) {
+                          iconcolor = AppColor.kPrimaryColor;
+                        } else {
+                          iconcolor = Colors.grey;
+                        }
+                        obsecurepassword = !obsecurepassword;
+                      });
+                    },
+                  ),
+                  onChanged: (value) {
+                    setState(() {
+                      password1 = value;
+                    });
+                  },
+                  validateStatus: (value) {
+                    if (value!.isEmpty) {
+                      return 'Field must not be empty';
+                    }
+                    return null;
+                  },
+                ),
+                SizedBox(
+                  height: 10.h,
+                ),
+                CustomInputField(
+                  hintText: 'Repeat the Password',
+                  backgroundcolor: AppColor.kPlaceholder1,
+                  isPassword: obsecurepassword2,
+                  textInputAction: TextInputAction.done,
+                  sufficon: IconButton(
+                    icon: Icon(
+                      obsecurepassword2
+                          ? Icons.visibility
+                          : Icons.visibility_off,
+                      color: iconcolor2,
+                    ),
+                    onPressed: () {
+                      setState(() {
+                        if (iconcolor2 == Colors.grey) {
+                          iconcolor2 = AppColor.kPrimaryColor;
+                        } else {
+                          iconcolor2 = Colors.grey;
+                        }
+                        obsecurepassword2 = !obsecurepassword2;
+                      });
+                    },
+                  ),
+                  onChanged: (value) {
+                    setState(() {
+                      password2 = value;
+                    });
+                  },
+                  validateStatus: (value) {
+                    if (value!.isEmpty) {
+                      return 'Field must not be empty';
+                    }
+                    return null;
+                  },
+                ),
+                SizedBox(
+                  height: 50.h,
+                ),
+                ElevatedButton(
+                  style: ButtonStyle(
+                    backgroundColor: MaterialStateProperty.all(
+                      AppColor.kPrimaryColor,
+                    ),
+                    shape: MaterialStateProperty.all(
+                      RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(
+                          8.r,
+                        ),
+                      ),
+                    ),
+                    minimumSize: MaterialStateProperty.all(
+                      Size(
+                        double.infinity,
+                        56.h,
+                      ),
+                    ),
+                  ),
+                  onPressed: () {
+                    if (password1 == password2) {
+                      savepassword();
+                      ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                          content: Text('Updated the password Successfully')));
+                      Navigator.pop(context);
+                    } else {
+                      ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                          content:
+                              Text('ERROR : The Two passwords don\'t Match')));
+                      Navigator.pop(context);
+                    }
+                  },
+                  child: Text(
+                    'Save Changes',
+                    style: TextStyle(color: Colors.white),
+                  ),
+                )
+              ],
+            ),
+          ),
         ),
       ),
     );

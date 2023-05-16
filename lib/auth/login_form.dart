@@ -40,6 +40,7 @@ var obsecurepassword = true;
 Color iconcolor = Colors.grey;
 
 class _LoginFormState extends State<LoginForm> {
+  bool check = false;
   @override
   Widget build(BuildContext context) {
     return Form(
@@ -77,7 +78,7 @@ class _LoginFormState extends State<LoginForm> {
               textInputAction: TextInputAction.next,
             ),
             SizedBox(
-              height: 8.h,
+              height: 15.h,
             ),
             CustomInputField(
               hintText: 'Password',
@@ -151,22 +152,24 @@ class _LoginFormState extends State<LoginForm> {
               onPressed: () async {
                 if (_formKey2.currentState!.validate()) {
                   // Perform login
-
-                  performLogin(context);
-                  reload();
-                  // Store login status
-                  if (constant.success) {
-                    SharedPreferences prefs =
-                        await SharedPreferences.getInstance();
-                    prefs.setBool('isLoggedIn', true);
-                    // ignore: unnecessary_null_comparison
-                  } else if (constant.success == null) {
-                    Center(child: CircularProgressIndicator());
+                  if (check = !true) {
+                    Center(
+                      child: CircularProgressIndicator(),
+                    );
                   }
-                  print('successful');
-                  Navigator.of(context).pushReplacementNamed(
-                    RouteGenerator.main,
-                  );
+                  performLogin(context);
+
+                  // Store login status
+                  // if (constant.success) {
+                  //   SharedPreferences prefs =
+                  //       await SharedPreferences.getInstance();
+                  //   prefs.setBool('isLoggedIn', true);
+                  //   // ignore: unnecessary_null_comparison
+                  // } else if (constant.success == null) {
+                  //   Center(child: CircularProgressIndicator());
+                  // }
+                  //  print('successful');
+
                   //   Login(context);
                 }
                 ;
@@ -189,11 +192,12 @@ class _LoginFormState extends State<LoginForm> {
     String jsonBody = json.encode(body);
     final encoding = Encoding.getByName('utf-8');
     if (email == "zozo" || password == "zozo") {
+      check = true;
       reload();
       //print('Fields have not to be empty');
     } else {
       var url = Uri.parse(
-          "https://73ec-197-54-244-163.ngrok-free.app/api/dj-rest-auth/login/");
+          "https://d46b-197-54-154-137.ngrok-free.app/api/dj-rest-auth/login/");
 
       var response = await http.post(url,
           headers: {
@@ -206,38 +210,59 @@ class _LoginFormState extends State<LoginForm> {
 
       print(data);
       if (response.statusCode == 200) {
+        check = true;
         token = data["key"];
         print(token);
         print("Login succeeded");
+        getinfo();
         reload();
+      } else {
+        Center(child: CircularProgressIndicator());
       }
       /* UNCOMMENT WHEN SERVER ONLINE */
     }
 
-    // var url2 =
-    //     Uri.parse("https://1a62-102-186-239-195.eu.ngrok.io/patient/info/55");
-    // var response = await http.get(
-    //   url2,
-    //   headers: {
-    //     'content-Type': 'application/json',
-    //     "Authorization": "Bearer ${token}"
-    //   },
-    // );
-
-    // if (response.statusCode == 200) {
-    //   var data2 = json.decode(response.body);
-    //   print(data2);
-    //   constant.Username = data2["username"].toString();
-
-    //   print('Username=$username');
-    // }
     /* UNCOMMENT WHEN SERVER ONLINE */
+  }
+
+  void getinfo() async {
+    var url2 = Uri.parse(
+        "https://d46b-197-54-154-137.ngrok-free.app/api/dj-rest-auth/user/");
+    var response2 = await http.get(
+      url2,
+      headers: {
+        'content-Type': 'application/json',
+        "Authorization": " Token ${token}"
+      },
+    );
+
+    var data2 = json.decode(response2.body);
+    print(data2);
+    if (response2.statusCode == 200) {
+      setState(() {
+        constant.Username = data2["username"].toString();
+        constant.bdateuser = data2["birth_date"].toString();
+        constant.country = data2["country"].toString();
+        constant.first_name = data2["first_name"].toString();
+        constant.last_name = data2["last_name"].toString();
+        constant.phoneuser = data2["phone_number"].toString();
+        constant.urlprofile = data2["user_image"].toString();
+      });
+      print(constant.first_name);
+    } else {
+      print('failed to load data');
+    }
   }
 
   Future<void> reload() async {
     constant.success = true;
-
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    prefs.setBool('isLoggedIn', true);
+    // ignore: unnecessary_null_comparison
     await Future.delayed(Duration(seconds: 3));
+    Navigator.of(context).pushReplacementNamed(
+      RouteGenerator.main,
+    );
 
     return;
   }

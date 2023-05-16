@@ -37,6 +37,7 @@ var password2 = "";
 var first_name = "";
 var username = "";
 //var id = "";
+
 var phoneno = constant.phone;
 var last_name = "";
 //var age = "";
@@ -45,46 +46,15 @@ var last_name = "";
 String selectedCountry = constant.country;
 String birthdate = constant.birthdate.toString();
 var obsecurepassword = true;
+var obsecurepassword2 = true;
 Color iconcolor = Colors.grey;
+Color iconcolor2 = Colors.grey;
 /* Variables */
 Future SignUp(BuildContext cont) async {
-  // String boundary =
-  //     '----WebKitFormBoundary${Random().nextInt(1000000000).toString()}';
-  // var request = http.MultipartRequest(
-  //     'POST',
-  //     Uri.parse(
-  //         "https://73ec-197-54-244-163.ngrok-free.app/api/dj-rest-auth/registration/"));
-  // request.headers['content-Type'] = 'multipart/form-data; boundary=$boundary';
-
-  // // Add the image file to the request
-  // if (photo != null) {
-  //   var photoFile = await http.MultipartFile.fromPath(
-  //       'user_image', constant.photofile,
-  //       contentType: MediaType('image', 'jpeg'));
-  //   request.files.add(photoFile);
-  // }
-
-  // // Add other fields to the request body
-  // request.fields['country'] = selectedCountry;
-  // request.fields['birth_date'] = birthdate;
-  // request.fields['email'] = email;
-  // request.fields['password1'] = password1;
-  // request.fields['password2'] = password2;
-  // request.fields['first_name'] = first_name;
-  // request.fields['last_name'] = last_name;
-  // request.fields['username'] = username;
-  // request.fields['phone_number'] = phoneno;
-
-  // // Send the request
-  // var response = await request.send();
-  // var result = await response.stream.bytesToString();
-  // print(result);
-
   /**removecomment when online */
   Map<String, dynamic> body = {
     "country": selectedCountry,
-    "birth_date": birthdate,
-    
+    "birth_date": constant.bdateuser,
     "email": email,
     "password1": password1,
     "password2": password2,
@@ -97,7 +67,7 @@ Future SignUp(BuildContext cont) async {
   final encoding = Encoding.getByName('utf-8');
 
   var url = Uri.parse(
-      "https://73ec-197-54-244-163.ngrok-free.app/api/dj-rest-auth/registration/");
+      "https://d46b-197-54-154-137.ngrok-free.app/api/dj-rest-auth/registration/");
   var response = await http.post(url,
       headers: {'content-Type': 'application/json'},
       body: jsonBody,
@@ -119,6 +89,33 @@ Future SignUp(BuildContext cont) async {
   /**removecomment when online */
 }
 
+bool isPasswordValid(String password) {
+  if (password.length < 8) {
+    return false;
+  }
+  if (!password.contains(RegExp(r'[A-Za-z]'))) {
+    return false;
+  }
+  if (!password.contains(RegExp(r'[0-9]'))) {
+    return false;
+  }
+  return true;
+}
+
+bool isEmailValid(String email) {
+  // Regular expression pattern for email validation
+  final pattern = r'^[\w-]+(\.[\w-]+)*@([a-zA-Z0-9-]+\.)+[a-zA-Z]{2,}$';
+  final regex = RegExp(pattern);
+  return regex.hasMatch(email);
+}
+
+// List<String> existingUsernames = ['john', 'mary', 'jane'];
+
+// bool isUsernameUnique(String username) {
+//   // Check if the username already exists in the list
+//   return !existingUsernames.contains(username);
+// }
+
 void _submitForm() {
   if (_formKey1.currentState!.validate()) {
     _formKey1.currentState!.save();
@@ -128,6 +125,15 @@ void _submitForm() {
 }
 
 class _SignupFormState extends State<SignupForm> {
+  @override
+  void initState() {
+    super.initState();
+
+    // Reset or reinitialize your constants here
+    constant.photofile = 'Upload Picture';
+    constant.country = 'Egypt';
+  }
+
   late String countryValue;
   @override
   Widget build(BuildContext context) {
@@ -171,6 +177,7 @@ class _SignupFormState extends State<SignupForm> {
                         }
                         return null;
                       },
+                      backgroundcolor: AppColor.kPlaceholder1,
                     ),
                   ),
                   SizedBox(
@@ -179,6 +186,7 @@ class _SignupFormState extends State<SignupForm> {
                   Expanded(
                     child: CustomInputField(
                       hintText: 'Last Name',
+                      backgroundcolor: AppColor.kPlaceholder1,
                       textInputAction: TextInputAction.next,
                       onChanged: (value) {
                         setState(() {
@@ -196,10 +204,11 @@ class _SignupFormState extends State<SignupForm> {
                 ],
               ),
               SizedBox(
-                height: 8.h,
+                height: 20.h,
               ),
               CustomInputField(
                 hintText: 'Email',
+                backgroundcolor: AppColor.kPlaceholder1,
                 textInputAction: TextInputAction.next,
                 onChanged: (value) {
                   setState(() {
@@ -210,14 +219,18 @@ class _SignupFormState extends State<SignupForm> {
                   if (value!.isEmpty) {
                     return 'Field must not be empty';
                   }
+                  if (!isEmailValid(value)) {
+                    return 'Invalid email format';
+                  }
                   return null;
                 },
               ),
               SizedBox(
-                height: 8.h,
+                height: 17.h,
               ),
               CustomInputField(
                 hintText: 'Username',
+                backgroundcolor: AppColor.kPlaceholder1,
                 textInputAction: TextInputAction.next,
                 onChanged: (value) {
                   setState(() {
@@ -232,7 +245,7 @@ class _SignupFormState extends State<SignupForm> {
                 },
               ),
               SizedBox(
-                height: 8.h,
+                height: 20.h,
               ),
               Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
@@ -259,11 +272,11 @@ class _SignupFormState extends State<SignupForm> {
                 ],
               ),
               SizedBox(
-                height: 8.h,
+                height: 20.h,
               ),
               IntlPhoneField(),
               SizedBox(
-                height: 8.h,
+                height: 20.h,
               ),
               BirthdateInputField(
                 validateStatus: (value) {
@@ -275,17 +288,20 @@ class _SignupFormState extends State<SignupForm> {
                 onChanged: (value) {},
                 title: 'birth',
                 onSaved: (String value) {
-                  setState(() {});
+                  setState(() {
+                    constant.bdateuser = value;
+                  });
                 },
                 color: AppColor.kPlaceholder1,
                 height: 10,
                 hintText: 'Birthdate',
               ),
               SizedBox(
-                height: 8.h,
+                height: 20.h,
               ),
               CustomInputField(
                 hintText: 'Password',
+                backgroundcolor: AppColor.kPlaceholder1,
                 isPassword: obsecurepassword,
                 textInputAction: TextInputAction.done,
                 sufficon: IconButton(
@@ -313,29 +329,33 @@ class _SignupFormState extends State<SignupForm> {
                   if (value!.isEmpty) {
                     return 'Field must not be empty';
                   }
+                  if (!isPasswordValid(value)) {
+                    return 'Password must have at least 8 characters, numbers, and letters';
+                  }
                   return null;
                 },
               ),
               SizedBox(
-                height: 10.h,
+                height: 20.h,
               ),
               CustomInputField(
-                hintText: 'Password',
-                isPassword: obsecurepassword,
+                hintText: 'Repeat the Password',
+                backgroundcolor: AppColor.kPlaceholder1,
+                isPassword: obsecurepassword2,
                 textInputAction: TextInputAction.done,
                 sufficon: IconButton(
                   icon: Icon(
-                    obsecurepassword ? Icons.visibility : Icons.visibility_off,
-                    color: iconcolor,
+                    obsecurepassword2 ? Icons.visibility : Icons.visibility_off,
+                    color: iconcolor2,
                   ),
                   onPressed: () {
                     setState(() {
-                      if (iconcolor == Colors.grey) {
-                        iconcolor = AppColor.kPrimaryColor;
+                      if (iconcolor2 == Colors.grey) {
+                        iconcolor2 = AppColor.kPrimaryColor;
                       } else {
-                        iconcolor = Colors.grey;
+                        iconcolor2 = Colors.grey;
                       }
-                      obsecurepassword = !obsecurepassword;
+                      obsecurepassword2 = !obsecurepassword2;
                     });
                   },
                 ),
@@ -348,19 +368,22 @@ class _SignupFormState extends State<SignupForm> {
                   if (value!.isEmpty) {
                     return 'Field must not be empty';
                   }
+                  if (password1 != password2) {
+                    return 'Two Passwords don\'t match';
+                  }
                   return null;
                 },
               ),
               SizedBox(
-                height: 10.h,
+                height: 20.h,
               ),
-              // uploadpicture(
-              //   buttoncolor: AppColor.kPlaceholder1,
-              //   height: 50,
-              // ),
-              // SizedBox(
-              //   height: 40.h,
-              // ),
+              uploadpicture(
+                buttoncolor: AppColor.kPlaceholder1,
+                height: 50,
+              ),
+              SizedBox(
+                height: 40.h,
+              ),
               ElevatedButton(
                 style: ButtonStyle(
                   backgroundColor: MaterialStateProperty.all(
@@ -385,7 +408,8 @@ class _SignupFormState extends State<SignupForm> {
                     print(
                         '${email},${password1},${selectedCountry},${phoneno},${birthdate},${first_name},${last_name},${username},${password2}');
                     print(constant.image);
-                    SignUp(context);
+                    confirmEmail(context);
+                    // SignUp(context);
                   }
                 },
                 child: Text(
@@ -396,6 +420,12 @@ class _SignupFormState extends State<SignupForm> {
           ),
         ),
       ),
+    );
+  }
+
+  void confirmEmail(context) {
+    Navigator.of(context).pushReplacementNamed(
+      RouteGenerator.emailconfirm,
     );
   }
 

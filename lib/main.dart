@@ -1,3 +1,5 @@
+
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_stripe/flutter_stripe.dart';
@@ -11,11 +13,12 @@ import 'package:shared_preferences/shared_preferences.dart';
 // import 'auth/signup_screen.dart';
 // import 'initials/onboarding_screen.dart';
 
-void main() async {
+Future main() async {
   Stripe.publishableKey =
       "pk_test_51N0o6jCUAXypJ6z6gycLGWxDVCj9SOqAkwuANiooRX9A7Ve1W0qVnpl71cHwzcVKDnLHu1OxrOObLR1V2BmxUYOz001bHflmdD";
 
   WidgetsFlutterBinding.ensureInitialized();
+  await Firebase.initializeApp();
 
   // Retrieve login status
   SharedPreferences prefs = await SharedPreferences.getInstance();

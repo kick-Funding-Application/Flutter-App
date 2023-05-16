@@ -1,19 +1,30 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 
+import '../../../../bloc/swap/swap_bloc.dart';
+import '../../../../models/result.dart';
+import '../../../../routes/routes.dart';
 import '../../../../theme/app_color.dart';
 import 'percentage_indicator.dart';
 
-class CharityCard extends StatelessWidget {
-  const CharityCard({this.onTap});
+class CharityCard extends StatefulWidget {
+  const CharityCard(this.result);
 
-  final void Function()? onTap;
+  final Result result;
 
+  @override
+  State<CharityCard> createState() => _CharityCardState();
+}
+
+class _CharityCardState extends State<CharityCard> {
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
-      onTap: onTap,
+      onTap: () {
+        BlocProvider.of<SwapBloc>(context).add(SetDetail(true));
+      },
       child: Container(
         height: 340.h,
         width: double.infinity,
@@ -58,7 +69,7 @@ class CharityCard extends StatelessWidget {
                             color: AppColor.kForthColor,
                           ),
                           child: Text(
-                            'Category',
+                            '${widget.result.category}',
                             style: TextStyle(
                               color: Colors.white,
                               fontWeight: FontWeight.bold,
@@ -84,7 +95,7 @@ class CharityCard extends StatelessWidget {
                       horizontal: 8.w,
                     ),
                     child: Text(
-                      'Title of project',
+                      '${widget.result.title}',
                       style: Theme.of(context).textTheme.headline6!.copyWith(
                             color: AppColor.kPrimaryColor,
                             fontWeight: FontWeight.bold,
@@ -98,7 +109,7 @@ class CharityCard extends StatelessWidget {
                       Column(
                         children: [
                           Text(
-                            '\$400',
+                            '\$${widget.result.remaining}',
                             style:
                                 Theme.of(context).textTheme.headline6!.copyWith(
                                       color: AppColor.kPrimaryColor,
@@ -106,7 +117,7 @@ class CharityCard extends StatelessWidget {
                                     ),
                           ),
                           Text(
-                            'Raised',
+                            'Remaining',
                             style: TextStyle(
                               color: AppColor.kTextColor1,
                             ),
@@ -114,12 +125,12 @@ class CharityCard extends StatelessWidget {
                         ],
                       ),
                       PercentageIndicatior(
-                        percentage: '90',
+                        percentage: '${widget.result.percent}',
                       ),
                       Column(
                         children: [
                           Text(
-                            '\$700.00',
+                            '\$${widget.result.target}',
                             style:
                                 Theme.of(context).textTheme.headline6!.copyWith(
                                       color: AppColor.kPrimaryColor,

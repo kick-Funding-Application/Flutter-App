@@ -3,6 +3,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 
 import '../../../../models/result.dart';
+import '../../../../routes/routes.dart';
 import '../../../../theme/app_color.dart';
 
 class IntroCard extends StatefulWidget {
@@ -17,7 +18,10 @@ class _IntroCardState extends State<IntroCard> {
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
-      onTap: () {},
+      onTap: () {
+        Navigator.of(context)
+            .pushNamed(RouteGenerator.result, arguments: widget.result);
+      },
       child: Container(
         height: 340.h,
         decoration: BoxDecoration(

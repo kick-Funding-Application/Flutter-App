@@ -8,6 +8,7 @@ class CharityInputField extends StatelessWidget {
   const CharityInputField(
     this.title, {
     this.assetName,
+    this.focusnode,
     this.onTap,
     this.hintText,
     required this.onchanged,
@@ -18,6 +19,7 @@ class CharityInputField extends StatelessWidget {
 
   final String title;
   final String? assetName;
+  final FocusNode? focusnode;
   final TextInputType? keyboardtype;
   final void Function()? onTap;
   final String? hintText;
@@ -40,6 +42,8 @@ class CharityInputField extends StatelessWidget {
         Stack(
           children: [
             TextFormField(
+              style: TextStyle(color: AppColor.kTextColor1),
+              focusNode: focusnode,
               keyboardType: keyboardtype,
               controller: controller,
               onChanged: onchanged,

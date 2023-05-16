@@ -24,6 +24,9 @@ class _LoginScreenState extends State<LoginScreen> {
         child: SingleChildScrollView(
           child: Column(
             children: [
+              SizedBox(
+                height: 70,
+              ),
               Text(
                 'KickFunding',
                 style: Theme.of(context).textTheme.headline1!.copyWith(
@@ -162,65 +165,65 @@ class _LoginScreenState extends State<LoginScreen> {
               SizedBox(
                 height: 32.h,
               ),
-              Text(
-                'Or Login With',
-                style: TextStyle(
-                  color: AppColor.kTextColor1,
-                ),
-              ),
-              SizedBox(
-                height: 24.h,
-              ),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Container(
-                    padding: EdgeInsets.all(16.w),
-                    decoration: BoxDecoration(
-                      color: Colors.white,
-                      borderRadius: BorderRadius.circular(
-                        8.r,
-                      ),
-                    ),
-                    child: SvgPicture.asset(
-                      'assets/images/image_placeholder.svg',
-                      width: 24.w,
-                    ),
-                  ),
-                  SizedBox(
-                    width: 16.w,
-                  ),
-                  Container(
-                    padding: EdgeInsets.all(16.w),
-                    decoration: BoxDecoration(
-                      color: Colors.white,
-                      borderRadius: BorderRadius.circular(
-                        8.r,
-                      ),
-                    ),
-                    child: SvgPicture.asset(
-                      'assets/images/image_placeholder.svg',
-                      width: 24.w,
-                    ),
-                  ),
-                  SizedBox(
-                    width: 16.w,
-                  ),
-                  Container(
-                    padding: EdgeInsets.all(16.w),
-                    decoration: BoxDecoration(
-                      color: Colors.white,
-                      borderRadius: BorderRadius.circular(
-                        8.r,
-                      ),
-                    ),
-                    child: SvgPicture.asset(
-                      'assets/images/image_placeholder.svg',
-                      width: 24.w,
-                    ),
-                  ),
-                ],
-              )
+              // Text(
+              //   'Or Login With',
+              //   style: TextStyle(
+              //     color: AppColor.kTextColor1,
+              //   ),
+              // ),
+              // SizedBox(
+              //   height: 24.h,
+              // ),
+              // Row(
+              //   mainAxisAlignment: MainAxisAlignment.center,
+              //   children: [
+              //     Container(
+              //       padding: EdgeInsets.all(16.w),
+              //       decoration: BoxDecoration(
+              //         color: Colors.white,
+              //         borderRadius: BorderRadius.circular(
+              //           8.r,
+              //         ),
+              //       ),
+              //       child: SvgPicture.asset(
+              //         'assets/images/image_placeholder.svg',
+              //         width: 24.w,
+              //       ),
+              //     ),
+              //     SizedBox(
+              //       width: 16.w,
+              //     ),
+              //     Container(
+              //       padding: EdgeInsets.all(16.w),
+              //       decoration: BoxDecoration(
+              //         color: Colors.white,
+              //         borderRadius: BorderRadius.circular(
+              //           8.r,
+              //         ),
+              //       ),
+              //       child: SvgPicture.asset(
+              //         'assets/images/image_placeholder.svg',
+              //         width: 24.w,
+              //       ),
+              //     ),
+              //     SizedBox(
+              //       width: 16.w,
+              //     ),
+              //     Container(
+              //       padding: EdgeInsets.all(16.w),
+              //       decoration: BoxDecoration(
+              //         color: Colors.white,
+              //         borderRadius: BorderRadius.circular(
+              //           8.r,
+              //         ),
+              //       ),
+              //       child: SvgPicture.asset(
+              //         'assets/images/image_placeholder.svg',
+              //         width: 24.w,
+              //       ),
+              //     ),
+              //   ],
+              // )
             ],
           ),
         ),

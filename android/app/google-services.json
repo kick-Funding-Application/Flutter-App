@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "629620543004",
+    "project_id": "kickfunding-a2c6e",
+    "storage_bucket": "kickfunding-a2c6e.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:629620543004:android:5e9508eb8d3238a93e19d9",
+        "android_client_info": {
+          "package_name": "com.example.kickfunding"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "629620543004-971e8tmobvpc48rj150io023l42f7ot3.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBCsOGWMk2uOHeDQXRawHjEacZnCTwmhzw"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "629620543004-971e8tmobvpc48rj150io023l42f7ot3.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

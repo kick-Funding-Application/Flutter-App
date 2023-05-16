@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:kickfunding/auth/emailconfirm.dart';
 
 import '../models/result.dart';
 import '../models/urgent.dart';
@@ -20,6 +21,7 @@ import '../ui/tab/search/result_screen.dart';
 class RouteGenerator {
   static const String main = '/tab_screen';
   static const String forgetPw = '/forget_pw_screen';
+  static const String emailconfirm = '/emailconfirm';
   static const String login = '/login_screen';
   static const String onboarding = '/onboarding_screen';
   static const String splash = '/';
@@ -56,6 +58,10 @@ class RouteGenerator {
       case forgetPw:
         return MaterialPageRoute(
           builder: (_) => const ForgetPwScreen(),
+        );
+      case emailconfirm:
+        return MaterialPageRoute(
+          builder: (_) => const emailConfirm(),
         );
       case main:
         return MaterialPageRoute(

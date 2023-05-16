@@ -10,6 +10,7 @@ import '../widgets/category.dart';
 import '../widgets/search/intro_card.dart';
 import '../widgets/search/result_card.dart';
 import '../widgets/search/search_bar.dart';
+import '/initials/constants.dart';
 
 class SearchScreen extends StatefulWidget {
   const SearchScreen();
@@ -19,6 +20,15 @@ class SearchScreen extends StatefulWidget {
 }
 
 final List<dynamic> results = [];
+
+final List<dynamic> specificresults = [];
+
+final List<dynamic> results2 = [];
+
+final List<dynamic> specificresults2 = [];
+
+String specificCategory =
+    'Education'; // Replace 'exampleCategory' with the desired category value
 
 class _SearchScreenState extends State<SearchScreen> {
   @override
@@ -42,8 +52,7 @@ class _SearchScreenState extends State<SearchScreen> {
 
 /**FOR TEST */
 
-    String test =
-        '''
+    String test = '''
     [
       {    "title": "Title of project",
     "target": "500.00",
@@ -62,7 +71,7 @@ class _SearchScreenState extends State<SearchScreen> {
     "target": "500.00",
     "percent": "50",
     "assetName": "assets/images/image_placeholder.svg",
-    "category": "Education",
+    "category": "Animal",
     "organizer": "Organizer",
     "remaining": "250.00",
     "rate": "0.0",
@@ -88,7 +97,20 @@ class _SearchScreenState extends State<SearchScreen> {
     "target": "1000.00",
     "percent": "50",
     "assetName": "assets/images/image_placeholder.svg",
-    "category": "Education",
+    "category": "Health",
+    "organizer": "Organizer",
+    "remaining": "100.00",
+    "rate": "0.0",
+    "details": "details..",
+    "end_date": "2024-05-26",
+    "start_date": "2022-02-01",
+    "days": "10",
+    "tags": "help"},
+    {"title": "Help The environment",
+    "target": "1000.00",
+    "percent": "50",
+    "assetName": "assets/images/image_placeholder.svg",
+    "category": "Environment",
     "organizer": "Organizer",
     "remaining": "100.00",
     "rate": "0.0",
@@ -102,6 +124,7 @@ class _SearchScreenState extends State<SearchScreen> {
 
     List<dynamic> jsonData = json.decode(test);
     results.clear();
+    specificresults.clear();
 
     for (var data in jsonData) {
       double target = double.parse(data['target']);
@@ -129,6 +152,12 @@ class _SearchScreenState extends State<SearchScreen> {
       );
 
       results.add(result);
+
+// Access the filtered results
+
+      if (result.category == charityform.specificCategory) {
+        specificresults.add(result);
+      }
     }
 
 /**FOR TEST */
@@ -203,90 +232,278 @@ class _SearchScreenState extends State<SearchScreen> {
         ),
       ),
       child: SafeArea(
-        child: SingleChildScrollView(
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Padding(
-                padding: EdgeInsets.symmetric(horizontal: 16.0.w),
-                child: AnimatedSwitcher(
-                  duration: AppAnimation.kAnimationDuration,
-                  switchInCurve: AppAnimation.kAnimationCurve,
-                  switchOutCurve: Curves.easeInOutBack,
-                  child: !isSearching
-                      ? Text(
-                          'Explore',
-                          style:
-                              Theme.of(context).textTheme.headline5!.copyWith(
-                                    fontWeight: FontWeight.bold,
-                                  ),
-                        )
-                      : Row(
-                          children: [
-                            GestureDetector(
-                              onTap: () {
-                                setState(() {
-                                  isSearching = false;
-                                });
-                              },
-                              child: SizedBox(
-                                width: 24.w,
-                                child: SvgPicture.asset(
-                                  'assets/images/back.svg',
-                                  width: 24.w,
-                                  color: AppColor.kTitle,
-                                ),
-                              ),
-                            ),
-                            Expanded(
-                              child: Text(
-                                'Search Result',
-                                style: Theme.of(context)
-                                    .textTheme
-                                    .headline5!
-                                    .copyWith(
-                                      color: AppColor.kTitle,
+        child: Padding(
+          padding: const EdgeInsets.all(8.0),
+          child: SingleChildScrollView(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Padding(
+                  padding: EdgeInsets.symmetric(horizontal: 16.0.w),
+                  child: AnimatedSwitcher(
+                    duration: AppAnimation.kAnimationDuration,
+                    switchInCurve: AppAnimation.kAnimationCurve,
+                    switchOutCurve: Curves.easeInOutBack,
+                    child: !isSearching
+                        ? Text(
+                            'Explore',
+                            style:
+                                Theme.of(context).textTheme.headline5!.copyWith(
                                       fontWeight: FontWeight.bold,
                                     ),
-                                textAlign: TextAlign.center,
+                          )
+                        : Row(
+                            children: [
+                              GestureDetector(
+                                onTap: () {
+                                  setState(() {
+                                    isSearching = false;
+                                  });
+                                },
+                                child: SizedBox(
+                                  width: 24.w,
+                                  child: SvgPicture.asset(
+                                    'assets/images/back.svg',
+                                    width: 24.w,
+                                    color: AppColor.kTitle,
+                                  ),
+                                ),
                               ),
-                            ),
-                            SizedBox(
-                              width: 24.w,
-                            )
-                          ],
-                        ),
+                              Expanded(
+                                child: Text(
+                                  'Search Result',
+                                  style: Theme.of(context)
+                                      .textTheme
+                                      .headline5!
+                                      .copyWith(
+                                        color: AppColor.kTitle,
+                                        fontWeight: FontWeight.bold,
+                                      ),
+                                  textAlign: TextAlign.center,
+                                ),
+                              ),
+                              SizedBox(
+                                width: 24.w,
+                              )
+                            ],
+                          ),
+                  ),
                 ),
-              ),
-              SizedBox(
-                height: 16.h,
-              ),
-              Padding(
-                padding: EdgeInsets.symmetric(horizontal: 16.0.w),
-                child: searchBarWidget(
-                  controller: controller,
-                  onTap: () {
-                    setState(() {
-                      isSearching = true;
-                    });
-                  },
-                  hintText: 'Search by name...',
+                SizedBox(
+                  height: 16.h,
                 ),
-              ),
-              SizedBox(
-                height: 16.h,
-              ),
-              !isSearching ? _buildSearching(context) : _buildResult()
-            ],
+                Padding(
+                  padding: EdgeInsets.symmetric(horizontal: 16.0.w),
+                  child: searchBarWidget(
+                    controller: controller,
+                    onTap: () {
+                      setState(() {
+                        isSearching = true;
+                      });
+                    },
+                    hintText: 'Search by name...',
+                  ),
+                ),
+                SizedBox(
+                  height: 16.h,
+                ),
+                !isSearching
+                    ? buildcategory()
+                    : SizedBox(
+                        height: 10,
+                      ),
+                // Category(onTap: () {
+                //   setState(() {
+                //     _buildSearching(context);
+                //   });
+                // }),
+                !isSearching ? _buildSearching(context) : _buildResult()
+              ],
+            ),
           ),
         ),
       ),
     );
   }
 
+  Future getData2() async {
+    var url = Uri.parse("https://dummyjson.com/quotes");
+    var response = await http.get(url);
+    var responsebody = jsonDecode(response.body);
+    print(responsebody["quotes"][1]["id"]);
+    //return responsebody["quotes"];
+
+// Make the HTTP GET request
+    final response2 =
+        await http.get(Uri.parse('http://example.com/api/urgents'));
+
+/**FOR TEST */
+
+    String test = '''
+    [
+      {    "title": "Title of project",
+    "target": "500.00",
+    "percent": "50",
+    "assetName": "assets/images/image_placeholder.svg",
+    "category": "Education",
+    "organizer": "Organizer",
+    "remaining": "250.00",
+    "rate": "0.0",
+    "details": "details",
+    "end_date": "2024-05-26",
+    "start_date": "2022-02-01",
+    "days": "10",
+    "tags": "help"},
+      {"title": "Title of project",
+    "target": "500.00",
+    "percent": "50",
+    "assetName": "assets/images/image_placeholder.svg",
+    "category": "Animal",
+    "organizer": "Organizer",
+    "remaining": "250.00",
+    "rate": "0.0",
+    "details": "details",
+    "end_date": "2024-05-26",
+    "start_date": "2022-02-01",
+    "days": "10",
+    "tags": "help"},
+      {"title": "Title of project",
+    "target": "500.00",
+    "percent": "50",
+    "assetName": "assets/images/image_placeholder.svg",
+    "category": "Education",
+    "organizer": "Organizer",
+    "remaining": "200.00",
+    "rate": "0.0",
+    "details": "details..",
+    "end_date": "2024-05-26",
+    "start_date": "2022-02-01",
+    "days": "10",
+    "tags": "help"},
+    {"title": "Zahraa",
+    "target": "1000.00",
+    "percent": "50",
+    "assetName": "assets/images/image_placeholder.svg",
+    "category": "Health",
+    "organizer": "Organizer",
+    "remaining": "100.00",
+    "rate": "0.0",
+    "details": "details..",
+    "end_date": "2024-05-26",
+    "start_date": "2022-02-01",
+    "days": "10",
+    "tags": "help"},
+    {"title": "Help The environment",
+    "target": "1000.00",
+    "percent": "50",
+    "assetName": "assets/images/image_placeholder.svg",
+    "category": "Environment",
+    "organizer": "Organizer",
+    "remaining": "100.00",
+    "rate": "0.0",
+    "details": "details..",
+    "end_date": "2024-05-26",
+    "start_date": "2022-02-01",
+    "days": "10",
+    "tags": "help"}
+    ]
+  '''; // Example JSON data
+
+    List<dynamic> jsonData = json.decode(test);
+    results2.clear();
+    specificresults2.clear();
+
+    for (var data in jsonData) {
+      double target = double.parse(data['target']);
+      double remaining = double.parse(data['remaining']);
+      double percent = ((target - remaining) / target) * 100;
+      DateTime end_date = DateTime.parse(data['end_date']).toLocal();
+      DateTime currentDate = DateTime.now().toLocal();
+      Duration remainingDuration = end_date.difference(currentDate);
+      int days = remainingDuration.inDays;
+      Result result2 = Result(
+        title: data['title'],
+        target: data['target'],
+        percent: percent
+            .toStringAsFixed(0), // Convert to string with 2 decimal places
+        assetName: data['assetName'],
+        category: data['category'],
+        organizer: data['organizer'],
+        remaining: data['remaining'],
+        rate: double.parse(data['rate'].toString()),
+        details: data['details'],
+        end_date: data['end_date'],
+        start_date: data['start_date'],
+        days: days,
+        tags: data['tags'],
+      );
+
+      results2.add(result2);
+
+// Access the filtered results
+
+      if (result2.category == charityform.specificCategory) {
+        specificresults.add(result2);
+      }
+    }
+
+/**FOR TEST */
+
+    // if (response2.statusCode == 200) {
+    //   // Parse the JSON response
+    //   final jsonData = json.decode(response2.body);
+
+    //   // Iterate over the parsed data and append to the urgents list
+    //   for (var data in jsonData) {
+    //     double target = double.parse(data['target']);
+    //     double remaining = double.parse(data['remaining']);
+    //     double percent = ((target - remaining) / target) * 100;
+    //     DateTime end_date = DateTime.parse(data['end_date']).toLocal();
+    //     DateTime currentDate = DateTime.now().toLocal();
+    //     Duration remainingDuration = end_date.difference(currentDate);
+    //     int days = remainingDuration.inDays;
+    //     Urgent urgent = Urgent(
+    //       title: data['title'],
+    //       target: data['target'],
+    //       percent: percent
+    //           .toStringAsFixed(2), // Convert to string with 2 decimal places
+    //       assetName: data['assetName'],
+    //       category: data['category'],
+    //       organizer: data['organizer'],
+    //       remaining: data['remaining'],
+    //       rate: double.parse(data['rate'].toString()),
+    //       details: data['details'],
+    //       end_date: data['end_date'],
+    //       start_date: data['start_date'],
+    //       days: days,
+    //       tags: data['tags'],
+    //     );
+
+    //     urgents.add(urgent);
+    //   }
+
+    // }
+
+    /*remove this comments*/
+//   var url = Uri.parse("https://1a62-102-186-239-195.eu.ngrok.io/chair/data/55");
+//   var response = await http.get(
+//     url,
+//     headers: {
+//       'content-Type': 'application/json',
+//       "Authorization": "Bearer ${constant.token}"
+//     },
+//   );
+
+//   var data = json.decode(response.body);
+//   print(data);
+//  // var heartint = data["pulse_rate"];
+    /*remove this comments*/
+    return results2;
+  }
+
   Widget _buildResult() {
     return FutureBuilder(
-        future: getData(),
+        future: getData2(),
         builder: (BuildContext context, AsyncSnapshot snapshot) {
           if (snapshot.connectionState == ConnectionState.waiting) {
             return Center(child: CircularProgressIndicator());
@@ -307,27 +524,21 @@ class _SearchScreenState extends State<SearchScreen> {
                   SizedBox(
                     height: 16.h,
                   ),
-                  ...List.generate(
-                    //results.length,
-                    snapshot.data!.length,
-                    (index) => Column(
+                  Padding(
+                    padding: EdgeInsets.symmetric(
+                      //   horizontal: 16.0.w,
+                      vertical: 16.h,
+                    ),
+                    child: Column(
                       children: [
-                        ResultCard(
-                          //results[index],
-                          assetName: 'assets/images/image_placeholder.svg',
-                          categories: ['Children', 'Education'],
-                          days: 13,
-                          desc: 'this is more info about the project',
-                          organizer: 'Organizer',
-                          people: 50,
-                          percent: '70',
-                          remaining: '300.00',
-                          target: '700.00',
-                          title: 'Title',
-                        ),
-                        SizedBox(
-                          height: 32.h,
-                        )
+                        ListView.builder(
+                            scrollDirection: Axis.vertical,
+                            physics: ScrollPhysics(),
+                            shrinkWrap: true,
+                            itemCount: results2.length,
+                            itemBuilder: (context, i) {
+                              return ResultCard(results2[i]);
+                            }),
                       ],
                     ),
                   ),
@@ -338,6 +549,14 @@ class _SearchScreenState extends State<SearchScreen> {
             return Center(child: CircularProgressIndicator());
           }
         });
+  }
+
+  Widget buildcategory() {
+    return Category(onTap: () {
+      setState(() {
+        _buildSearching(context);
+      });
+    });
   }
 
   Widget _buildSearching(BuildContext context) {
@@ -353,7 +572,6 @@ class _SearchScreenState extends State<SearchScreen> {
                 return Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Category(),
                     SizedBox(
                       height: 16.h,
                     ),
@@ -367,9 +585,9 @@ class _SearchScreenState extends State<SearchScreen> {
                               scrollDirection: Axis.vertical,
                               physics: ScrollPhysics(),
                               shrinkWrap: true,
-                              itemCount: results.length,
+                              itemCount: specificresults.length,
                               itemBuilder: (context, i) {
-                                return IntroCard(results[i]);
+                                return IntroCard(specificresults[i]);
                               }),
                         ],
                       ),

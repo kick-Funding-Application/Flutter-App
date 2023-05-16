@@ -57,7 +57,9 @@ class _PercentageIndicatiorState extends State<PercentageIndicatior> {
               child: Center(
                 child: Row(
                   children: [
-                    Text(' ${widget.percentage} %'),
+                    Text(
+                      ' ${widget.percentage} %',
+                    ),
                   ],
                 ),
               ),
