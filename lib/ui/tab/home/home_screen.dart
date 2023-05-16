@@ -15,19 +15,17 @@ final List<Urgent> urgents = [];
 final List<dynamic> specificurgents = [];
 
 Future getData() async {
-  var url = Uri.parse("https://dummyjson.com/quotes");
-  var response = await http.get(url);
-  var responsebody = jsonDecode(response.body);
-  print(responsebody["quotes"][1]["id"]);
+  // var url = Uri.parse("https://dummyjson.com/quotes");
+  // var response = await http.get(url);
+  // var responsebody = jsonDecode(response.body);
+  // print(responsebody["quotes"][1]["id"]);
   //return responsebody["quotes"];
 
 // Make the HTTP GET request
-  final response2 = await http.get(Uri.parse('http://example.com/api/urgents'));
 
 /**FOR TEST */
 
-  String test =
-      '''
+  String test = '''
     [
       {    "title": "Hospital project",
     "target": "500.00",
@@ -97,92 +95,88 @@ Future getData() async {
     ]
   '''; // Example JSON data
 
-  List<dynamic> jsonData = json.decode(test);
-  urgents.clear();
-  specificurgents.clear();
+  // List<dynamic> jsonData = json.decode(test);
+  // urgents.clear();
+  // specificurgents.clear();
 
-  for (var data in jsonData) {
-    double target = double.parse(data['target']);
-    double remaining = double.parse(data['remaining']);
-    double percent = ((target - remaining) / target) * 100;
-    DateTime end_date = DateTime.parse(data['end_date']).toLocal();
-    DateTime currentDate = DateTime.now().toLocal();
-    Duration remainingDuration = end_date.difference(currentDate);
-    int days = remainingDuration.inDays;
-    Urgent urgent = Urgent(
-      title: data['title'],
-      target: data['target'],
-      percent:
-          percent.toStringAsFixed(2), // Convert to string with 2 decimal places
-      assetName: data['assetName'],
-      category: data['category'],
-      organizer: data['organizer'],
-      remaining: data['remaining'],
-      rate: double.parse(data['rate'].toString()),
-      details: data['details'],
-      end_date: data['end_date'],
-      start_date: data['start_date'],
-      days: days,
-      tags: data['tags'],
-    );
+  // for (var data in jsonData) {
+  //   double target = double.parse(data['target']);
+  //   double remaining = double.parse(data['remaining']);
+  //   double percent = ((target - remaining) / target) * 100;
+  //   DateTime end_date = DateTime.parse(data['end_date']).toLocal();
+  //   DateTime currentDate = DateTime.now().toLocal();
+  //   Duration remainingDuration = end_date.difference(currentDate);
+  //   int days = remainingDuration.inDays;
+  //   Urgent urgent = Urgent(
+  //     title: data['title'],
+  //     target: data['target'],
+  //     percent:
+  //         percent.toStringAsFixed(2), // Convert to string with 2 decimal places
+  //     assetName: data['assetName'],
+  //     category: data['category'],
+  //     organizer: data['organizer'],
+  //     remaining: data['remaining'],
+  //     rate: double.parse(data['rate'].toString()),
+  //     details: data['details'],
+  //     end_date: data['end_date'],
+  //     start_date: data['start_date'],
+  //     days: days,
+  //     tags: data['tags'],
+  //   );
 
-    urgents.add(urgent);
-    if (urgent.category == charityform.specificCategory) {
-      specificurgents.add(urgent);
+  //   urgents.add(urgent);
+  //   if (urgent.category == charityform.specificCategory) {
+  //     specificurgents.add(urgent);
+  //   }
+  // }
+
+/**FOR TEST */
+  final response2 = await http.get(
+      Uri.parse('https://02f3-197-134-102-115.ngrok-free.app/api/projects/'));
+
+  if (response2.statusCode == 200) {
+    // Parse the JSON response
+    final jsonData = json.decode(response2.body);
+    print(jsonData);
+
+    // Clear the specificurgents list before starting the loop
+    specificurgents.clear();
+
+    // Iterate over the parsed data and append to the urgents list
+    for (var data in jsonData) {
+      int target = data['target_amount'];
+      String target2 = data['target_amount'].toString();
+      int current_amount = data['current_amount'];
+      int remaining = ((target - current_amount));
+      double percent = ((target - remaining) / target) * 100;
+      DateTime end_date = DateTime.parse(data['end_date']).toLocal();
+      DateTime currentDate = DateTime.now().toLocal();
+      Duration remainingDuration = end_date.difference(currentDate);
+      int days = remainingDuration.inDays;
+      Urgent urgent = Urgent(
+        title: data['title'],
+        target: target2,
+        percent: percent
+            .toStringAsFixed(2), // Convert to string with 2 decimal places
+        assetName: data['img_url']['image'],
+        category: data['category'],
+        organizer: data['created_by'],
+        remaining: remaining.toString(),
+        rate: double.parse(data['rate']['avg_rate'].toString()),
+        details: data['details'],
+        end_date: data['end_date'],
+        start_date: data['start_date'],
+        days: days,
+        tags: data['tags'],
+      );
+
+      if (urgent.category == charityform.specificCategory) {
+        urgents.add(urgent);
+        specificurgents.add(urgent);
+      }
     }
   }
 
-/**FOR TEST */
-
-  // if (response2.statusCode == 200) {
-  //   // Parse the JSON response
-  //   final jsonData = json.decode(response2.body);
-
-  //   // Iterate over the parsed data and append to the urgents list
-  //   for (var data in jsonData) {
-  //     double target = double.parse(data['target']);
-  //     double remaining = double.parse(data['remaining']);
-  //     double percent = ((target - remaining) / target) * 100;
-  //     DateTime end_date = DateTime.parse(data['end_date']).toLocal();
-  //     DateTime currentDate = DateTime.now().toLocal();
-  //     Duration remainingDuration = end_date.difference(currentDate);
-  //     int days = remainingDuration.inDays;
-  //     Urgent urgent = Urgent(
-  //       title: data['title'],
-  //       target: data['target'],
-  //       percent: percent
-  //           .toStringAsFixed(2), // Convert to string with 2 decimal places
-  //       assetName: data['assetName'],
-  //       category: data['category'],
-  //       organizer: data['organizer'],
-  //       remaining: data['remaining'],
-  //       rate: double.parse(data['rate'].toString()),
-  //       details: data['details'],
-  //       end_date: data['end_date'],
-  //       start_date: data['start_date'],
-  //       days: days,
-  //       tags: data['tags'],
-  //     );
-
-  //     urgents.add(urgent);
-  //   }
-
-  // }
-
-  /*remove this comments*/
-//   var url = Uri.parse("https://1a62-102-186-239-195.eu.ngrok.io/chair/data/55");
-//   var response = await http.get(
-//     url,
-//     headers: {
-//       'content-Type': 'application/json',
-//       "Authorization": "Bearer ${constant.token}"
-//     },
-//   );
-
-//   var data = json.decode(response.body);
-//   print(data);
-//  // var heartint = data["pulse_rate"];
-  /*remove this comments*/
   return specificurgents;
 }
 

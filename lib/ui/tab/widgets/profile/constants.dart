@@ -24,7 +24,8 @@ class constant {
   static File? image;
   static File? projectImage;
   static String urlprofile =
-      "https://firebasestorage.googleapis.com/v0/b/kickfunding-a2c6e.appspot.com/o/kickfunding%20white%20bg.jpg?alt=media&token=7a34ef05-bc28-45ac-9704-1f4a9c6acea4";
+      "https://firebasestorage.googleapis.com/v0/b/kickfunding-a2c6e.appspot.com/o/kickfunding%20white%20bg.jpg?alt=media&token=44e1a743-de84-40bd-a69b-ddab8f8bd138";
   static String? urlprofileimage;
-  static String? urlprojectimage;
+  static String urlprojectimage =
+      "https://firebasestorage.googleapis.com/v0/b/kickfunding-a2c6e.appspot.com/o/kickfunding%20white%20bg.jpg?alt=media&token=44e1a743-de84-40bd-a69b-ddab8f8bd138";
 }

@@ -11,12 +11,13 @@ class charityform {
   static var image = "";
   static var description = "";
   static var phone = "";
-  static String specificCategory = "Education";
+  static String specificCategory = "education";
   static List<String> categories = [
-    'Education',
-    'Health',
-    'Animal',
-    'Environment',
+    'education',
+    'health',
+    'animal',
+    'environment',
+    'other',
   ];
   static var selectcategory = 0;
 }

@@ -192,12 +192,11 @@ class _LoginFormState extends State<LoginForm> {
     String jsonBody = json.encode(body);
     final encoding = Encoding.getByName('utf-8');
     if (email == "zozo" || password == "zozo") {
-      check = true;
-      reload();
+      reload(context);
       //print('Fields have not to be empty');
     } else {
       var url = Uri.parse(
-          "https://d46b-197-54-154-137.ngrok-free.app/api/dj-rest-auth/login/");
+          "https://02f3-197-134-102-115.ngrok-free.app/api/dj-rest-auth/login/");
 
       var response = await http.post(url,
           headers: {
@@ -215,7 +214,7 @@ class _LoginFormState extends State<LoginForm> {
         print(token);
         print("Login succeeded");
         getinfo();
-        reload();
+        reload(context);
       } else {
         Center(child: CircularProgressIndicator());
       }
@@ -227,7 +226,7 @@ class _LoginFormState extends State<LoginForm> {
 
   void getinfo() async {
     var url2 = Uri.parse(
-        "https://d46b-197-54-154-137.ngrok-free.app/api/dj-rest-auth/user/");
+        "https://02f3-197-134-102-115.ngrok-free.app/api/dj-rest-auth/user/");
     var response2 = await http.get(
       url2,
       headers: {
@@ -246,7 +245,7 @@ class _LoginFormState extends State<LoginForm> {
         constant.first_name = data2["first_name"].toString();
         constant.last_name = data2["last_name"].toString();
         constant.phoneuser = data2["phone_number"].toString();
-        constant.urlprofile = data2["user_image"].toString();
+        //constant.urlprofile = data2["user_image"].toString();
       });
       print(constant.first_name);
     } else {
@@ -254,8 +253,11 @@ class _LoginFormState extends State<LoginForm> {
     }
   }
 
-  Future<void> reload() async {
+  Future<void> reload(context) async {
     constant.success = true;
+    setState(() {
+      check = true;
+    });
     SharedPreferences prefs = await SharedPreferences.getInstance();
     prefs.setBool('isLoggedIn', true);
     // ignore: unnecessary_null_comparison

@@ -62,9 +62,13 @@ class _DetailScreenState extends State<DetailScreen> {
                             color: AppColor.kPlaceholder1,
                           ),
                           child: Center(
-                            child: SvgPicture.asset(
-                              widget.urgent.assetName,
-                              width: 100.w,
+                            child: Container(
+                              decoration: BoxDecoration(
+                                image: DecorationImage(
+                                    image:
+                                        NetworkImage(widget.urgent.assetName),
+                                    fit: BoxFit.cover),
+                              ),
                             ),
                           ),
                         ),

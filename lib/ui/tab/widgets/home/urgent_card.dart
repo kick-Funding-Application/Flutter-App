@@ -59,19 +59,25 @@ class _UrgentCardState extends State<UrgentCard> {
                     color: AppColor.kPlaceholder1,
                   ),
                   child: Center(
-                    child: SvgPicture.asset(
-                      'assets/images/image_placeholder.svg',
-                      width: 80.w,
+                    child: Container(
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(
+                          8.r,
+                        ),
+                        image: DecorationImage(
+                            image: NetworkImage(widget.urgent.assetName),
+                            fit: BoxFit.cover),
+                      ),
                     ),
                   ),
                 ),
-                Positioned(
-                  bottom: 8.h,
-                  right: 8.w,
-                  child: SvgPicture.asset(
-                    'assets/images/bookmark.svg',
-                  ),
-                )
+                // Positioned(
+                //   bottom: 8.h,
+                //   right: 8.w,
+                //   child: SvgPicture.asset(
+                //     'assets/images/bookmark.svg',
+                //   ),
+                // )
               ],
             ),
             SizedBox(
@@ -87,7 +93,9 @@ class _UrgentCardState extends State<UrgentCard> {
             Row(
               children: [
                 Container(
-                  width: (240.w - 20.w) * double.parse(widget.urgent.percent) / 100,
+                  width: (240.w - 20.w) *
+                      double.parse(widget.urgent.percent) /
+                      100,
                   height: 4.h,
                   decoration: ShapeDecoration(
                     shape: const StadiumBorder(),

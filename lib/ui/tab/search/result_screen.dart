@@ -61,9 +61,16 @@ class _ResultScreenState extends State<ResultScreen> {
                             color: AppColor.kPlaceholder1,
                           ),
                           child: Center(
-                            child: SvgPicture.asset(
-                              widget.result.assetName,
-                              width: 100.w,
+                            child: Container(
+                              decoration: BoxDecoration(
+                                borderRadius: BorderRadius.circular(
+                                  8.r,
+                                ),
+                                image: DecorationImage(
+                                    image:
+                                        NetworkImage(widget.result.assetName),
+                                    fit: BoxFit.cover),
+                              ),
                             ),
                           ),
                         ),

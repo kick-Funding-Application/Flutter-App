@@ -40,15 +40,15 @@ class _SearchScreenState extends State<SearchScreen> {
   }
 
   Future getData() async {
-    var url = Uri.parse("https://dummyjson.com/quotes");
-    var response = await http.get(url);
-    var responsebody = jsonDecode(response.body);
-    print(responsebody["quotes"][1]["id"]);
-    //return responsebody["quotes"];
+//     var url = Uri.parse("https://dummyjson.com/quotes");
+//     var response = await http.get(url);
+//     var responsebody = jsonDecode(response.body);
+//     print(responsebody["quotes"][1]["id"]);
+//     //return responsebody["quotes"];
 
-// Make the HTTP GET request
-    final response2 =
-        await http.get(Uri.parse('http://example.com/api/urgents'));
+// // Make the HTTP GET request
+//     final response2 =
+//         await http.get(Uri.parse('http://example.com/api/urgents'));
 
 /**FOR TEST */
 
@@ -122,96 +122,91 @@ class _SearchScreenState extends State<SearchScreen> {
     ]
   '''; // Example JSON data
 
-    List<dynamic> jsonData = json.decode(test);
-    results.clear();
-    specificresults.clear();
+//     List<dynamic> jsonData = json.decode(test);
+//     results.clear();
+//     specificresults.clear();
 
-    for (var data in jsonData) {
-      double target = double.parse(data['target']);
-      double remaining = double.parse(data['remaining']);
-      double percent = ((target - remaining) / target) * 100;
-      DateTime end_date = DateTime.parse(data['end_date']).toLocal();
-      DateTime currentDate = DateTime.now().toLocal();
-      Duration remainingDuration = end_date.difference(currentDate);
-      int days = remainingDuration.inDays;
-      Result result = Result(
-        title: data['title'],
-        target: data['target'],
-        percent: percent
-            .toStringAsFixed(2), // Convert to string with 2 decimal places
-        assetName: data['assetName'],
-        category: data['category'],
-        organizer: data['organizer'],
-        remaining: data['remaining'],
-        rate: double.parse(data['rate'].toString()),
-        details: data['details'],
-        end_date: data['end_date'],
-        start_date: data['start_date'],
-        days: days,
-        tags: data['tags'],
-      );
+//     for (var data in jsonData) {
+//       double target = double.parse(data['target']);
+//       double remaining = double.parse(data['remaining']);
+//       double percent = ((target - remaining) / target) * 100;
+//       DateTime end_date = DateTime.parse(data['end_date']).toLocal();
+//       DateTime currentDate = DateTime.now().toLocal();
+//       Duration remainingDuration = end_date.difference(currentDate);
+//       int days = remainingDuration.inDays;
+//       Result result = Result(
+//         title: data['title'],
+//         target: data['target'],
+//         percent: percent
+//             .toStringAsFixed(2), // Convert to string with 2 decimal places
+//         assetName: data['assetName'],
+//         category: data['category'],
+//         organizer: data['organizer'],
+//         remaining: data['remaining'],
+//         rate: double.parse(data['rate'].toString()),
+//         details: data['details'],
+//         end_date: data['end_date'],
+//         start_date: data['start_date'],
+//         days: days,
+//         tags: data['tags'],
+//       );
 
-      results.add(result);
+//       results.add(result);
 
-// Access the filtered results
+// // Access the filtered results
 
-      if (result.category == charityform.specificCategory) {
-        specificresults.add(result);
+//       if (result.category == charityform.specificCategory) {
+//         specificresults.add(result);
+//       }
+//     }
+/**FOR TEST */
+    final response2 = await http.get(
+        Uri.parse('https://02f3-197-134-102-115.ngrok-free.app/api/projects/'));
+
+    if (response2.statusCode == 200) {
+      // Parse the JSON response
+      final jsonData = json.decode(response2.body);
+      print(jsonData);
+
+      // Clear the specificurgents list before starting the loop
+      specificresults.clear();
+
+      // Iterate over the parsed data and append to the urgents list
+      for (var data in jsonData) {
+        int target = data['target_amount'];
+        String target2 = data['target_amount'].toString();
+        int current_amount = data['current_amount'];
+        int remaining = ((target - current_amount));
+        double percent = ((target - remaining) / target) * 100;
+        DateTime end_date = DateTime.parse(data['end_date']).toLocal();
+        DateTime currentDate = DateTime.now().toLocal();
+        Duration remainingDuration = end_date.difference(currentDate);
+        int days = remainingDuration.inDays;
+        Result urgent = Result(
+          title: data['title'],
+          target: target2,
+          percent: percent
+              .toStringAsFixed(2), // Convert to string with 2 decimal places
+          assetName: data['img_url']['image'],
+          category: data['category'],
+          organizer: data['created_by'],
+          remaining: remaining.toString(),
+          rate: double.parse(data['rate']['avg_rate'].toString()),
+          details: data['details'],
+          end_date: data['end_date'],
+          start_date: data['start_date'],
+          days: days,
+          tags: data['tags'],
+        );
+
+        if (urgent.category == charityform.specificCategory) {
+          results.add(urgent);
+          specificresults.add(urgent);
+        }
       }
     }
 
-/**FOR TEST */
-
-    // if (response2.statusCode == 200) {
-    //   // Parse the JSON response
-    //   final jsonData = json.decode(response2.body);
-
-    //   // Iterate over the parsed data and append to the urgents list
-    //   for (var data in jsonData) {
-    //     double target = double.parse(data['target']);
-    //     double remaining = double.parse(data['remaining']);
-    //     double percent = ((target - remaining) / target) * 100;
-    //     DateTime end_date = DateTime.parse(data['end_date']).toLocal();
-    //     DateTime currentDate = DateTime.now().toLocal();
-    //     Duration remainingDuration = end_date.difference(currentDate);
-    //     int days = remainingDuration.inDays;
-    //     Urgent urgent = Urgent(
-    //       title: data['title'],
-    //       target: data['target'],
-    //       percent: percent
-    //           .toStringAsFixed(2), // Convert to string with 2 decimal places
-    //       assetName: data['assetName'],
-    //       category: data['category'],
-    //       organizer: data['organizer'],
-    //       remaining: data['remaining'],
-    //       rate: double.parse(data['rate'].toString()),
-    //       details: data['details'],
-    //       end_date: data['end_date'],
-    //       start_date: data['start_date'],
-    //       days: days,
-    //       tags: data['tags'],
-    //     );
-
-    //     urgents.add(urgent);
-    //   }
-
-    // }
-
-    /*remove this comments*/
-//   var url = Uri.parse("https://1a62-102-186-239-195.eu.ngrok.io/chair/data/55");
-//   var response = await http.get(
-//     url,
-//     headers: {
-//       'content-Type': 'application/json',
-//       "Authorization": "Bearer ${constant.token}"
-//     },
-//   );
-
-//   var data = json.decode(response.body);
-//   print(data);
-//  // var heartint = data["pulse_rate"];
-    /*remove this comments*/
-    return responsebody["quotes"];
+    return specificresults;
   }
 
   late final TextEditingController controller;
@@ -327,15 +322,13 @@ class _SearchScreenState extends State<SearchScreen> {
   }
 
   Future getData2() async {
-    var url = Uri.parse("https://dummyjson.com/quotes");
-    var response = await http.get(url);
-    var responsebody = jsonDecode(response.body);
-    print(responsebody["quotes"][1]["id"]);
+    // var url = Uri.parse("https://dummyjson.com/quotes");
+    // var response = await http.get(url);
+    // var responsebody = jsonDecode(response.body);
+    // print(responsebody["quotes"][1]["id"]);
     //return responsebody["quotes"];
 
 // Make the HTTP GET request
-    final response2 =
-        await http.get(Uri.parse('http://example.com/api/urgents'));
 
 /**FOR TEST */
 
@@ -409,96 +402,88 @@ class _SearchScreenState extends State<SearchScreen> {
     ]
   '''; // Example JSON data
 
-    List<dynamic> jsonData = json.decode(test);
-    results2.clear();
-    specificresults2.clear();
+//     List<dynamic> jsonData = json.decode(test);
+//     results2.clear();
+//     specificresults2.clear();
 
-    for (var data in jsonData) {
-      double target = double.parse(data['target']);
-      double remaining = double.parse(data['remaining']);
-      double percent = ((target - remaining) / target) * 100;
-      DateTime end_date = DateTime.parse(data['end_date']).toLocal();
-      DateTime currentDate = DateTime.now().toLocal();
-      Duration remainingDuration = end_date.difference(currentDate);
-      int days = remainingDuration.inDays;
-      Result result2 = Result(
-        title: data['title'],
-        target: data['target'],
-        percent: percent
-            .toStringAsFixed(0), // Convert to string with 2 decimal places
-        assetName: data['assetName'],
-        category: data['category'],
-        organizer: data['organizer'],
-        remaining: data['remaining'],
-        rate: double.parse(data['rate'].toString()),
-        details: data['details'],
-        end_date: data['end_date'],
-        start_date: data['start_date'],
-        days: days,
-        tags: data['tags'],
-      );
+//     for (var data in jsonData) {
+//       double target = double.parse(data['target']);
+//       double remaining = double.parse(data['remaining']);
+//       double percent = ((target - remaining) / target) * 100;
+//       DateTime end_date = DateTime.parse(data['end_date']).toLocal();
+//       DateTime currentDate = DateTime.now().toLocal();
+//       Duration remainingDuration = end_date.difference(currentDate);
+//       int days = remainingDuration.inDays;
+//       Result result2 = Result(
+//         title: data['title'],
+//         target: data['target'],
+//         percent: percent
+//             .toStringAsFixed(0), // Convert to string with 2 decimal places
+//         assetName: data['assetName'],
+//         category: data['category'],
+//         organizer: data['organizer'],
+//         remaining: data['remaining'],
+//         rate: double.parse(data['rate'].toString()),
+//         details: data['details'],
+//         end_date: data['end_date'],
+//         start_date: data['start_date'],
+//         days: days,
+//         tags: data['tags'],
+//       );
 
-      results2.add(result2);
+//       results2.add(result2);
 
-// Access the filtered results
+// // Access the filtered results
 
-      if (result2.category == charityform.specificCategory) {
-        specificresults.add(result2);
+//       if (result2.category == charityform.specificCategory) {
+//         specificresults.add(result2);
+//       }
+//     }
+
+/**FOR TEST */
+    final response3 = await http.get(Uri.parse(
+        'https://02f3-197-134-102-115.ngrok-free.app/api/projects/?search=${controller.text}'));
+
+    if (response3.statusCode == 200) {
+      // Parse the JSON response
+      final jsonData = json.decode(response3.body);
+      print(jsonData);
+
+      // Clear the specificurgents list before starting the loop
+      specificresults2.clear();
+
+      // Iterate over the parsed data and append to the urgents list
+      for (var data in jsonData) {
+        int target = data['target_amount'];
+        String target2 = data['target_amount'].toString();
+        int current_amount = data['current_amount'];
+        int remaining = ((target - current_amount));
+        int percent = ((target - remaining) * 100 ~/ target);
+        DateTime end_date = DateTime.parse(data['end_date']).toLocal();
+        DateTime currentDate = DateTime.now().toLocal();
+        Duration remainingDuration = end_date.difference(currentDate);
+        int days = remainingDuration.inDays;
+        Result result2 = Result(
+          title: data['title'],
+          target: target2,
+          percent: percent.toString(),
+          assetName: data['img_url']['image'],
+          category: data['category'],
+          organizer: data['created_by'],
+          remaining: remaining.toString(),
+          rate: double.parse(data['rate']['avg_rate'].toString()),
+          details: data['details'],
+          end_date: data['end_date'],
+          start_date: data['start_date'],
+          days: days,
+          tags: data['tags'],
+        );
+
+        specificresults2.add(result2);
       }
     }
 
-/**FOR TEST */
-
-    // if (response2.statusCode == 200) {
-    //   // Parse the JSON response
-    //   final jsonData = json.decode(response2.body);
-
-    //   // Iterate over the parsed data and append to the urgents list
-    //   for (var data in jsonData) {
-    //     double target = double.parse(data['target']);
-    //     double remaining = double.parse(data['remaining']);
-    //     double percent = ((target - remaining) / target) * 100;
-    //     DateTime end_date = DateTime.parse(data['end_date']).toLocal();
-    //     DateTime currentDate = DateTime.now().toLocal();
-    //     Duration remainingDuration = end_date.difference(currentDate);
-    //     int days = remainingDuration.inDays;
-    //     Urgent urgent = Urgent(
-    //       title: data['title'],
-    //       target: data['target'],
-    //       percent: percent
-    //           .toStringAsFixed(2), // Convert to string with 2 decimal places
-    //       assetName: data['assetName'],
-    //       category: data['category'],
-    //       organizer: data['organizer'],
-    //       remaining: data['remaining'],
-    //       rate: double.parse(data['rate'].toString()),
-    //       details: data['details'],
-    //       end_date: data['end_date'],
-    //       start_date: data['start_date'],
-    //       days: days,
-    //       tags: data['tags'],
-    //     );
-
-    //     urgents.add(urgent);
-    //   }
-
-    // }
-
-    /*remove this comments*/
-//   var url = Uri.parse("https://1a62-102-186-239-195.eu.ngrok.io/chair/data/55");
-//   var response = await http.get(
-//     url,
-//     headers: {
-//       'content-Type': 'application/json',
-//       "Authorization": "Bearer ${constant.token}"
-//     },
-//   );
-
-//   var data = json.decode(response.body);
-//   print(data);
-//  // var heartint = data["pulse_rate"];
-    /*remove this comments*/
-    return results2;
+    return specificresults2;
   }
 
   Widget _buildResult() {
@@ -535,9 +520,9 @@ class _SearchScreenState extends State<SearchScreen> {
                             scrollDirection: Axis.vertical,
                             physics: ScrollPhysics(),
                             shrinkWrap: true,
-                            itemCount: results2.length,
+                            itemCount: specificresults2.length,
                             itemBuilder: (context, i) {
-                              return ResultCard(results2[i]);
+                              return ResultCard(specificresults2[i]);
                             }),
                       ],
                     ),

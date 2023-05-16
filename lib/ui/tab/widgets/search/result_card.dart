@@ -41,9 +41,15 @@ class _ResultCardState extends State<ResultCard> {
                   ),
                 ),
                 child: Center(
-                  child: SvgPicture.asset(
-                    'assets/images/image_placeholder.svg',
-                    width: 32.w,
+                  child: Container(
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(
+                        8.r,
+                      ),
+                      image: DecorationImage(
+                          image: NetworkImage(widget.result.assetName),
+                          fit: BoxFit.cover),
+                    ),
                   ),
                 ),
               ),

@@ -44,11 +44,11 @@ class _BirthdateInputFieldState extends State<BirthdateInputField> {
     _dateController = widget.controller ?? TextEditingController();
   }
 
-  @override
-  void dispose() {
-    _dateController?.dispose();
-    super.dispose();
-  }
+  // @override
+  // void dispose() {
+  //   _dateController?.dispose();
+  //   super.dispose();
+  // }
 
   @override
   Widget build(BuildContext context) {

@@ -14,7 +14,9 @@ import 'package:flutter_image_compress/flutter_image_compress.dart';
 class uploadProjectImage extends StatefulWidget {
   const uploadProjectImage({
     super.key,
+    this.image,
   });
+  final String? image;
 
   @override
   State<uploadProjectImage> createState() => _uploadProjectImageState();
@@ -25,6 +27,7 @@ File? _image;
 class _uploadProjectImageState extends State<uploadProjectImage> {
   @override
   Widget build(BuildContext context) {
+    bool isLoading = constant.urlprojectimage == null;
     return GestureDetector(
       onTap: () {
         uploadImage(context);
@@ -33,38 +36,51 @@ class _uploadProjectImageState extends State<uploadProjectImage> {
         padding: EdgeInsets.all(10),
         width: double.infinity,
         child: Center(
-          child: Container(
-            width: 130.w,
-            height: 130.w,
-            padding: EdgeInsets.symmetric(
-              horizontal: 8.w,
-            ),
-            decoration: BoxDecoration(
-              borderRadius: BorderRadius.circular(
-                32.r,
-              ),
-              color: AppColor.kPlaceholder2,
-            ),
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                SvgPicture.asset(
-                  'assets/images/image.svg',
-                  width: 32.w,
+          child: Column(
+            children: [
+              Container(
+                width: 130.w,
+                height: 130.w,
+                padding: EdgeInsets.symmetric(
+                  horizontal: 8.w,
                 ),
-                SizedBox(
-                  height: 4.h,
-                ),
-                Text(
-                  'Drag & Drop your file here',
-                  style: TextStyle(
-                    color: AppColor.kTextColor2,
-                    fontSize: 12.sp,
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(
+                    32.r,
                   ),
-                  textAlign: TextAlign.center,
+                  color: AppColor.kPlaceholder2,
                 ),
-              ],
-            ),
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Icon(
+                      Icons.image,
+                      color: AppColor.kTextColor2,
+                    ),
+                    Container(
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(8.r),
+                        image: DecorationImage(
+                          image: NetworkImage("${widget.image}"),
+                          fit: BoxFit.cover,
+                        ),
+                      ),
+                    ),
+                    SizedBox(
+                      height: 4.h,
+                    ),
+                    Text(
+                      'Upload a photo ',
+                      style: TextStyle(
+                        color: AppColor.kTextColor2,
+                        fontSize: 12.sp,
+                      ),
+                      textAlign: TextAlign.center,
+                    ),
+                  ],
+                ),
+              ),
+            ],
           ),
         ),
       ),
@@ -95,9 +111,10 @@ class _uploadProjectImageState extends State<uploadProjectImage> {
           ScaffoldMessenger.of(context).showSnackBar(
               SnackBar(content: Text('Uploaded Image Successfully'))));
       String url = await taskSnapshot.ref.getDownloadURL();
-      print(url);
+
       setState(() {
         constant.urlprojectimage = url;
+        print(url);
       });
     } catch (ex) {
       ScaffoldMessenger.of(context)

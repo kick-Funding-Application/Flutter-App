@@ -103,10 +103,9 @@ bool isPasswordValid(String password) {
 }
 
 bool isEmailValid(String email) {
-  // Regular expression pattern for email validation
-  final pattern = r'^[\w-]+(\.[\w-]+)*@([a-zA-Z0-9-]+\.)+[a-zA-Z]{2,}$';
-  final regex = RegExp(pattern);
-  return regex.hasMatch(email);
+  // Add your email validation logic here
+  // This is a simple example that checks for the presence of '@' and '.'
+  return email.contains('@') && email.contains('.');
 }
 
 // List<String> existingUsernames = ['john', 'mary', 'jane'];
