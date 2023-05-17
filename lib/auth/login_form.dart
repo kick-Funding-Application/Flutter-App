@@ -196,7 +196,7 @@ class _LoginFormState extends State<LoginForm> {
       //print('Fields have not to be empty');
     } else {
       var url = Uri.parse(
-          "https://02f3-197-134-102-115.ngrok-free.app/api/dj-rest-auth/login/");
+          "https://kickfunding-backend.herokuapp.com/api/dj-rest-auth/login/");
 
       var response = await http.post(url,
           headers: {
@@ -226,7 +226,7 @@ class _LoginFormState extends State<LoginForm> {
 
   void getinfo() async {
     var url2 = Uri.parse(
-        "https://02f3-197-134-102-115.ngrok-free.app/api/dj-rest-auth/user/");
+        "https://kickfunding-backend.herokuapp.com/api/dj-rest-auth/user/");
     var response2 = await http.get(
       url2,
       headers: {
@@ -238,14 +238,25 @@ class _LoginFormState extends State<LoginForm> {
     var data2 = json.decode(response2.body);
     print(data2);
     if (response2.statusCode == 200) {
+      String userImage = data2["user_image"].toString();
+      String defaultImage =
+          "https://th.bing.com/th/id/OIP.OF59vsDmwxPP1tw7b_8clQHaE8?pid=ImgDet&rs=1";
+
+      if (userImage == "null") {
+        setState(() {
+          constant.urlprofile = defaultImage;
+        });
+      } else {
+        constant.urlprofile = userImage;
+      }
+
       setState(() {
         constant.Username = data2["username"].toString();
         constant.bdateuser = data2["birth_date"].toString();
-        constant.country = data2["country"].toString();
+        constant.countryuser = data2["country"].toString();
         constant.first_name = data2["first_name"].toString();
         constant.last_name = data2["last_name"].toString();
         constant.phoneuser = data2["phone_number"].toString();
-        //constant.urlprofile = data2["user_image"].toString();
       });
       print(constant.first_name);
     } else {

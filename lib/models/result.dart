@@ -3,6 +3,7 @@ class Result {
   final String target;
   final String percent;
   final String assetName;
+  final String userimage;
   final String category;
   final String organizer;
   final String remaining;
@@ -13,7 +14,7 @@ class Result {
   final int days;
   final double rate;
 
-  Result({
+  Result( {
     required this.title,
     required this.target,
     required this.percent,
@@ -26,6 +27,7 @@ class Result {
     required this.organizer,
     required this.remaining,
     required this.days,
-    required this.rate,
+    required this.rate, 
+    required this.userimage,
   });
 }

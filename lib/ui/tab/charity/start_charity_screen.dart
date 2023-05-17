@@ -6,6 +6,7 @@ import 'package:kickfunding/ui/tab/widgets/charity/categroyinput.dart';
 import 'package:kickfunding/ui/tab/widgets/charity/charity_input_field.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:dotted_border/dotted_border.dart';
+import 'package:kickfunding/ui/tab/widgets/profile/projectdate.dart';
 import '../../../../routes/routes.dart';
 import '../../../../theme/app_color.dart';
 import '../../../auth/login_form.dart';
@@ -29,11 +30,19 @@ class StartCharityScreen extends StatefulWidget {
   State<StartCharityScreen> createState() => _StartCharityScreenState();
 }
 
-var title = TextEditingController();
-var tags = TextEditingController();
-var target = TextEditingController();
-var deadline = TextEditingController();
-var desc = TextEditingController();
+TextEditingController title = TextEditingController();
+TextEditingController tags = TextEditingController();
+TextEditingController target = TextEditingController();
+TextEditingController deadline = TextEditingController();
+TextEditingController desc = TextEditingController();
+String validateField(String value) {
+  if (value.isEmpty) {
+    return 'This field is required';
+  }
+  // Add more validation rules if needed
+
+  return 'null';
+}
 
 int currentStep = 0;
 
@@ -65,6 +74,9 @@ class _StartCharityScreenState extends State<StartCharityScreen> {
                   onchanged: (String value) {
                     setState(() {
                       charityform.title = value;
+                      // Validate the field on each change
+                      String errorMessage = validateField(value);
+                      // Handle the error message or perform other actions
                     });
                   },
                   validateStatus: (value) {
@@ -96,6 +108,9 @@ class _StartCharityScreenState extends State<StartCharityScreen> {
                   onchanged: (String value) {
                     setState(() {
                       charityform.tags = value;
+                      // Validate the field on each change
+                      String errorMessage = validateField(value);
+                      // Handle the error message or perform other actions
                     });
                   },
                   controller: tags,
@@ -111,7 +126,10 @@ class _StartCharityScreenState extends State<StartCharityScreen> {
                   'Target',
                   assetName: 'assets/images/dollar.svg',
                   onchanged: (String value) {
-                    charityform.target = value;
+                    charityform.target = int.parse(value);
+                    // Validate the field on each change
+                    String errorMessage = validateField(value);
+                    // Handle the error message or perform other actions
                   },
                   validateStatus: (value) {
                     if (value!.isEmpty) {
@@ -125,7 +143,7 @@ class _StartCharityScreenState extends State<StartCharityScreen> {
                 SizedBox(height: 8.h),
                 Text('Deadline'),
                 SizedBox(height: 8.h),
-                BirthdateInputField(
+                projectDate(
                     title: 'Deadline',
                     controller: deadline,
                     onChanged: (String value) {
@@ -186,6 +204,9 @@ class _StartCharityScreenState extends State<StartCharityScreen> {
                       },
                       onChanged: (String value) {
                         setState(() {
+                          // Validate the field on each change
+                          String errorMessage = validateField(value);
+                          // Handle the error message or perform other actions
                           charityform.description = value;
                         });
                       },
@@ -237,7 +258,6 @@ class _StartCharityScreenState extends State<StartCharityScreen> {
                       ),
                       onPressed: () {
                         uploadproject(context);
-                        showSheet();
                       },
                       child: Text('Upload Project')),
                 ),
@@ -330,18 +350,19 @@ class _StartCharityScreenState extends State<StartCharityScreen> {
   Future uploadproject(BuildContext cont) async {
     /**removecomment when online */
     Map<String, dynamic> body = {
-      "title": charityform.title,
-      "target": charityform.target,
-      "details": charityform.description,
-      "end_date": charityform.deadline,
-      "tags": charityform.tags,
-      "thumbnails": {"image": constant.urlprojectimage}
+      "title": "${charityform.title}",
+      "target_amount": charityform.target,
+      "details": "${charityform.description}",
+      "end_date": "${charityform.deadline}",
+      "tags": "${charityform.tags}",
+      "category": "${charityform.category}",
+      "image": "${constant.urlprojectimage}",
     };
     String jsonBody = json.encode(body);
     final encoding = Encoding.getByName('utf-8');
 
     var url =
-        Uri.parse("https://f0e8-197-134-102-115.ngrok-free.app/api/projects/");
+        Uri.parse("https://kickfunding-backend.herokuapp.com/api/projects/");
     var response = await http.post(url,
         headers: {
           'content-Type': 'application/json',
@@ -354,11 +375,20 @@ class _StartCharityScreenState extends State<StartCharityScreen> {
 
     if (response.statusCode == 201) {
       print("Registeration succeeded");
-      ScaffoldMessenger.of(context)
-          .showSnackBar(SnackBar(content: Text("Uploaded Successfully")));
+      // showDialog(
+      //     context: context,
+      //     builder: (_) => const AlertDialog(
+      //           content: Text("Project Uploaded Successfully"),
+      //         ));
+      showSheet();
       print('Registration successful');
     } else {
       print("Registeration Failed");
+      showDialog(
+          context: context,
+          builder: (_) => const AlertDialog(
+                content: Text("Fill in the Fields!!! "),
+              ));
     }
 
     /**removecomment when online */

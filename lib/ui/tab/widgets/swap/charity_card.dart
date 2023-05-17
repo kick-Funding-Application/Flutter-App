@@ -50,12 +50,9 @@ class _CharityCardState extends State<CharityCard> {
                       decoration: BoxDecoration(
                         borderRadius: BorderRadius.circular(8.r),
                         color: AppColor.kPlaceholder1,
-                      ),
-                      child: Center(
-                        child: SvgPicture.asset(
-                          'assets/images/image_placeholder.svg',
-                          width: 48.w,
-                        ),
+                        image: DecorationImage(
+                            image: NetworkImage(widget.result.assetName),
+                            fit: BoxFit.cover),
                       ),
                     ),
                     Positioned(

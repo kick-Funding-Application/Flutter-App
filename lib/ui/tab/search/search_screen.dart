@@ -52,7 +52,8 @@ class _SearchScreenState extends State<SearchScreen> {
 
 /**FOR TEST */
 
-    String test = '''
+    String test =
+        '''
     [
       {    "title": "Title of project",
     "target": "500.00",
@@ -161,7 +162,7 @@ class _SearchScreenState extends State<SearchScreen> {
 //     }
 /**FOR TEST */
     final response2 = await http.get(
-        Uri.parse('https://02f3-197-134-102-115.ngrok-free.app/api/projects/'));
+        Uri.parse('https://kickfunding-backend.herokuapp.com/api/projects/'));
 
     if (response2.statusCode == 200) {
       // Parse the JSON response
@@ -187,7 +188,8 @@ class _SearchScreenState extends State<SearchScreen> {
           target: target2,
           percent: percent
               .toStringAsFixed(2), // Convert to string with 2 decimal places
-          assetName: data['img_url']['image'],
+          assetName: data['image'],
+          userimage: data['user_image'],
           category: data['category'],
           organizer: data['created_by'],
           remaining: remaining.toString(),
@@ -332,7 +334,8 @@ class _SearchScreenState extends State<SearchScreen> {
 
 /**FOR TEST */
 
-    String test = '''
+    String test =
+        '''
     [
       {    "title": "Title of project",
     "target": "500.00",
@@ -442,7 +445,7 @@ class _SearchScreenState extends State<SearchScreen> {
 
 /**FOR TEST */
     final response3 = await http.get(Uri.parse(
-        'https://02f3-197-134-102-115.ngrok-free.app/api/projects/?search=${controller.text}'));
+        'https://kickfunding-backend.herokuapp.com/api/projects/?search=${controller.text}'));
 
     if (response3.statusCode == 200) {
       // Parse the JSON response
@@ -467,7 +470,8 @@ class _SearchScreenState extends State<SearchScreen> {
           title: data['title'],
           target: target2,
           percent: percent.toString(),
-          assetName: data['img_url']['image'],
+          assetName: data['image'],
+          userimage: data['user_image'],
           category: data['category'],
           organizer: data['created_by'],
           remaining: remaining.toString(),

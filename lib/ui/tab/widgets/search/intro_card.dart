@@ -114,7 +114,7 @@ class _IntroCardState extends State<IntroCard> {
                                 8.r,
                               ),
                               image: DecorationImage(
-                                  image: NetworkImage(widget.result.assetName),
+                                  image: NetworkImage(widget.result.userimage),
                                   fit: BoxFit.cover),
                             ),
                           ),

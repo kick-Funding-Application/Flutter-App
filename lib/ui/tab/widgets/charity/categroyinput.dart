@@ -73,7 +73,7 @@ class _categoryinputfieldState extends State<categoryinputfield> {
                   charityform.category = newValue;
                 });
               },
-              items: <String>['Education', 'Children', 'Health', 'Animals']
+              items: <String>['Education', 'Environment', 'Health', 'Animals']
                   .map<DropdownMenuItem<String>>((String value) {
                 return DropdownMenuItem<String>(
                   value: value,

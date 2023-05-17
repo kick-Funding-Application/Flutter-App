@@ -28,60 +28,6 @@ Future getData() async {
   return responsebody["quotes"];
 }
 
-// // Make the HTTP GET request
-//   // final response2 = await http.get(Uri.parse('http://example.com/api/urgents'));
-
-// /**FOR TEST */
-
-// //   String test = '''
-// //   [
-// //     {
-// //       "first_name": "Zahraa",
-// //       "last_name": "Ashraf",
-// //       "phone_number": "+0201222318030",
-// //       "birth_date": "2000-05-23",
-// //       "email": "zozo@gmail.com",
-// //       "country": "Egypt",
-// //       "username": "Zahraa"
-// //     }
-// //   ]
-// // ''';
-
-// //   var jsonData = json.decode(test);
-
-// //   constant.Username = jsonData[0]["username"];
-// //   constant.first_name = jsonData[0]["first_name"];
-// //   constant.last_name = jsonData[0]["last_name"];
-// //   constant.email = jsonData[0]["email"];
-// //   constant.countryuser = jsonData[0]["country"];
-// //   constant.phoneuser = jsonData[0]["phone_number"];
-// //   constant.bdateuser = jsonData[0]["birth_date"];
-
-// /**FOR TEST */
-
-//   /*remove this comments*/
-// //   var url = Uri.parse("https://1a62-102-186-239-195.eu.ngrok.io/chair/data/55");
-// //   var response = await http.get(
-// //     url,
-// //     headers: {
-// //       'content-Type': 'application/json',
-// //       "Authorization": "Bearer ${constant.token}"
-// //     },
-// //   );
-
-// //   var data = json.decode(response.body);
-// //   print(data);
-//   // constant.Username = data["username"];
-//   // constant.first_name = data["first_name"];
-//   // constant.last_name = data["last_name"];
-//   // constant.email = data["email"];
-//   // constant.countryuser = data["country"];
-//   // constant.phoneuser = data["phone_number"];
-//   // constant.bdateuser = data["birth_date"];
-// //  /*remove this comments*/
-//   return jsonData;
-// }
-
 class _ProfileContentState extends State<ProfileContent> {
   @override
   Widget build(BuildContext context) {
@@ -175,6 +121,4 @@ class _ProfileContentState extends State<ProfileContent> {
           }
         });
   }
-
-  
 }

@@ -60,6 +60,7 @@ class _UrgentCardState extends State<UrgentCard> {
                   ),
                   child: Center(
                     child: Container(
+                      // width: 180.h,
                       decoration: BoxDecoration(
                         borderRadius: BorderRadius.circular(
                           8.r,

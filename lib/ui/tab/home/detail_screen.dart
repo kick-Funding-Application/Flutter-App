@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
+import 'package:kickfunding/ui/tab/widgets/home/Ratefeedback.dart';
 import '../../../../models/urgent.dart';
 import '../../../../theme/app_color.dart';
 import '../../../routes/routes.dart';
@@ -366,6 +367,15 @@ class _DetailScreenState extends State<DetailScreen> {
   }
 
   void updateRate() async {
+    showModalBottomSheet(
+        context: context,
+        isScrollControlled: true,
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(32.r),
+        ),
+        builder: (_) => rateFeedback(
+              rate: rate,
+            ));
     /**Remove when online */
     // Map<String, dynamic> body = {
     //   "value": rate,

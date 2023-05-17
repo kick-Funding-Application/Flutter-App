@@ -181,7 +181,7 @@ class _StartCharityScreenState extends State<StartCharityScreen> {
                                 'Target',
                                 assetName: 'assets/images/dollar.svg',
                                 onchanged: (String value) {
-                                  charityform.target = value;
+                                  // charityform.target = value;
                                 },
                                 validateStatus: (value) {
                                   if (value!.isEmpty) {

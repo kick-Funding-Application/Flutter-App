@@ -87,13 +87,13 @@ class _EditContentState extends State<EditContent> {
         "last_name": constant.last_name,
         "username": constant.Username,
         "phone_number": constant.phoneuser,
-        // "user_image": constant.image,
+        "user_image": constant.urlprofile,
       };
       String jsonBody = json.encode(body);
       final encoding = Encoding.getByName('utf-8');
 
       var url = Uri.parse(
-          "https://d46b-197-54-154-137.ngrok-free.app/api/dj-rest-auth/user/");
+          "https://kickfunding-backend.herokuapp.com/api/dj-rest-auth/user/");
       var response = await http.put(url,
           headers: {
             'content-Type': 'application/json',

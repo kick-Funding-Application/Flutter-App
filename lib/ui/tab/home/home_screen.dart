@@ -25,7 +25,8 @@ Future getData() async {
 
 /**FOR TEST */
 
-  String test = '''
+  String test =
+      '''
     [
       {    "title": "Hospital project",
     "target": "500.00",
@@ -132,7 +133,7 @@ Future getData() async {
 
 /**FOR TEST */
   final response2 = await http.get(
-      Uri.parse('https://02f3-197-134-102-115.ngrok-free.app/api/projects/'));
+      Uri.parse('https://kickfunding-backend.herokuapp.com/api/projects/'));
 
   if (response2.statusCode == 200) {
     // Parse the JSON response
@@ -148,7 +149,13 @@ Future getData() async {
       String target2 = data['target_amount'].toString();
       int current_amount = data['current_amount'];
       int remaining = ((target - current_amount));
-      double percent = ((target - remaining) / target) * 100;
+      double percent;
+      if (target == 0) {
+        percent = 0;
+      } else {
+        percent = ((target - remaining) / target) * 100;
+      }
+
       DateTime end_date = DateTime.parse(data['end_date']).toLocal();
       DateTime currentDate = DateTime.now().toLocal();
       Duration remainingDuration = end_date.difference(currentDate);
@@ -158,7 +165,7 @@ Future getData() async {
         target: target2,
         percent: percent
             .toStringAsFixed(2), // Convert to string with 2 decimal places
-        assetName: data['img_url']['image'],
+        assetName: data['image'],
         category: data['category'],
         organizer: data['created_by'],
         remaining: remaining.toString(),

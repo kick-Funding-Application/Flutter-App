@@ -6,18 +6,18 @@ class charityform {
   static var address = "";
   static var title = "";
   static var tags = "";
-  static var target = "";
+  static var target = 50;
   static var deadline = "";
   static var image = "";
   static var description = "";
   static var phone = "";
-  static String specificCategory = "education";
+  static DateTime projectdate = DateTime(2023, 07, 05);
+  static String specificCategory = "Education";
   static List<String> categories = [
-    'education',
-    'health',
-    'animal',
-    'environment',
-    'other',
+    'Education',
+    'Health',
+    'Animals',
+    'Environment',
   ];
   static var selectcategory = 0;
 }

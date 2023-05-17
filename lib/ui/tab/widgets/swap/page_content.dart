@@ -5,8 +5,10 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:http/http.dart' as http;
 import 'package:kickfunding/models/donator.dart';
 import 'package:kickfunding/ui/tab/charity/start_charity_screen.dart';
+import 'package:kickfunding/ui/tab/search/search_screen.dart';
 import 'package:kickfunding/ui/tab/widgets/swap/donators.dart';
 import 'dart:convert';
+import '../../../../auth/login_form.dart';
 import '../../../../bloc/swap/swap_bloc.dart';
 import '../../../../models/donation.dart';
 //import '../../../../models/donator.dart';
@@ -51,11 +53,11 @@ Future getData() async {
   //return responsebody["quotes"];
 
 // Make the HTTP GET request
-  final response2 = await http.get(Uri.parse('http://example.com/api/urgents'));
 
 /**FOR TEST */
 
-  String test = '''
+  String test =
+      '''
     [
       {    "title": "Title of project",
     "target": "500.00",
@@ -125,91 +127,99 @@ Future getData() async {
     ]
   '''; // Example JSON data
 
-  List<dynamic> jsonData = json.decode(test);
-  myprojects.clear();
+  // List<dynamic> jsonData = json.decode(test);
+  // myprojects.clear();
 
-  for (var data in jsonData) {
-    double target = double.parse(data['target']);
-    double remaining = double.parse(data['remaining']);
-    double percent = ((target - remaining) / target) * 100;
-    DateTime end_date = DateTime.parse(data['end_date']).toLocal();
-    DateTime currentDate = DateTime.now().toLocal();
-    Duration remainingDuration = end_date.difference(currentDate);
-    int days = remainingDuration.inDays;
-    Result result = Result(
-      title: data['title'],
-      target: data['target'],
-      percent:
-          percent.toStringAsFixed(0), // Convert to string with 2 decimal places
-      assetName: data['assetName'],
-      category: data['category'],
-      organizer: data['organizer'],
-      remaining: data['remaining'],
-      rate: double.parse(data['rate'].toString()),
-      details: data['details'],
-      end_date: data['end_date'],
-      start_date: data['start_date'],
-      days: days,
-      tags: data['tags'],
-    );
+  // for (var data in jsonData) {
+  //   double target = double.parse(data['target']);
+  //   double remaining = double.parse(data['remaining']);
+  //   double percent = ((target - remaining) / target) * 100;
+  //   DateTime end_date = DateTime.parse(data['end_date']).toLocal();
+  //   DateTime currentDate = DateTime.now().toLocal();
+  //   Duration remainingDuration = end_date.difference(currentDate);
+  //   int days = remainingDuration.inDays;
+  //   Result result = Result(
+  //     userimage:
+  //         'https://th.bing.com/th/id/OIP.OF59vsDmwxPP1tw7b_8clQHaE8?pid=ImgDet&rs=1',
+  //     title: data['title'],
+  //     target: data['target'],
+  //     percent:
+  //         percent.toStringAsFixed(0), // Convert to string with 2 decimal places
+  //     assetName: data['assetName'],
+  //     category: data['category'],
+  //     organizer: data['organizer'],
+  //     remaining: data['remaining'],
+  //     rate: double.parse(data['rate'].toString()),
+  //     details: data['details'],
+  //     end_date: data['end_date'],
+  //     start_date: data['start_date'],
+  //     days: days,
+  //     tags: data['tags'],
+  //   );
 
-    myprojects.add(result);
+  //   myprojects.add(result);
 
 // Access the filtered results
-  }
 
 /**FOR TEST */
+  var url2 = Uri.parse(
+      "https://kickfunding-backend.herokuapp.com/api/dj-rest-auth/user/projects");
+  var response2 = await http.get(
+    url2,
+    headers: {
+      'content-Type': 'application/json',
+      "Authorization": " Token ${token}"
+    },
+  );
 
-  // if (response2.statusCode == 200) {
-  //   // Parse the JSON response
-  //   final jsonData = json.decode(response2.body);
+  if (response2.statusCode == 200) {
+    // Parse the JSON response
+    final jsonData = json.decode(response2.body);
+    print(jsonData);
 
-  //   // Iterate over the parsed data and append to the urgents list
-  //   for (var data in jsonData) {
-  //     double target = double.parse(data['target']);
-  //     double remaining = double.parse(data['remaining']);
-  //     double percent = ((target - remaining) / target) * 100;
-  //     DateTime end_date = DateTime.parse(data['end_date']).toLocal();
-  //     DateTime currentDate = DateTime.now().toLocal();
-  //     Duration remainingDuration = end_date.difference(currentDate);
-  //     int days = remainingDuration.inDays;
-  //     Urgent urgent = Urgent(
-  //       title: data['title'],
-  //       target: data['target'],
-  //       percent: percent
-  //           .toStringAsFixed(2), // Convert to string with 2 decimal places
-  //       assetName: data['assetName'],
-  //       category: data['category'],
-  //       organization: data['organization'],
-  //       remaining: data['remaining'],
-  //       rate: double.parse(data['rate'].toString()),
-  //       details: data['details'],
-  //       end_date: data['end_date'],
-  //       start_date: data['start_date'],
-  //       days: days,
-  //       tags: data['tags'],
-  //     );
+    // Clear the specificurgents list before starting the loop
+    myprojects.clear();
 
-  //     urgents.add(urgent);
-  //   }
+    // Iterate over the parsed data and append to the urgents list
+    for (var data in jsonData) {
+      int target = data['target_amount'];
+      String target2 = data['target_amount'].toString();
+      int current_amount = data['current_amount'];
+      int remaining = ((target - current_amount));
+      double percent;
+      if (target == 0) {
+        percent = 0;
+      } else {
+        percent = ((target - remaining) / target) * 100;
+      }
 
-  // }
+      DateTime end_date = DateTime.parse(data['end_date']).toLocal();
+      DateTime currentDate = DateTime.now().toLocal();
+      Duration remainingDuration = end_date.difference(currentDate);
+      int days = remainingDuration.inDays;
+      Result result = Result(
+        userimage:
+            'https://th.bing.com/th/id/OIP.OF59vsDmwxPP1tw7b_8clQHaE8?pid=ImgDet&rs=1',
+        title: data['title'],
+        target: target2,
+        percent: percent
+            .toStringAsFixed(0), // Convert to string with 2 decimal places
+        assetName: data['image'],
+        category: data['category'],
+        organizer: data['created_by'],
+        remaining: remaining.toString(),
+        rate: double.parse(data['rate']['avg_rate'].toString()),
+        details: data['details'],
+        end_date: data['end_date'],
+        start_date: data['start_date'],
+        days: days,
+        tags: data['tags'],
+      );
 
-  /*remove this comments*/
-//   var url = Uri.parse("https://1a62-102-186-239-195.eu.ngrok.io/chair/data/55");
-//   var response = await http.get(
-//     url,
-//     headers: {
-//       'content-Type': 'application/json',
-//       "Authorization": "Bearer ${constant.token}"
-//     },
-//   );
-
-//   var data = json.decode(response.body);
-//   print(data);
-//  // var heartint = data["pulse_rate"];
-  /*remove this comments*/
-  return responsebody["quotes"];
+      myprojects.add(result);
+    }
+  }
+  return myprojects;
 }
 
 class _CharityContentState extends State<CharityContent> {
@@ -256,7 +266,7 @@ class _CharityContentState extends State<CharityContent> {
             ),
           );
         } else {
-          return CircularProgressIndicator();
+          return Center(child: CircularProgressIndicator());
         }
       },
     );
@@ -283,7 +293,8 @@ Future getData2() async {
 
 /**FOR TEST */
 
-  String test2 = '''
+  String test2 =
+      '''
     [
       {"organization": "project",
       "desc": "description",
@@ -417,7 +428,8 @@ Future getData3() async {
 
 /**FOR TEST */
 
-  String test3 = '''
+  String test3 =
+      '''
     [
       {"name": "Zahraa",
       "phone": "+0201222318030",
