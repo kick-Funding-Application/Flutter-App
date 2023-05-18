@@ -77,37 +77,41 @@ class _EditContentState extends State<EditContent> {
   }
 
   void _submitForm() async {
-    if (_formKey.currentState!.validate()) {
-      _formKey.currentState!.save();
+    try {
+      if (_formKey.currentState!.validate()) {
+        _formKey.currentState!.save();
 
-      Map<String, dynamic> body = {
-        "country": constant.countryuser,
-        "birth_date": constant.bdateuser,
-        "first_name": constant.first_name,
-        "last_name": constant.last_name,
-        "username": constant.Username,
-        "phone_number": constant.phoneuser,
-        "user_image": constant.urlprofile,
-      };
-      String jsonBody = json.encode(body);
-      final encoding = Encoding.getByName('utf-8');
+        Map<String, dynamic> body = {
+          "country": constant.countryuser,
+          "birth_date": constant.bdateuser,
+          "first_name": constant.first_name,
+          "last_name": constant.last_name,
+          "username": constant.Username,
+          "phone_number": constant.phoneuser,
+          "user_image": constant.urlprofile,
+        };
+        String jsonBody = json.encode(body);
+        final encoding = Encoding.getByName('utf-8');
 
-      var url = Uri.parse(
-          "https://kickfunding-backend.herokuapp.com/api/dj-rest-auth/user/");
-      var response = await http.put(url,
-          headers: {
-            'content-Type': 'application/json',
-            "Authorization": " Token ${token}"
-          },
-          body: jsonBody,
-          encoding: encoding);
-      var result = response.body;
-      print(result);
+        var url = Uri.parse(
+            "https://kickfunding-backend.herokuapp.com/api/dj-rest-auth/user/");
+        var response = await http.put(url,
+            headers: {
+              'content-Type': 'application/json',
+              "Authorization": " Token ${token}"
+            },
+            body: jsonBody,
+            encoding: encoding);
+        var result = response.body;
+        print(result);
 
-      print('Profile Edited successfully');
-      saveprofile();
+        print('Profile Edited successfully');
+        saveprofile();
 
-      /**removecomment when online */
+        /**removecomment when online */
+      }
+    } catch (e) {
+      print(e.toString());
     }
   }
 

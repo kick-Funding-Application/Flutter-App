@@ -5,27 +5,37 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:kickfunding/ui/tab/home/detail_screen.dart';
 import 'package:kickfunding/ui/tab/widgets/home/peoplecomment.dart';
 import 'package:http/http.dart' as http;
+import 'package:kickfunding/ui/tab/widgets/profile/constants.dart';
+import '../../../../auth/login_form.dart';
 import '../../../../routes/routes.dart';
 import '../../../../theme/app_color.dart';
 import '../../../../models/comment.dart';
 import 'dart:convert';
 
 class rateFeedback extends StatefulWidget {
-  const rateFeedback({required this.rate});
+  const rateFeedback({required this.rate, required this.projectID});
   final double rate;
+  final String projectID;
 
   @override
   State<rateFeedback> createState() => _rateFeedbackState();
 }
 
-final List<Comment> comments = [];
-Future getData2() async {
-  var url = Uri.parse("https://dummyjson.com/quotes");
-  var response2 = await http.get(url);
-  var responsebody = jsonDecode(response2.body);
-  print(responsebody["quotes"][1]["id"]);
+String feedbackcomment = '';
 
-  String test = '''
+bool nocomments = false;
+final List<Comment> comments = [];
+
+TextEditingController feedback = TextEditingController();
+
+class _rateFeedbackState extends State<rateFeedback> {
+  Future getData2() async {
+    var url = Uri.parse("https://dummyjson.com/quotes");
+    var response2 = await http.get(url);
+    var responsebody = jsonDecode(response2.body);
+    print(responsebody["quotes"][1]["id"]);
+
+    String test = '''
     [
       {
         "comment": "i like this app",
@@ -54,34 +64,63 @@ Future getData2() async {
     ]
     '''; // Example JSON data
 
-  List<dynamic> jsonData = json.decode(test);
-  comments.clear();
+    //     List<dynamic> Data = json.decode(test);
+    // comments.clear();
+    //   for (var data in jsonData) {
+    //   DateTime start_date = DateTime.parse(data['date']).toLocal();
+    //   DateTime currentDate = DateTime.now().toLocal();
+    //   Duration remainingDuration = currentDate.difference(start_date);
+    //   int days = remainingDuration.inDays;
+    //   Comment comment = Comment(
+    //     username: data['username'],
+    //     userimage: data['userimage'],
+    //     rate: double.parse(data['rate'].toString()),
+    //     comment: data['comment'],
+    //     date: data['date'],
+    //     days: days,
+    //   );
 
-  for (var data in jsonData) {
-    DateTime start_date = DateTime.parse(data['date']).toLocal();
-    DateTime currentDate = DateTime.now().toLocal();
-    Duration remainingDuration = currentDate.difference(start_date);
-    int days = remainingDuration.inDays;
-    Comment comment = Comment(
-      submitted: true,
-      username: data['username'],
-      userimage: data['userimage'],
-      rate: double.parse(data['rate'].toString()),
-      comment: data['comment'],
-      date: data['date'],
-      days: days,
-    );
+    //   comments.add(comment);
+    // }
+    try {
+      final response3 = await http.get(Uri.parse(
+          'https://kickfunding-backend.herokuapp.com/api/projects/${constant.ID}/feedback/'));
 
-    comments.add(comment);
+      var jsonData = json.decode(response3.body);
+      if (response3.statusCode == 404) {
+        setState(() {
+          nocomments = true;
+        });
+      } else {
+        print(jsonData);
+        comments.clear();
+
+        for (var data in jsonData) {
+          DateTime start_date = DateTime.parse(data['created_dt']).toLocal();
+          DateTime currentDate = DateTime.now().toLocal();
+          Duration remainingDuration = currentDate.difference(start_date);
+          int days = remainingDuration.inDays;
+          Comment comment = Comment(
+            username: data['user'],
+            userimage: data['user_image'],
+            rate: double.parse(data['rate'].toString()),
+            comment: data['content'],
+            date: data['created_dt'],
+            days: days,
+          );
+
+          comments.add(comment);
+        }
+      }
+    } catch (e) {
+      print(e.toString());
+    }
+
+    return responsebody["quotes"];
   }
 
-  return responsebody["quotes"];
-}
-
-TextEditingController feedback = TextEditingController();
-
-class _rateFeedbackState extends State<rateFeedback> {
   bool showTextField = true;
+
   @override
   Widget build(BuildContext context) {
     return FutureBuilder(
@@ -134,9 +173,9 @@ class _rateFeedbackState extends State<rateFeedback> {
                             ),
                             onRatingUpdate: (rating) {
                               print(rating);
-                              setState(() {
-                                rate = rating;
-                              });
+                              // setState(() {
+                              //   rate = rating;
+                              // });
                             },
                           ),
                           SizedBox(
@@ -158,7 +197,10 @@ class _rateFeedbackState extends State<rateFeedback> {
                                   return null;
                                 },
                                 onChanged: (String value) {
-                                  setState(() {});
+                                  // setState(() {
+                                  //   feedbackcomment = value;
+                                  //   print(feedbackcomment);
+                                  // });
                                 },
                                 controller: feedback,
                                 minLines: null,
@@ -209,6 +251,7 @@ class _rateFeedbackState extends State<rateFeedback> {
                               setState(() {
                                 showTextField = false;
                               });
+                              submitComment();
                             },
                             child: Text(
                               'Submit',
@@ -242,18 +285,27 @@ class _rateFeedbackState extends State<rateFeedback> {
                         Text('Feedbacks on this Project'),
                       ],
                     ),
-                    Column(
-                      children: [
-                        ListView.builder(
-                            scrollDirection: Axis.vertical,
-                            physics: ScrollPhysics(),
-                            shrinkWrap: true,
-                            itemCount: comments.length,
-                            itemBuilder: (context, i) {
-                              return PeopleComment(comments[i]);
-                            }),
-                      ],
-                    ),
+                    if (nocomments)
+                      Column(
+                        crossAxisAlignment: CrossAxisAlignment.center,
+                        children: [
+                          Text(
+                              '      No Comments Yet, Be the first to submit :)')
+                        ],
+                      ),
+                    if (!nocomments)
+                      Column(
+                        children: [
+                          ListView.builder(
+                              scrollDirection: Axis.vertical,
+                              physics: ScrollPhysics(),
+                              shrinkWrap: true,
+                              itemCount: comments.length,
+                              itemBuilder: (context, i) {
+                                return PeopleComment(comments[i]);
+                              }),
+                        ],
+                      ),
                   ],
                 ),
               ),
@@ -264,5 +316,54 @@ class _rateFeedbackState extends State<rateFeedback> {
         }
       },
     );
+  }
+
+  Future submitComment() async {
+    /**removecomment when online */
+    try {
+      Map<String, dynamic> body = {
+        "rate": rate,
+        "content": feedback.text,
+      };
+      String jsonBody = json.encode(body);
+      final encoding = Encoding.getByName('utf-8');
+
+      var url = Uri.parse(
+          "https://kickfunding-backend.herokuapp.com/api/projects/${constant.ID}/feedback/");
+      var response = await http.post(url,
+          headers: {
+            'content-Type': 'application/json',
+            "Authorization": "Token ${token}"
+          },
+          body: jsonBody,
+          encoding: encoding);
+      var result = response.body;
+      print(result);
+
+      if (response.statusCode == 201) {
+        print("Registeration succeeded");
+        showDialog(
+            context: context,
+            builder: (_) => const AlertDialog(
+                  content: Text("Comment Posted!"),
+                ));
+        Navigator.of(context).pushReplacementNamed(
+          RouteGenerator.main,
+        );
+
+        print('Registration successful');
+      } else {
+        print("Registeration Failed");
+        showDialog(
+            context: context,
+            builder: (_) => const AlertDialog(
+                  content: Text("Failed to post "),
+                ));
+      }
+    } catch (e) {
+      print(e.toString());
+    }
+
+    /**removecomment when online */
   }
 }

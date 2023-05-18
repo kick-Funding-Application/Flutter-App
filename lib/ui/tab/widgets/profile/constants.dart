@@ -15,6 +15,7 @@ class constant {
   static var countryuser = 'g';
   static String phoneuser = 'g';
   static String bdateuser = 'g';
+  static String ID = '1';
   static var category = '';
   static var totalpayment = '0';
   static var photofile = 'Upload Picture';

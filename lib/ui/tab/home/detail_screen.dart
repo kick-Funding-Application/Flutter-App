@@ -3,6 +3,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:kickfunding/ui/tab/widgets/home/Ratefeedback.dart';
+import 'package:kickfunding/ui/tab/widgets/profile/constants.dart';
 import '../../../../models/urgent.dart';
 import '../../../../theme/app_color.dart';
 import '../../../routes/routes.dart';
@@ -20,6 +21,8 @@ class DetailScreen extends StatefulWidget {
   State<DetailScreen> createState() => _DetailScreenState();
 }
 
+int projectID = 0;
+String ID = '';
 var rate;
 
 class _DetailScreenState extends State<DetailScreen> {
@@ -276,6 +279,7 @@ class _DetailScreenState extends State<DetailScreen> {
                                           updateRate();
                                         },
                                       ),
+                                      Text('${widget.urgent.rate} avg'),
                                     ],
                                   ),
                                 ),
@@ -367,6 +371,12 @@ class _DetailScreenState extends State<DetailScreen> {
   }
 
   void updateRate() async {
+    setState(() {
+      projectID = widget.urgent.id;
+      constant.ID = projectID.toString();
+      print(constant.ID);
+    });
+
     showModalBottomSheet(
         context: context,
         isScrollControlled: true,
@@ -374,6 +384,7 @@ class _DetailScreenState extends State<DetailScreen> {
           borderRadius: BorderRadius.circular(32.r),
         ),
         builder: (_) => rateFeedback(
+              projectID: constant.ID,
               rate: rate,
             ));
     /**Remove when online */

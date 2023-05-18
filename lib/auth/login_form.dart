@@ -185,82 +185,89 @@ class _LoginFormState extends State<LoginForm> {
   }
 
   void performLogin(BuildContext context) async {
-    Map<String, dynamic> body = {
-      "email": email,
-      "password": password,
-    };
-    String jsonBody = json.encode(body);
-    final encoding = Encoding.getByName('utf-8');
-    if (email == "zozo" || password == "zozo") {
-      reload(context);
-      //print('Fields have not to be empty');
-    } else {
-      var url = Uri.parse(
-          "https://kickfunding-backend.herokuapp.com/api/dj-rest-auth/login/");
-
-      var response = await http.post(url,
-          headers: {
-            'content-Type': 'application/json',
-          },
-          body: jsonBody,
-          encoding: encoding);
-
-      var data = json.decode(response.body);
-
-      print(data);
-      if (response.statusCode == 200) {
-        check = true;
-        token = data["key"];
-        print(token);
-        print("Login succeeded");
-        getinfo();
+    try {
+      Map<String, dynamic> body = {
+        "email": email,
+        "password": password,
+      };
+      String jsonBody = json.encode(body);
+      final encoding = Encoding.getByName('utf-8');
+      if (email == "zozo" || password == "zozo") {
         reload(context);
+        //print('Fields have not to be empty');
       } else {
-        Center(child: CircularProgressIndicator());
-      }
-      /* UNCOMMENT WHEN SERVER ONLINE */
-    }
+        var url = Uri.parse(
+            "https://kickfunding-backend.herokuapp.com/api/dj-rest-auth/login/");
 
+        var response = await http.post(url,
+            headers: {
+              'content-Type': 'application/json',
+            },
+            body: jsonBody,
+            encoding: encoding);
+
+        var data = json.decode(response.body);
+
+        print(data);
+        if (response.statusCode == 200) {
+          check = true;
+          token = data["key"];
+          print(token);
+          print("Login succeeded");
+          getinfo();
+          reload(context);
+        } else {
+          Center(child: CircularProgressIndicator());
+        }
+        /* UNCOMMENT WHEN SERVER ONLINE */
+      }
+    } catch (e) {
+      print(e.toString());
+    }
     /* UNCOMMENT WHEN SERVER ONLINE */
   }
 
   void getinfo() async {
-    var url2 = Uri.parse(
-        "https://kickfunding-backend.herokuapp.com/api/dj-rest-auth/user/");
-    var response2 = await http.get(
-      url2,
-      headers: {
-        'content-Type': 'application/json',
-        "Authorization": " Token ${token}"
-      },
-    );
+    try {
+      var url2 = Uri.parse(
+          "https://kickfunding-backend.herokuapp.com/api/dj-rest-auth/user/");
+      var response2 = await http.get(
+        url2,
+        headers: {
+          'content-Type': 'application/json',
+          "Authorization": " Token ${token}"
+        },
+      );
 
-    var data2 = json.decode(response2.body);
-    print(data2);
-    if (response2.statusCode == 200) {
-      String userImage = data2["user_image"].toString();
-      String defaultImage =
-          "https://th.bing.com/th/id/OIP.OF59vsDmwxPP1tw7b_8clQHaE8?pid=ImgDet&rs=1";
+      var data2 = json.decode(response2.body);
+      print(data2);
+      if (response2.statusCode == 200) {
+        String userImage = data2["user_image"].toString();
+        String defaultImage =
+            "https://th.bing.com/th/id/OIP.OF59vsDmwxPP1tw7b_8clQHaE8?pid=ImgDet&rs=1";
 
-      if (userImage == "null") {
+        if (userImage == "null") {
+          setState(() {
+            constant.urlprofile = defaultImage;
+          });
+        } else {
+          constant.urlprofile = userImage;
+        }
+
         setState(() {
-          constant.urlprofile = defaultImage;
+          constant.Username = data2["username"].toString();
+          constant.bdateuser = data2["birth_date"].toString();
+          constant.countryuser = data2["country"].toString();
+          constant.first_name = data2["first_name"].toString();
+          constant.last_name = data2["last_name"].toString();
+          constant.phoneuser = data2["phone_number"].toString();
         });
+        print(constant.first_name);
       } else {
-        constant.urlprofile = userImage;
+        print('failed to load data');
       }
-
-      setState(() {
-        constant.Username = data2["username"].toString();
-        constant.bdateuser = data2["birth_date"].toString();
-        constant.countryuser = data2["country"].toString();
-        constant.first_name = data2["first_name"].toString();
-        constant.last_name = data2["last_name"].toString();
-        constant.phoneuser = data2["phone_number"].toString();
-      });
-      print(constant.first_name);
-    } else {
-      print('failed to load data');
+    } catch (e) {
+      print(e.toString());
     }
   }
 

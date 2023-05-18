@@ -348,49 +348,53 @@ class _StartCharityScreenState extends State<StartCharityScreen> {
   }
 
   Future uploadproject(BuildContext cont) async {
-    /**removecomment when online */
-    Map<String, dynamic> body = {
-      "title": "${charityform.title}",
-      "target_amount": charityform.target,
-      "details": "${charityform.description}",
-      "end_date": "${charityform.deadline}",
-      "tags": "${charityform.tags}",
-      "category": "${charityform.category}",
-      "image": "${constant.urlprojectimage}",
-    };
-    String jsonBody = json.encode(body);
-    final encoding = Encoding.getByName('utf-8');
+    try {
+      /**removecomment when online */
+      Map<String, dynamic> body = {
+        "title": "${charityform.title}",
+        "target_amount": charityform.target,
+        "details": "${charityform.description}",
+        "end_date": "${charityform.deadline}",
+        "tags": "${charityform.tags}",
+        "category": "${charityform.category}",
+        "image": "${constant.urlprojectimage}",
+      };
+      String jsonBody = json.encode(body);
+      final encoding = Encoding.getByName('utf-8');
 
-    var url =
-        Uri.parse("https://kickfunding-backend.herokuapp.com/api/projects/");
-    var response = await http.post(url,
-        headers: {
-          'content-Type': 'application/json',
-          "Authorization": "Token ${token}"
-        },
-        body: jsonBody,
-        encoding: encoding);
-    var result = response.body;
-    print(result);
+      var url =
+          Uri.parse("https://kickfunding-backend.herokuapp.com/api/projects/");
+      var response = await http.post(url,
+          headers: {
+            'content-Type': 'application/json',
+            "Authorization": "Token ${token}"
+          },
+          body: jsonBody,
+          encoding: encoding);
+      var result = response.body;
+      print(result);
 
-    if (response.statusCode == 201) {
-      print("Registeration succeeded");
-      // showDialog(
-      //     context: context,
-      //     builder: (_) => const AlertDialog(
-      //           content: Text("Project Uploaded Successfully"),
-      //         ));
-      showSheet();
-      print('Registration successful');
-    } else {
-      print("Registeration Failed");
-      showDialog(
-          context: context,
-          builder: (_) => const AlertDialog(
-                content: Text("Fill in the Fields!!! "),
-              ));
+      if (response.statusCode == 201) {
+        print("Registeration succeeded");
+        // showDialog(
+        //     context: context,
+        //     builder: (_) => const AlertDialog(
+        //           content: Text("Project Uploaded Successfully"),
+        //         ));
+        showSheet();
+        print('Registration successful');
+      } else {
+        print("Registeration Failed");
+        showDialog(
+            context: context,
+            builder: (_) => const AlertDialog(
+                  content: Text("Fill in the Fields!!! "),
+                ));
+      }
+
+      /**removecomment when online */
+    } catch (e) {
+      print(e.toString());
     }
-
-    /**removecomment when online */
   }
 }

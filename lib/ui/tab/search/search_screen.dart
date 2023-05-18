@@ -160,54 +160,57 @@ class _SearchScreenState extends State<SearchScreen> {
 //         specificresults.add(result);
 //       }
 //     }
-/**FOR TEST */
-    final response2 = await http.get(
-        Uri.parse('https://kickfunding-backend.herokuapp.com/api/projects/'));
+    try {
+      /**FOR TEST */
+      final response2 = await http.get(
+          Uri.parse('https://kickfunding-backend.herokuapp.com/api/projects/'));
 
-    if (response2.statusCode == 200) {
-      // Parse the JSON response
-      final jsonData = json.decode(response2.body);
-      print(jsonData);
+      if (response2.statusCode == 200) {
+        // Parse the JSON response
+        final jsonData = json.decode(response2.body);
+        print(jsonData);
 
-      // Clear the specificurgents list before starting the loop
-      specificresults.clear();
+        // Clear the specificurgents list before starting the loop
+        specificresults.clear();
 
-      // Iterate over the parsed data and append to the urgents list
-      for (var data in jsonData) {
-        int target = data['target_amount'];
-        String target2 = data['target_amount'].toString();
-        int current_amount = data['current_amount'];
-        int remaining = ((target - current_amount));
-        double percent = ((target - remaining) / target) * 100;
-        DateTime end_date = DateTime.parse(data['end_date']).toLocal();
-        DateTime currentDate = DateTime.now().toLocal();
-        Duration remainingDuration = end_date.difference(currentDate);
-        int days = remainingDuration.inDays;
-        Result urgent = Result(
-          title: data['title'],
-          target: target2,
-          percent: percent
-              .toStringAsFixed(2), // Convert to string with 2 decimal places
-          assetName: data['image'],
-          userimage: data['user_image'],
-          category: data['category'],
-          organizer: data['created_by'],
-          remaining: remaining.toString(),
-          rate: double.parse(data['rate']['avg_rate'].toString()),
-          details: data['details'],
-          end_date: data['end_date'],
-          start_date: data['start_date'],
-          days: days,
-          tags: data['tags'],
-        );
+        // Iterate over the parsed data and append to the urgents list
+        for (var data in jsonData) {
+          int target = data['target_amount'];
+          String target2 = data['target_amount'].toString();
+          int current_amount = data['current_amount'];
+          int remaining = ((target - current_amount));
+          double percent = ((target - remaining) / target) * 100;
+          DateTime end_date = DateTime.parse(data['end_date']).toLocal();
+          DateTime currentDate = DateTime.now().toLocal();
+          Duration remainingDuration = end_date.difference(currentDate);
+          int days = remainingDuration.inDays;
+          Result urgent = Result(
+            title: data['title'],
+            target: target2,
+            percent: percent
+                .toStringAsFixed(2), // Convert to string with 2 decimal places
+            assetName: data['image'],
+            userimage: data['user_image'],
+            category: data['category'],
+            organizer: data['created_by'],
+            remaining: remaining.toString(),
+            rate: double.parse(data['rate']['avg_rate'].toString()),
+            details: data['details'],
+            end_date: data['end_date'],
+            start_date: data['start_date'],
+            days: days,
+            tags: data['tags'],
+          );
 
-        if (urgent.category == charityform.specificCategory) {
-          results.add(urgent);
-          specificresults.add(urgent);
+          if (urgent.category == charityform.specificCategory) {
+            results.add(urgent);
+            specificresults.add(urgent);
+          }
         }
       }
+    } catch (e) {
+      print(e.toString());
     }
-
     return specificresults;
   }
 
@@ -442,49 +445,52 @@ class _SearchScreenState extends State<SearchScreen> {
 //         specificresults.add(result2);
 //       }
 //     }
-
+    try {
 /**FOR TEST */
-    final response3 = await http.get(Uri.parse(
-        'https://kickfunding-backend.herokuapp.com/api/projects/?search=${controller.text}'));
+      final response3 = await http.get(Uri.parse(
+          'https://kickfunding-backend.herokuapp.com/api/projects/?search=${controller.text}'));
 
-    if (response3.statusCode == 200) {
-      // Parse the JSON response
-      final jsonData = json.decode(response3.body);
-      print(jsonData);
+      if (response3.statusCode == 200) {
+        // Parse the JSON response
+        final jsonData = json.decode(response3.body);
+        print(jsonData);
 
-      // Clear the specificurgents list before starting the loop
-      specificresults2.clear();
+        // Clear the specificurgents list before starting the loop
+        specificresults2.clear();
 
-      // Iterate over the parsed data and append to the urgents list
-      for (var data in jsonData) {
-        int target = data['target_amount'];
-        String target2 = data['target_amount'].toString();
-        int current_amount = data['current_amount'];
-        int remaining = ((target - current_amount));
-        int percent = ((target - remaining) * 100 ~/ target);
-        DateTime end_date = DateTime.parse(data['end_date']).toLocal();
-        DateTime currentDate = DateTime.now().toLocal();
-        Duration remainingDuration = end_date.difference(currentDate);
-        int days = remainingDuration.inDays;
-        Result result2 = Result(
-          title: data['title'],
-          target: target2,
-          percent: percent.toString(),
-          assetName: data['image'],
-          userimage: data['user_image'],
-          category: data['category'],
-          organizer: data['created_by'],
-          remaining: remaining.toString(),
-          rate: double.parse(data['rate']['avg_rate'].toString()),
-          details: data['details'],
-          end_date: data['end_date'],
-          start_date: data['start_date'],
-          days: days,
-          tags: data['tags'],
-        );
+        // Iterate over the parsed data and append to the urgents list
+        for (var data in jsonData) {
+          int target = data['target_amount'];
+          String target2 = data['target_amount'].toString();
+          int current_amount = data['current_amount'];
+          int remaining = ((target - current_amount));
+          int percent = ((target - remaining) * 100 ~/ target);
+          DateTime end_date = DateTime.parse(data['end_date']).toLocal();
+          DateTime currentDate = DateTime.now().toLocal();
+          Duration remainingDuration = end_date.difference(currentDate);
+          int days = remainingDuration.inDays;
+          Result result2 = Result(
+            title: data['title'],
+            target: target2,
+            percent: percent.toString(),
+            assetName: data['image'],
+            userimage: data['user_image'],
+            category: data['category'],
+            organizer: data['created_by'],
+            remaining: remaining.toString(),
+            rate: double.parse(data['rate']['avg_rate'].toString()),
+            details: data['details'],
+            end_date: data['end_date'],
+            start_date: data['start_date'],
+            days: days,
+            tags: data['tags'],
+          );
 
-        specificresults2.add(result2);
+          specificresults2.add(result2);
+        }
       }
+    } catch (e) {
+      print(e.toString());
     }
 
     return specificresults2;

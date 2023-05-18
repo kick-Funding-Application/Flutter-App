@@ -160,64 +160,67 @@ Future getData() async {
   //   myprojects.add(result);
 
 // Access the filtered results
-
+  try {
 /**FOR TEST */
-  var url2 = Uri.parse(
-      "https://kickfunding-backend.herokuapp.com/api/dj-rest-auth/user/projects");
-  var response2 = await http.get(
-    url2,
-    headers: {
-      'content-Type': 'application/json',
-      "Authorization": " Token ${token}"
-    },
-  );
+    var url2 = Uri.parse(
+        "https://kickfunding-backend.herokuapp.com/api/dj-rest-auth/user/projects");
+    var response2 = await http.get(
+      url2,
+      headers: {
+        'content-Type': 'application/json',
+        "Authorization": " Token ${token}"
+      },
+    );
 
-  if (response2.statusCode == 200) {
-    // Parse the JSON response
-    final jsonData = json.decode(response2.body);
-    print(jsonData);
+    if (response2.statusCode == 200) {
+      // Parse the JSON response
+      final jsonData = json.decode(response2.body);
+      print(jsonData);
 
-    // Clear the specificurgents list before starting the loop
-    myprojects.clear();
+      // Clear the specificurgents list before starting the loop
+      myprojects.clear();
 
-    // Iterate over the parsed data and append to the urgents list
-    for (var data in jsonData) {
-      int target = data['target_amount'];
-      String target2 = data['target_amount'].toString();
-      int current_amount = data['current_amount'];
-      int remaining = ((target - current_amount));
-      double percent;
-      if (target == 0) {
-        percent = 0;
-      } else {
-        percent = ((target - remaining) / target) * 100;
+      // Iterate over the parsed data and append to the urgents list
+      for (var data in jsonData) {
+        int target = data['target_amount'];
+        String target2 = data['target_amount'].toString();
+        int current_amount = data['current_amount'];
+        int remaining = ((target - current_amount));
+        double percent;
+        if (target == 0) {
+          percent = 0;
+        } else {
+          percent = ((target - remaining) / target) * 100;
+        }
+
+        DateTime end_date = DateTime.parse(data['end_date']).toLocal();
+        DateTime currentDate = DateTime.now().toLocal();
+        Duration remainingDuration = end_date.difference(currentDate);
+        int days = remainingDuration.inDays;
+        Result result = Result(
+          userimage:
+              'https://th.bing.com/th/id/OIP.OF59vsDmwxPP1tw7b_8clQHaE8?pid=ImgDet&rs=1',
+          title: data['title'],
+          target: target2,
+          percent: percent
+              .toStringAsFixed(0), // Convert to string with 2 decimal places
+          assetName: data['image'],
+          category: data['category'],
+          organizer: data['created_by'],
+          remaining: remaining.toString(),
+          rate: double.parse(data['rate']['avg_rate'].toString()),
+          details: data['details'],
+          end_date: data['end_date'],
+          start_date: data['start_date'],
+          days: days,
+          tags: data['tags'],
+        );
+
+        myprojects.add(result);
       }
-
-      DateTime end_date = DateTime.parse(data['end_date']).toLocal();
-      DateTime currentDate = DateTime.now().toLocal();
-      Duration remainingDuration = end_date.difference(currentDate);
-      int days = remainingDuration.inDays;
-      Result result = Result(
-        userimage:
-            'https://th.bing.com/th/id/OIP.OF59vsDmwxPP1tw7b_8clQHaE8?pid=ImgDet&rs=1',
-        title: data['title'],
-        target: target2,
-        percent: percent
-            .toStringAsFixed(0), // Convert to string with 2 decimal places
-        assetName: data['image'],
-        category: data['category'],
-        organizer: data['created_by'],
-        remaining: remaining.toString(),
-        rate: double.parse(data['rate']['avg_rate'].toString()),
-        details: data['details'],
-        end_date: data['end_date'],
-        start_date: data['start_date'],
-        days: days,
-        tags: data['tags'],
-      );
-
-      myprojects.add(result);
     }
+  } catch (e) {
+    print(e.toString());
   }
   return myprojects;
 }

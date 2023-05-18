@@ -5,7 +5,7 @@ class Comment {
   final String date;
   final int days;
   final double rate;
-  final bool submitted;
+
 
   Comment({
     required this.comment,
@@ -14,6 +14,5 @@ class Comment {
     required this.days,
     required this.rate,
     required this.username,
-    required this.submitted,
   });
 }

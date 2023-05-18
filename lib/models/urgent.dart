@@ -1,5 +1,6 @@
 class Urgent {
   final String title;
+  final int id;
   final String target;
   final String percent;
   final String assetName;
@@ -13,7 +14,10 @@ class Urgent {
   final int days;
   final double rate;
 
-  Urgent({
+  Urgent(
+    
+    {
+      required this.id,
     required this.title,
     required this.target,
     required this.percent,
