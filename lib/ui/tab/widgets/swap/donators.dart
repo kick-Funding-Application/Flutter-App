@@ -33,12 +33,6 @@ class _DonatorCardState extends State<DonatorCard> {
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      Text(
-                        '${widget._donator.date}',
-                        style: TextStyle(
-                          color: AppColor.kTextColor1,
-                        ),
-                      ),
                       SizedBox(
                         height: 16.h,
                       ),

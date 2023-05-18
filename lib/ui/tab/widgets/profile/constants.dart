@@ -28,5 +28,5 @@ class constant {
       "https://firebasestorage.googleapis.com/v0/b/kickfunding-a2c6e.appspot.com/o/kickfunding%20white%20bg.jpg?alt=media&token=44e1a743-de84-40bd-a69b-ddab8f8bd138";
   static String? urlprofileimage;
   static String urlprojectimage =
-      "https://th.bing.com/th/id/R.f08d198b86bb5332dcbf49e412cb5718?rik=EUhO58yOw%2bpV7g&pid=ImgRaw&r=0";
+      "https://github.com/Zahraa5Ashraf/flutter/blob/main/new%20logo%20finalllllllyyyy.jpg?raw=true";
 }

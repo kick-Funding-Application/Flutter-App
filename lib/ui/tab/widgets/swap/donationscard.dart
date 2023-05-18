@@ -51,6 +51,8 @@ class _donationCardState extends State<donationCard> {
                         style: Theme.of(context).textTheme.bodyText1!.copyWith(
                               color: AppColor.kTextColor1,
                             ),
+                        maxLines: 1,
+                        overflow: TextOverflow.ellipsis,
                       ),
                     ],
                   ),

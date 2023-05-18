@@ -1,7 +1,7 @@
 class Donator {
   final String name;
   final String phone;
-  final String price;
+  final double price;
   final String date;
 
   Donator({
