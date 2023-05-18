@@ -25,8 +25,7 @@ Future getData() async {
 
 /**FOR TEST */
 
-  String test =
-      '''
+  String test = '''
     [
       {    "title": "Hospital project",
     "target": "500.00",

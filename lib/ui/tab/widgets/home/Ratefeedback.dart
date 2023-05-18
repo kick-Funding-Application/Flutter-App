@@ -13,9 +13,8 @@ import '../../../../models/comment.dart';
 import 'dart:convert';
 
 class rateFeedback extends StatefulWidget {
-  const rateFeedback({required this.rate, required this.projectID});
-  final double rate;
-  final String projectID;
+  const rateFeedback(this.comment);
+  final Comment comment;
 
   @override
   State<rateFeedback> createState() => _rateFeedbackState();
@@ -26,101 +25,100 @@ String feedbackcomment = '';
 bool nocomments = false;
 final List<Comment> comments = [];
 
-TextEditingController feedback = TextEditingController();
-
 class _rateFeedbackState extends State<rateFeedback> {
+  bool showTextField = true;
   Future getData2() async {
     var url = Uri.parse("https://dummyjson.com/quotes");
     var response2 = await http.get(url);
     var responsebody = jsonDecode(response2.body);
     print(responsebody["quotes"][1]["id"]);
+    return responsebody["quotes"][1]["id"];
 
-    String test = '''
-    [
-      {
-        "comment": "i like this app",
-        "userimage": "https://citywildlife.org/wp-content/uploads/DSC_0468.jpg",
-        "rate": "5.0",
-        "days": "3",
-        "date": "2023-05-13",
-        "username": "Zahraa"
-      },
-      {
-        "comment": "this is amazing",
-        "userimage": "https://www.hindustantimes.com/ht-img/img/2023/02/15/1600x900/Death_Note_is_usually_the_first_anime__1676437361142_1676437361490_1676437361490.jpg",
-        "rate": "4.0",
-        "days": "7",
-        "date": "2023-05-13",
-        "username": "Ahmed"
-      },
-      {
-        "comment": "I Rate this 10/10",
-        "userimage": "https://w0.peakpx.com/wallpaper/981/593/HD-wallpaper-hacker-dark-mask-thumbnail.jpg",
-        "rate": "5.0",
-        "days": "1",
-        "date": "2023-05-13",
-        "username": "Badr"
-      }
-    ]
-    '''; // Example JSON data
+    // String test = '''
+    // [
+    //   {
+    //     "comment": "i like this app",
+    //     "userimage": "https://citywildlife.org/wp-content/uploads/DSC_0468.jpg",
+    //     "rate": "5.0",
+    //     "days": "3",
+    //     "date": "2023-05-13",
+    //     "username": "Zahraa"
+    //   },
+    //   {
+    //     "comment": "this is amazing",
+    //     "userimage": "https://www.hindustantimes.com/ht-img/img/2023/02/15/1600x900/Death_Note_is_usually_the_first_anime__1676437361142_1676437361490_1676437361490.jpg",
+    //     "rate": "4.0",
+    //     "days": "7",
+    //     "date": "2023-05-13",
+    //     "username": "Ahmed"
+    //   },
+    //   {
+    //     "comment": "I Rate this 10/10",
+    //     "userimage": "https://w0.peakpx.com/wallpaper/981/593/HD-wallpaper-hacker-dark-mask-thumbnail.jpg",
+    //     "rate": "5.0",
+    //     "days": "1",
+    //     "date": "2023-05-13",
+    //     "username": "Badr"
+    //   }
+    // ]
+    // '''; // Example JSON data
 
-    //     List<dynamic> Data = json.decode(test);
-    // comments.clear();
-    //   for (var data in jsonData) {
-    //   DateTime start_date = DateTime.parse(data['date']).toLocal();
-    //   DateTime currentDate = DateTime.now().toLocal();
-    //   Duration remainingDuration = currentDate.difference(start_date);
-    //   int days = remainingDuration.inDays;
-    //   Comment comment = Comment(
-    //     username: data['username'],
-    //     userimage: data['userimage'],
-    //     rate: double.parse(data['rate'].toString()),
-    //     comment: data['comment'],
-    //     date: data['date'],
-    //     days: days,
-    //   );
+    // //     List<dynamic> Data = json.decode(test);
+    // // comments.clear();
+    // //   for (var data in jsonData) {
+    // //   DateTime start_date = DateTime.parse(data['date']).toLocal();
+    // //   DateTime currentDate = DateTime.now().toLocal();
+    // //   Duration remainingDuration = currentDate.difference(start_date);
+    // //   int days = remainingDuration.inDays;
+    // //   Comment comment = Comment(
+    // //     username: data['username'],
+    // //     userimage: data['userimage'],
+    // //     rate: double.parse(data['rate'].toString()),
+    // //     comment: data['comment'],
+    // //     date: data['date'],
+    // //     days: days,
+    // //   );
 
-    //   comments.add(comment);
+    // //   comments.add(comment);
+    // // }
+    // try {
+    //   final response3 = await http.get(Uri.parse(
+    //       'https://kickfunding-backend.herokuapp.com/api/projects/${constant.ID}/feedback/'));
+
+    //   var jsonData = json.decode(response3.body);
+    //   if (response3.statusCode == 404) {
+    //     setState(() {
+    //       nocomments = true;
+    //     });
+    //   } else {
+    //     print(jsonData);
+    //     comments.clear();
+
+    //     for (var data in jsonData) {
+    //       DateTime start_date = DateTime.parse(data['created_dt']).toLocal();
+    //       DateTime currentDate = DateTime.now().toLocal();
+    //       Duration remainingDuration = currentDate.difference(start_date);
+    //       int days = remainingDuration.inDays;
+    //       Comment comment = Comment(
+    //         username: data['user'],
+    //         userimage: data['user_image'],
+    //         rate: double.parse(data['rate'].toString()),
+    //         comment: data['content'],
+    //         date: data['created_dt'],
+    //         days: days,
+    //       );
+
+    //       comments.add(comment);
+    //     }
+    //   }
+    // } catch (e) {
+    //   print(e.toString());
     // }
-    try {
-      final response3 = await http.get(Uri.parse(
-          'https://kickfunding-backend.herokuapp.com/api/projects/${constant.ID}/feedback/'));
 
-      var jsonData = json.decode(response3.body);
-      if (response3.statusCode == 404) {
-        setState(() {
-          nocomments = true;
-        });
-      } else {
-        print(jsonData);
-        comments.clear();
-
-        for (var data in jsonData) {
-          DateTime start_date = DateTime.parse(data['created_dt']).toLocal();
-          DateTime currentDate = DateTime.now().toLocal();
-          Duration remainingDuration = currentDate.difference(start_date);
-          int days = remainingDuration.inDays;
-          Comment comment = Comment(
-            username: data['user'],
-            userimage: data['user_image'],
-            rate: double.parse(data['rate'].toString()),
-            comment: data['content'],
-            date: data['created_dt'],
-            days: days,
-          );
-
-          comments.add(comment);
-        }
-      }
-    } catch (e) {
-      print(e.toString());
-    }
-
-    return responsebody["quotes"];
+    // return responsebody["quotes"];
   }
 
-  bool showTextField = true;
-
+  String feedback = '';
   @override
   Widget build(BuildContext context) {
     return FutureBuilder(
@@ -161,7 +159,7 @@ class _rateFeedbackState extends State<rateFeedback> {
                           ),
                           RatingBar.builder(
                             itemSize: 30,
-                            initialRating: rate,
+                            initialRating: 0,
                             minRating: 0,
                             direction: Axis.horizontal,
                             allowHalfRating: false,
@@ -173,9 +171,9 @@ class _rateFeedbackState extends State<rateFeedback> {
                             ),
                             onRatingUpdate: (rating) {
                               print(rating);
-                              // setState(() {
-                              //   rate = rating;
-                              // });
+                              setState(() {
+                                rate = rating;
+                              });
                             },
                           ),
                           SizedBox(
@@ -197,12 +195,11 @@ class _rateFeedbackState extends State<rateFeedback> {
                                   return null;
                                 },
                                 onChanged: (String value) {
-                                  // setState(() {
-                                  //   feedbackcomment = value;
-                                  //   print(feedbackcomment);
-                                  // });
+                                  setState(() {
+                                    feedback = value;
+                                    print(feedback);
+                                  });
                                 },
-                                controller: feedback,
                                 minLines: null,
                                 maxLines: 3,
                                 textAlignVertical: TextAlignVertical.top,
@@ -319,11 +316,14 @@ class _rateFeedbackState extends State<rateFeedback> {
   }
 
   Future submitComment() async {
+    if (!mounted) {
+      return; // Widget is no longer mounted, exit early
+    }
     /**removecomment when online */
     try {
       Map<String, dynamic> body = {
         "rate": rate,
-        "content": feedback.text,
+        "content": feedback,
       };
       String jsonBody = json.encode(body);
       final encoding = Encoding.getByName('utf-8');
