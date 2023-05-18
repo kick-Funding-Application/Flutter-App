@@ -68,7 +68,7 @@ Future SignUp(BuildContext cont) async {
   final encoding = Encoding.getByName('utf-8');
 
   var url = Uri.parse(
-      "https://6bcc-156-210-179-53.ngrok-free.app/api/dj-rest-auth/registration/");
+      "https://kickfunding-backend.herokuapp.com/api/dj-rest-auth/registration/");
   var response = await http.post(url,
       headers: {'content-Type': 'application/json'},
       body: jsonBody,

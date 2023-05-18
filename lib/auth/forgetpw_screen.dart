@@ -152,7 +152,7 @@ class _ForgetPwScreenState extends State<ForgetPwScreen> {
       final encoding = Encoding.getByName('utf-8');
 
       var url = Uri.parse(
-          "https://6bcc-156-210-179-53.ngrok-free.app/api/dj-rest-auth/password/reset/");
+          "https://kickfunding-backend.herokuapp.com/api/dj-rest-auth/password/reset/");
       var response = await http.post(url,
           headers: {
             'content-Type': 'application/json',

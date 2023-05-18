@@ -197,7 +197,7 @@ class _LoginFormState extends State<LoginForm> {
         //print('Fields have not to be empty');
       } else {
         var url = Uri.parse(
-            "https://6bcc-156-210-179-53.ngrok-free.app/api/dj-rest-auth/login/");
+            "https://kickfunding-backend.herokuapp.com/api/dj-rest-auth/login/");
 
         var response = await http.post(url,
             headers: {
@@ -238,7 +238,7 @@ class _LoginFormState extends State<LoginForm> {
   void getinfo() async {
     try {
       var url2 = Uri.parse(
-          "https://6bcc-156-210-179-53.ngrok-free.app/api/dj-rest-auth/login/");
+          "https://kickfunding-backend.herokuapp.com/api/dj-rest-auth/login/");
       var response2 = await http.get(
         url2,
         headers: {
