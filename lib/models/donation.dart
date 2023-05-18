@@ -1,7 +1,7 @@
 class Donation {
   final String organization;
   final String desc;
-  final String total;
+  final double total;
   final String date;
 
   Donation({

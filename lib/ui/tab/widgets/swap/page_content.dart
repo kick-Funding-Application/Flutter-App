@@ -6,6 +6,7 @@ import 'package:http/http.dart' as http;
 import 'package:kickfunding/models/donator.dart';
 import 'package:kickfunding/ui/tab/charity/start_charity_screen.dart';
 import 'package:kickfunding/ui/tab/search/search_screen.dart';
+import 'package:kickfunding/ui/tab/widgets/swap/donationstest.dart';
 import 'package:kickfunding/ui/tab/widgets/swap/donators.dart';
 import 'dart:convert';
 import '../../../../auth/login_form.dart';
@@ -56,8 +57,7 @@ Future getData() async {
 
 /**FOR TEST */
 
-  String test =
-      '''
+  String test = '''
     [
       {    "title": "Title of project",
     "target": "500.00",
@@ -283,102 +283,83 @@ class DonationContent extends StatefulWidget {
   State<DonationContent> createState() => _DonationContentState();
 }
 
-final List<dynamic> mydonations = [];
-Future getData2() async {
-  var url = Uri.parse("https://dummyjson.com/quotes");
-  var response2 = await http.get(url);
-  var responsebody = jsonDecode(response2.body);
-  print(responsebody["quotes"][1]["id"]);
-  //return responsebody["quotes"];
+List<Donation> mydonations = [];
 
-// Make the HTTP GET request
-  final response3 = await http.get(Uri.parse('http://example.com/api/urgents'));
+Future<List<Donation>> getData2() async {
+  // var url = Uri.parse("https://dummyjson.com/quotes");
+  // var response2 = await http.get(url);
+  // var responsebody = jsonDecode(response2.body);
+  // print(responsebody["quotes"][1]["id"]);
 
 /**FOR TEST */
 
-  String test2 =
-      '''
-    [
-      {"organization": "project",
-      "desc": "description",
-      "total": "100",
-      "date":"2023-05-01"
-      },
-      {"organization": "project",
-      "desc": "description",
-      "total": "100",
-      "date":"2023-05-01"
-      },
-      {"organization": "project",
-      "desc": "description",
-      "total": "100",
-      "date":"2023-05-01"
-      },
-      {"organization": "project",
-      "desc": "description",
-      "total": "100",
-      "date":"2023-05-01"
-      },
-      {"organization": "project",
-      "desc": "description",
-      "total": "100",
-      "date":"2023-05-01"
-      }
-    ]
+  String test2 = '''
+   [
+  {
+    "transaction_list": {
+      "2023-05-18": [
+        {
+          "amount": 100.0,
+          "project": "Hospital",
+          "details": "A hospital is a vital healthcare facility that serves the community by providing comprehensive medical services. It is staffed by a diverse team of healthcare professionals, including doctors, nurses, specialists, and support staff, who work together to deliver high-quality care."
+        },
+        {
+          "amount": 50.0,
+          "project": "Hospital",
+          "details": "A hospital is a vital healthcare facility that serves the community by providing comprehensive medical services. It is staffed by a diverse team of healthcare professionals, including doctors, nurses, specialists, and support staff, who work together to deliver high-quality care."
+        },
+        {
+          "amount": 10.0,
+          "project": "Help the Deer",
+          "details": "Deer are medium-sized mammals known for their grace and agility. They have slender bodies, long legs, and hooves, which enable them to move swiftly through various habitats. Their fur can vary in color, ranging from reddish-brown to grayish-brown, depending on the species and the season."
+        }
+      ]
+    }
+  }
+]
+
   ''';
 
-  List<dynamic> jsonData = json.decode(test2);
-  mydonations.clear();
-
-  for (var data in jsonData) {
-    Donation mydonation = Donation(
-      date: data["date"],
-      desc: data["desc"],
-      organization: data["organization"],
-      total: data["total"],
+  try {
+    var url2 = Uri.parse(
+        "https://kickfunding-backend.herokuapp.com/api/dj-rest-auth/user/donate/");
+    var response2 = await http.get(
+      url2,
+      headers: {
+        'content-Type': 'application/json',
+        "Authorization": " Token ${token}"
+      },
     );
-    print(mydonation);
-    mydonations.add(mydonation);
+
+    List<dynamic> transactions = json.decode(response2.body);
+
+    // Iterate over each transaction entry
+    mydonations.clear();
+    for (var entry in transactions) {
+      Map<String, dynamic> transactionList = entry['transaction_list'];
+
+      // Sort and display transactions for each date
+      transactionList.keys.forEach((date) {
+        print('Date: $date');
+        List<dynamic> transactionsByDate = transactionList[date];
+
+        transactionsByDate.sort((a, b) => a['amount'].compareTo(b['amount']));
+
+        for (var transaction in transactionsByDate) {
+          Donation mydonation = Donation(
+              organization: transaction['project'],
+              desc: transaction['details'],
+              total: transaction['amount'],
+              date: date);
+          mydonations.add(mydonation);
+          print(mydonations.length);
+        }
+      });
+    }
+  } catch (e) {
+    print(e.toString());
   }
 
-/**FOR TEST */
-
-  // if (response2.statusCode == 200) {
-  //   // Parse the JSON response
-  //   final jsonData = json.decode(response2.body);
-
-  //   // Iterate over the parsed data and append to the urgents list
-  //  mydonations.clear();
-
-  // for (var data in jsonData) {
-  //   DateTime date = DateTime.parse(data['date']).toLocal();
-
-  //   Donation mydonation = Donation(
-  //     date: date,
-  //     desc: data['desc'],
-  //     organization: data['organization'],
-  //     total: data['total'],
-  //   );
-
-  //   mydonations.add(mydonation);
-  // }
-
-  // }
-
-  /*remove this comments*/
-//   var url = Uri.parse("https://1a62-102-186-239-195.eu.ngrok.io/chair/data/55");
-//   var response = await http.get(
-//     url,
-//     headers: {
-//       'content-Type': 'application/json',
-//       "Authorization": "Bearer ${constant.token}"
-//     },
-//   );
-
-//   var data = json.decode(response.body);
-//   print(data);
-//  // var heartint = data["pulse_rate"];
-  /*remove this comments*/
   return mydonations;
 }
 
@@ -388,19 +369,51 @@ class _DonationContentState extends State<DonationContent> {
     return Container(
       padding: EdgeInsets.symmetric(horizontal: 16.0.w),
       child: SingleChildScrollView(
-        child: FutureBuilder(
+        child: FutureBuilder<List<Donation>>(
           future: getData2(),
-          builder: (BuildContext context, AsyncSnapshot snapshot) {
+          builder:
+              (BuildContext context, AsyncSnapshot<List<Donation>> snapshot) {
             if (snapshot.hasData) {
+              List<Donation> donations = snapshot.data!;
+              Set<String> uniqueDates =
+                  donations.map((donation) => donation.date).toSet();
+
               return ListView.builder(
                 scrollDirection: Axis.vertical,
                 physics: ScrollPhysics(),
                 shrinkWrap: true,
-                itemCount: mydonations.length,
+                itemCount: uniqueDates.length,
                 itemBuilder: (context, i) {
-                  return donationCard(mydonations[i]);
+                  String date = uniqueDates.toList()[i];
+                  List<Donation> donationsByDate = donations
+                      .where((donation) => donation.date == date)
+                      .toList();
+
+                  return Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        'Date: $date',
+                        style: TextStyle(
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
+                      ListView.builder(
+                        scrollDirection: Axis.vertical,
+                        physics: ScrollPhysics(),
+                        shrinkWrap: true,
+                        itemCount: donationsByDate.length,
+                        itemBuilder: (context, index) {
+                          Donation donation = donationsByDate[index];
+                          return donationCard(donation);
+                        },
+                      ),
+                    ],
+                  );
                 },
               );
+            } else if (snapshot.hasError) {
+              return Text('Error: ${snapshot.error}');
             } else {
               return Center(child: CircularProgressIndicator());
             }
@@ -431,8 +444,7 @@ Future getData3() async {
 
 /**FOR TEST */
 
-  String test3 =
-      '''
+  String test3 = '''
     [
       {"name": "Zahraa",
       "phone": "+0201222318030",
