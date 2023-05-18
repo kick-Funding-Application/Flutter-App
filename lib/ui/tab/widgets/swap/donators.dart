@@ -66,6 +66,7 @@ class _DonatorCardState extends State<DonatorCard> {
             SizedBox(
               height: 16.h,
             ),
+            Divider(),
           ],
         ),
       ],

@@ -11,6 +11,7 @@ class charityform {
   static var image = "";
   static var description = "";
   static var phone = "";
+  static var donationID = "";
   static DateTime projectdate = DateTime(2023, 07, 05);
   static String specificCategory = "Education";
   static List<String> categories = [

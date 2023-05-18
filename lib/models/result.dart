@@ -1,4 +1,5 @@
 class Result {
+  final int id;
   final String title;
   final String target;
   final String percent;
@@ -14,7 +15,8 @@ class Result {
   final int days;
   final double rate;
 
-  Result( {
+  Result({
+    required this.id,
     required this.title,
     required this.target,
     required this.percent,
@@ -27,7 +29,7 @@ class Result {
     required this.organizer,
     required this.remaining,
     required this.days,
-    required this.rate, 
+    required this.rate,
     required this.userimage,
   });
 }

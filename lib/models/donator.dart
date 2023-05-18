@@ -1,6 +1,6 @@
 class Donator {
   final String name;
-  final String phone;
+  final int phone;
   final double price;
   final String date;
 

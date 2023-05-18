@@ -197,7 +197,7 @@ class _LoginFormState extends State<LoginForm> {
         //print('Fields have not to be empty');
       } else {
         var url = Uri.parse(
-            "https://kickfunding-backend.herokuapp.com/api/dj-rest-auth/login/");
+            "https://6bcc-156-210-179-53.ngrok-free.app/api/dj-rest-auth/login/");
 
         var response = await http.post(url,
             headers: {
@@ -207,6 +207,7 @@ class _LoginFormState extends State<LoginForm> {
             encoding: encoding);
 
         var data = json.decode(response.body);
+        print(response.statusCode);
 
         print(data);
         if (response.statusCode == 200) {
@@ -216,7 +217,14 @@ class _LoginFormState extends State<LoginForm> {
           print("Login succeeded");
           getinfo();
           reload(context);
+        } else if (response.statusCode == 400) {
+          showDialog(
+              context: context,
+              builder: (_) => const AlertDialog(
+                    content: Text("Wrong Email or Password!"),
+                  ));
         } else {
+          print(response.statusCode);
           Center(child: CircularProgressIndicator());
         }
         /* UNCOMMENT WHEN SERVER ONLINE */
@@ -230,7 +238,7 @@ class _LoginFormState extends State<LoginForm> {
   void getinfo() async {
     try {
       var url2 = Uri.parse(
-          "https://kickfunding-backend.herokuapp.com/api/dj-rest-auth/user/");
+          "https://6bcc-156-210-179-53.ngrok-free.app/api/dj-rest-auth/login/");
       var response2 = await http.get(
         url2,
         headers: {
@@ -241,7 +249,8 @@ class _LoginFormState extends State<LoginForm> {
 
       var data2 = json.decode(response2.body);
       print(data2);
-      if (response2.statusCode == 200) {
+      print(response2.statusCode);
+      if (1 == 1) {
         String userImage = data2["user_image"].toString();
         String defaultImage =
             "https://th.bing.com/th/id/OIP.OF59vsDmwxPP1tw7b_8clQHaE8?pid=ImgDet&rs=1";
@@ -261,6 +270,7 @@ class _LoginFormState extends State<LoginForm> {
           constant.first_name = data2["first_name"].toString();
           constant.last_name = data2["last_name"].toString();
           constant.phoneuser = data2["phone_number"].toString();
+          constant.email = data2["email"].toString();
         });
         print(constant.first_name);
       } else {

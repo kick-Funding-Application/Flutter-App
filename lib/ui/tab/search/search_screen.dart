@@ -185,6 +185,7 @@ class _SearchScreenState extends State<SearchScreen> {
           Duration remainingDuration = end_date.difference(currentDate);
           int days = remainingDuration.inDays;
           Result urgent = Result(
+            id: data['id'],
             title: data['title'],
             target: target2,
             percent: percent
@@ -471,6 +472,7 @@ class _SearchScreenState extends State<SearchScreen> {
           int days = remainingDuration.inDays;
           Result result2 = Result(
             title: data['title'],
+            id: data['id'],
             target: target2,
             percent: percent.toString(),
             assetName: data['image'],

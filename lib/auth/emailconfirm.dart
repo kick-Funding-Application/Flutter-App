@@ -2,10 +2,12 @@ import 'package:email_auth/email_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:kickfunding/ui/tab/widgets/profile/constants.dart';
-
+import 'dart:convert';
+import 'package:http/http.dart' as http;
 import '../../../routes/routes.dart';
 import '../../../theme/app_color.dart';
 import '../ui/custom_input_field.dart';
+import '../ui/signup_form.dart';
 
 class emailConfirm extends StatefulWidget {
   const emailConfirm();
@@ -18,37 +20,6 @@ final TextEditingController _otpcontroller = TextEditingController();
 bool submitValid = false;
 
 class _emailConfirmState extends State<emailConfirm> {
-  late EmailAuth emailAuth;
-  void sendOTP() async {
-    emailAuth = new EmailAuth(
-      sessionName: "Sample session",
-    );
-    var res =
-        await emailAuth.sendOtp(recipientMail: constant.email, otpLength: 5);
-    if (res) {
-      setState(() {
-        submitValid = true;
-      });
-      ScaffoldMessenger.of(context)
-          .showSnackBar(SnackBar(content: Text("OTP Sent")));
-    } else {
-      ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text("OTP Failed to be sent ,Verify your mail")));
-    }
-  }
-
-  void verifyOtp() {
-    var res = emailAuth.validateOtp(
-        recipientMail: constant.email, userOtp: _otpcontroller.value.text);
-    if (res) {
-      ScaffoldMessenger.of(context)
-          .showSnackBar(SnackBar(content: Text("OTP Verified Successfully")));
-    } else {
-      ScaffoldMessenger.of(context)
-          .showSnackBar(SnackBar(content: Text("InValid OTP!")));
-    }
-  }
-
   @override
   void initState() {
     //sendOTP();
@@ -138,32 +109,6 @@ class _emailConfirmState extends State<emailConfirm> {
                             SizedBox(
                               height: 24.h,
                             ),
-                            // (submitValid)
-                            //     ? TextField(
-                            //         controller: _otpcontroller,
-                            //       )
-                            //     : Container(height: 1),
-                            // (submitValid)
-                            //     ? Container(
-                            //         margin: EdgeInsets.only(top: 20),
-                            //         height: 50,
-                            //         width: 200,
-                            //         color: Colors.green[400],
-                            //         child: GestureDetector(
-                            //           onTap: verifyOtp,
-                            //           child: Center(
-                            //             child: Text(
-                            //               "Verify",
-                            //               style: TextStyle(
-                            //                 fontWeight: FontWeight.bold,
-                            //                 color: Colors.white,
-                            //                 fontSize: 20,
-                            //               ),
-                            //             ),
-                            //           ),
-                            //         ),
-                            //       )
-                            //     : SizedBox(height: 1),
 
                             ElevatedButton(
                               style: ButtonStyle(
@@ -184,11 +129,7 @@ class _emailConfirmState extends State<emailConfirm> {
                                   ),
                                 ),
                               ),
-                              onPressed: () =>
-                                  Navigator.of(context).pushReplacementNamed(
-                                RouteGenerator.splash,
-                              ),
-                              //verifyOtp(),
+                              onPressed: () => Confirm(context),
                               child: Text(
                                 'Submit',
                               ),
@@ -205,5 +146,37 @@ class _emailConfirmState extends State<emailConfirm> {
         ),
       ),
     );
+  }
+
+  Future Confirm(BuildContext context) async {
+    try {
+      Map<String, dynamic> body = {
+        "country": selectedCountry,
+      };
+      String jsonBody = json.encode(body);
+      final encoding = Encoding.getByName('utf-8');
+
+      var url = Uri.parse(
+          "https://6bcc-156-210-179-53.ngrok-free.app/api/dj-rest-auth/registration/");
+      var response = await http.post(url,
+          headers: {
+            'content-Type': 'application/json',
+            "Authorization": " Token ${token}"
+          },
+          body: jsonBody,
+          encoding: encoding);
+      var result = response.body;
+      print(result);
+
+      print('Registration successful');
+      print(response.statusCode);
+
+      print("Registeration Successful");
+      Navigator.of(context).pushReplacementNamed(
+        RouteGenerator.login,
+      );
+    } catch (e) {
+      print(e.toString());
+    }
   }
 }

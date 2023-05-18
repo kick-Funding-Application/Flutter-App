@@ -330,7 +330,9 @@ class _DetailScreenState extends State<DetailScreen> {
                                 Container(
                                   child: Row(
                                     children: [
+                                      Text('Avg Rate:'),
                                       RatingBar.builder(
+                                        ignoreGestures: true,
                                         itemSize: 25,
                                         initialRating:
                                             widget.urgent.rate != null
@@ -610,7 +612,7 @@ class _DetailScreenState extends State<DetailScreen> {
                             ),
                             RatingBar.builder(
                               itemSize: 30,
-                              initialRating: 0,
+                              initialRating: rate != null ? rate! : 0,
                               minRating: 0,
                               direction: Axis.horizontal,
                               allowHalfRating: false,
@@ -807,12 +809,26 @@ class _DetailScreenState extends State<DetailScreen> {
         );
 
         print('Registration successful');
-      } else {
+      } else if (response.statusCode == 403) {
+        print(response.statusCode);
         print("Registeration Failed");
         showDialog(
             context: context,
             builder: (_) => const AlertDialog(
-                  content: Text("Failed to post "),
+                  content: Text("You Can\'t rate for the same project twice! "),
+                ));
+      } else if (response.statusCode == 404) {
+        showDialog(
+            context: context,
+            builder: (_) => const AlertDialog(
+                  content: Text("Server is lagging please wait "),
+                ));
+      } else {
+        print(response.statusCode);
+        showDialog(
+            context: context,
+            builder: (_) => const AlertDialog(
+                  content: Text("No Rate Selected"),
                 ));
       }
     } catch (e) {

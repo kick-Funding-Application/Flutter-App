@@ -252,13 +252,14 @@ class _ResultScreenState extends State<ResultScreen> {
                                 Container(
                                   child: Row(
                                     children: [
-                                      Text('Rate Your Experience:'),
+                                      Text('Avg Rate:'),
                                       RatingBar.builder(
                                         itemSize: 30,
                                         initialRating:
                                             widget.result.rate != null
                                                 ? widget.result.rate!
                                                 : 0,
+                                        ignoreGestures: true,
                                         minRating: 0,
                                         direction: Axis.horizontal,
                                         allowHalfRating: false,
@@ -269,14 +270,9 @@ class _ResultScreenState extends State<ResultScreen> {
                                           Icons.star,
                                           color: Colors.amber,
                                         ),
-                                        onRatingUpdate: (rating) {
-                                          print(rating);
-                                          setState(() {
-                                            rate = rating;
-                                          });
-                                          updateRate();
-                                        },
+                                        onRatingUpdate: (rating) {},
                                       ),
+                                      Text('${widget.result.rate}'),
                                     ],
                                   ),
                                 ),

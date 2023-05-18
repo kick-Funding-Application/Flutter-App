@@ -173,71 +173,71 @@ class _DonationScreenState extends State<DonationScreen> {
                             ),
                           ),
                         ),
-                        Expanded(
-                          child: Text(
-                            'Donation Detail',
-                            style:
-                                Theme.of(context).textTheme.headline5!.copyWith(
-                                      color: AppColor.kTitle,
-                                      fontWeight: FontWeight.bold,
-                                    ),
-                            textAlign: TextAlign.center,
-                          ),
-                        ),
+                        // Expanded(
+                        //   child: Text(
+                        //     'Donation Detail',
+                        //     style:
+                        //         Theme.of(context).textTheme.headline5!.copyWith(
+                        //               color: AppColor.kTitle,
+                        //               fontWeight: FontWeight.bold,
+                        //             ),
+                        //     textAlign: TextAlign.center,
+                        //   ),
+                        // ),
                         SizedBox(
                           width: 24.w,
                         )
                       ],
                     ),
-                    Spacer(),
-                    SizedBox(
-                      height: 72.h,
-                      child: Row(
-                        crossAxisAlignment: CrossAxisAlignment.stretch,
-                        children: [
-                          Container(
-                            width: 104.w,
-                            height: 72.h,
-                            decoration: BoxDecoration(
-                              borderRadius: BorderRadius.circular(
-                                8.r,
-                              ),
-                              color: AppColor.kPlaceholder1,
-                            ),
-                            child: Center(
-                              child: SvgPicture.asset(
-                                'assets/images/image_placeholder.svg',
-                                width: 48.w,
-                                color: Colors.white,
-                              ),
-                            ),
-                          ),
-                          SizedBox(
-                            width: 16.w,
-                          ),
-                          Expanded(
-                            child: Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                              children: [
-                                Text(
-                                  'Project title',
-                                  style: TextStyle(
-                                    fontWeight: FontWeight.w900,
-                                  ),
-                                ),
-                                Text(
-                                  'OWNER:',
-                                  style: TextStyle(
-                                    color: AppColor.kTextColor1,
-                                  ),
-                                ),
-                              ],
-                            ),
-                          ),
-                        ],
-                      ),
-                    ),
+                    // Spacer(),
+                    // SizedBox(
+                    //   height: 72.h,
+                    //   child: Row(
+                    //     crossAxisAlignment: CrossAxisAlignment.stretch,
+                    //     children: [
+                    //       Container(
+                    //         width: 104.w,
+                    //         height: 72.h,
+                    //         decoration: BoxDecoration(
+                    //           borderRadius: BorderRadius.circular(
+                    //             8.r,
+                    //           ),
+                    //           color: AppColor.kPlaceholder1,
+                    //         ),
+                    //         child: Center(
+                    //           child: SvgPicture.asset(
+                    //             'assets/images/image_placeholder.svg',
+                    //             width: 48.w,
+                    //             color: Colors.white,
+                    //           ),
+                    //         ),
+                    //       ),
+                    //       SizedBox(
+                    //         width: 16.w,
+                    //       ),
+                    //       Expanded(
+                    //         child: Column(
+                    //           crossAxisAlignment: CrossAxisAlignment.start,
+                    //           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                    //           children: [
+                    //             Text(
+                    //               'Project title',
+                    //               style: TextStyle(
+                    //                 fontWeight: FontWeight.w900,
+                    //               ),
+                    //             ),
+                    //             Text(
+                    //               'OWNER:',
+                    //               style: TextStyle(
+                    //                 color: AppColor.kTextColor1,
+                    //               ),
+                    //             ),
+                    //           ],
+                    //         ),
+                    //       ),
+                    //     ],
+                    //   ),
+                    // ),
                     // Spacer(),
                     // ElevatedButton(
                     //   style: ButtonStyle(
@@ -272,7 +272,9 @@ class _DonationScreenState extends State<DonationScreen> {
                             fontWeight: FontWeight.bold,
                           ),
                     ),
-                    Spacer(),
+                    SizedBox(
+                      height: 20,
+                    ),
                     BlocProvider(
                       create: (context) => PaymentBloc(),
                       child: Column(
@@ -295,7 +297,7 @@ class _DonationScreenState extends State<DonationScreen> {
                     Row(
                       children: [
                         Text('Total',
-                            style: Theme.of(context).textTheme.headline6),
+                            style: Theme.of(context).textTheme.headline5),
                         Spacer(),
                         Text(
                           '\$${constant.totalpayment}',
@@ -306,7 +308,8 @@ class _DonationScreenState extends State<DonationScreen> {
                                   ),
                         ),
                       ],
-                    )
+                    ),
+                    SizedBox(height: 25,),
                   ],
                 ),
               ),

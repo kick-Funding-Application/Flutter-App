@@ -1,13 +1,22 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-
+import 'dart:convert';
+import 'package:http/http.dart' as http;
 import '../../../routes/routes.dart';
 import '../../../theme/app_color.dart';
 import '../ui/custom_input_field.dart';
+import '../ui/signup_form.dart';
 
-class ForgetPwScreen extends StatelessWidget {
+class ForgetPwScreen extends StatefulWidget {
   const ForgetPwScreen();
 
+  @override
+  State<ForgetPwScreen> createState() => _ForgetPwScreenState();
+}
+
+var email;
+
+class _ForgetPwScreenState extends State<ForgetPwScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -85,6 +94,12 @@ class ForgetPwScreen extends StatelessWidget {
                             CustomInputField(
                               hintText: 'email address',
                               textInputAction: TextInputAction.done,
+                              onChanged: (String value) {
+                                setState(() {
+                                  email = value;
+                                  print(email);
+                                });
+                              },
                             ),
                             SizedBox(
                               height: 24.h,
@@ -108,10 +123,7 @@ class ForgetPwScreen extends StatelessWidget {
                                   ),
                                 ),
                               ),
-                              onPressed: () =>
-                                  Navigator.of(context).pushReplacementNamed(
-                                RouteGenerator.splash,
-                              ),
+                              onPressed: () => Confirm(context),
                               child: Text(
                                 'Submit',
                               ),
@@ -128,5 +140,41 @@ class ForgetPwScreen extends StatelessWidget {
         ),
       ),
     );
+  }
+
+  Future Confirm(BuildContext context) async {
+    print(email);
+    try {
+      Map<String, dynamic> body = {
+        "email": email,
+      };
+      String jsonBody = json.encode(body);
+      final encoding = Encoding.getByName('utf-8');
+
+      var url = Uri.parse(
+          "https://6bcc-156-210-179-53.ngrok-free.app/api/dj-rest-auth/password/reset/");
+      var response = await http.post(url,
+          headers: {
+            'content-Type': 'application/json',
+          },
+          body: jsonBody,
+          encoding: encoding);
+      var result = response.body;
+      print(response.statusCode);
+      print(result);
+
+      print('Registration successful');
+      print(response.statusCode);
+
+      print("Registeration Successful");
+      ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+          content: Text(
+              'Follow the instructions sent in your mail to reset your password')));
+      Navigator.of(context).pushReplacementNamed(
+        RouteGenerator.login,
+      );
+    } catch (e) {
+      print(e.toString());
+    }
   }
 }

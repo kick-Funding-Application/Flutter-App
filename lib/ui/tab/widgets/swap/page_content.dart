@@ -13,6 +13,7 @@ import '../../../../auth/login_form.dart';
 import '../../../../bloc/swap/swap_bloc.dart';
 import '../../../../models/donation.dart';
 //import '../../../../models/donator.dart';
+import '/initials/constants.dart';
 import '../../../../models/result.dart';
 import '../../../../theme/app_color.dart';
 
@@ -198,6 +199,7 @@ Future getData() async {
         Duration remainingDuration = end_date.difference(currentDate);
         int days = remainingDuration.inDays;
         Result result = Result(
+          id: data['id'],
           userimage:
               'https://th.bing.com/th/id/OIP.OF59vsDmwxPP1tw7b_8clQHaE8?pid=ImgDet&rs=1',
           title: data['title'],
@@ -464,44 +466,49 @@ Future<List<Donator>> getData3() async {
 ]
 ''';
 
-  List<dynamic> jsonData = json.decode(test3);
+  //List<dynamic> jsonData = json.decode(test3);
 
   try {
-    // var url2 = Uri.parse(
-    //     "https://kickfunding-backend.herokuapp.com/api/dj-rest-auth/user/donate/");
-    // var response2 = await http.get(
-    //   url2,
-    //   headers: {
-    //     'content-Type': 'application/json',
-    //     "Authorization": " Token ${token}"
-    //   },
-    // );
+    var url2 = Uri.parse(
+        "https://kickfunding-backend.herokuapp.com/api/donate/${charityform.donationID}/history/");
+    var response2 = await http.get(
+      url2,
+      headers: {
+        'content-Type': 'application/json',
+        "Authorization": " Token ${token}"
+      },
+    );
+    print(response2.statusCode);
+    if (response2.statusCode == 404) {
+      print('No donations');
+    } else {
+      List<dynamic> jsonData = json.decode(response2.body);
+      print(jsonData);
 
-    //List<dynamic> transactions = json.decode(response2.body);
+      print(response2.statusCode);
+      donators.clear();
 
-    // Iterate over each transaction entry
-    donators.clear();
+      for (var entry in jsonData) {
+        Map<String, dynamic> transactionList = entry['donation_list'];
 
-    for (var entry in jsonData) {
-      Map<String, dynamic> transactionList = entry['donation_list'];
+        // Sort and display transactions for each date
+        transactionList.keys.forEach((date) {
+          print('Date: $date');
+          List<dynamic> transactionsByDate = transactionList[date];
 
-      // Sort and display transactions for each date
-      transactionList.keys.forEach((date) {
-        print('Date: $date');
-        List<dynamic> transactionsByDate = transactionList[date];
+          transactionsByDate.sort((a, b) => a['amount'].compareTo(b['amount']));
 
-        transactionsByDate.sort((a, b) => a['amount'].compareTo(b['amount']));
-
-        for (var transaction in transactionsByDate) {
-          Donator donator = Donator(
-              name: transaction['user'],
-              price: transaction['amount'],
-              date: date,
-              phone: '0120000000');
-          donators.add(donator);
-          print(donators.length);
-        }
-      });
+          for (var transaction in transactionsByDate) {
+            Donator donator = Donator(
+                name: transaction['user'],
+                price: transaction['amount'],
+                date: date,
+                phone: transaction['phone_number']);
+            donators.add(donator);
+            print(donators.length);
+          }
+        });
+      }
     }
   } catch (e) {
     print(e.toString());

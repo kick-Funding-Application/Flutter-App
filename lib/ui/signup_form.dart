@@ -62,12 +62,13 @@ Future SignUp(BuildContext cont) async {
     "last_name": last_name,
     "username": username,
     "phone_number": phoneno,
+    "user_image": "${constant.urlprofile}",
   };
   String jsonBody = json.encode(body);
   final encoding = Encoding.getByName('utf-8');
 
   var url = Uri.parse(
-      "https://d46b-197-54-154-137.ngrok-free.app/api/dj-rest-auth/registration/");
+      "https://6bcc-156-210-179-53.ngrok-free.app/api/dj-rest-auth/registration/");
   var response = await http.post(url,
       headers: {'content-Type': 'application/json'},
       body: jsonBody,
@@ -76,14 +77,30 @@ Future SignUp(BuildContext cont) async {
   print(result);
 
   print('Registration successful');
-
-  if (response.statusCode == 200) {
-    print("Registeration succeeded");
+  print(response.statusCode);
+  if (response.statusCode == 201) {
+    print("Registeration Successful");
+    ScaffoldMessenger.of(cont).showSnackBar(SnackBar(
+        content: Text(
+            'Follow the instructions sent in your mail to confirm your email')));
     Navigator.of(cont).pushReplacementNamed(
-      RouteGenerator.splash,
+      RouteGenerator.login,
     );
-  } else {
+  } else if (response.statusCode == 404) {
     print("Registeration Failed");
+    showDialog(
+        context: cont,
+        builder: (_) => const AlertDialog(
+              content: Text("Password is too common"),
+            ));
+  } else if (response.statusCode == 404) {
+    print(response.statusCode);
+  } else {
+    showDialog(
+        context: cont,
+        builder: (_) => const AlertDialog(
+              content: Text("Failed to register!"),
+            ));
   }
 
   /**removecomment when online */
@@ -406,9 +423,9 @@ class _SignupFormState extends State<SignupForm> {
                   if (_formKey1.currentState!.validate()) {
                     print(
                         '${email},${password1},${selectedCountry},${phoneno},${birthdate},${first_name},${last_name},${username},${password2}');
-                    print(constant.image);
-                    confirmEmail(context);
-                    // SignUp(context);
+                    print(constant.urlprofile);
+
+                    SignUp(context);
                   }
                 },
                 child: Text(
@@ -419,12 +436,6 @@ class _SignupFormState extends State<SignupForm> {
           ),
         ),
       ),
-    );
-  }
-
-  void confirmEmail(context) {
-    Navigator.of(context).pushReplacementNamed(
-      RouteGenerator.emailconfirm,
     );
   }
 

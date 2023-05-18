@@ -9,9 +9,17 @@ import '../../../../theme/app_color.dart';
 
 final List<PaymentMethod> methods = [
   PaymentMethod(
+    name: 'Visa',
+    assetName: 'assets/images/visa.png',
+  ),
+  PaymentMethod(
     name: 'PayPal',
     assetName: 'assets/images/paypal.png',
-  )
+  ),
+  PaymentMethod(
+    name: 'BCA',
+    assetName: 'assets/images/bca.png',
+  ),
 ];
 
 class PaymentMethodWidget extends StatelessWidget {
@@ -39,9 +47,9 @@ class PaymentMethodWidget extends StatelessWidget {
                 decoration: BoxDecoration(
                   shape: BoxShape.circle,
                   border: Border.all(
-                    color: // state.index == index?
-                        AppColor.kPrimaryColor,
-                    // : AppColor.kPlaceholder2,
+                    color: state.index == index
+                        ? AppColor.kPrimaryColor
+                        : AppColor.kPlaceholder2,
                     width: 2.sp,
                   ),
                 ),
@@ -67,9 +75,9 @@ class PaymentMethodWidget extends StatelessWidget {
                 height: 64.h,
                 padding: EdgeInsets.symmetric(horizontal: 16.w),
                 decoration: BoxDecoration(
-                  color: //state.index == index?
-                      AppColor.kPrimaryColor,
-                  //: AppColor.kPlaceholder2,
+                  color: state.index == index
+                      ? AppColor.kPrimaryColor
+                      : AppColor.kPlaceholder2,
                   borderRadius: BorderRadius.circular(
                     12.r,
                   ),
@@ -79,10 +87,10 @@ class PaymentMethodWidget extends StatelessWidget {
                     Text(
                       method.name,
                       style: TextStyle(
-                          color: //state.index == index?
-                              Colors.white
-                          //   : AppColor.kTextColor1,
-                          ),
+                        color: state.index == index
+                            ? Colors.white
+                            : AppColor.kTextColor1,
+                      ),
                     ),
                     Spacer(),
                     SizedBox(
