@@ -65,11 +65,14 @@ Future SignUp(BuildContext cont) async {
     "user_image": "${constant.urlprofile}",
   };
   String jsonBody = json.encode(body);
+  print(jsonBody);
   final encoding = Encoding.getByName('utf-8');
 
   var url = Uri.parse("${constant.server}api/dj-rest-auth/registration/");
   var response = await http.post(url,
-      headers: {'content-Type': 'application/json'},
+      headers: {
+        'content-Type': 'application/json',
+      },
       body: jsonBody,
       encoding: encoding);
   var result = response.body;
