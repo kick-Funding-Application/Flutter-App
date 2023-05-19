@@ -4,6 +4,7 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:http/http.dart' as http;
 import 'package:kickfunding/models/result.dart';
 import 'dart:convert';
+import '/ui/tab/widgets/profile/constants.dart';
 import '../../../../theme/app_animation.dart';
 import '../../../../theme/app_color.dart';
 import '../widgets/category.dart';
@@ -52,8 +53,7 @@ class _SearchScreenState extends State<SearchScreen> {
 
 /**FOR TEST */
 
-    String test =
-        '''
+    String test = '''
     [
       {    "title": "Title of project",
     "target": "500.00",
@@ -162,8 +162,8 @@ class _SearchScreenState extends State<SearchScreen> {
 //     }
     try {
       /**FOR TEST */
-      final response2 = await http.get(
-          Uri.parse('https://kickfunding-backend.herokuapp.com/api/projects/'));
+      final response2 =
+          await http.get(Uri.parse('${constant.server}api/projects/'));
 
       if (response2.statusCode == 200) {
         // Parse the JSON response
@@ -338,8 +338,7 @@ class _SearchScreenState extends State<SearchScreen> {
 
 /**FOR TEST */
 
-    String test =
-        '''
+    String test = '''
     [
       {    "title": "Title of project",
     "target": "500.00",
@@ -449,7 +448,7 @@ class _SearchScreenState extends State<SearchScreen> {
     try {
 /**FOR TEST */
       final response3 = await http.get(Uri.parse(
-          'https://kickfunding-backend.herokuapp.com/api/projects/?search=${controller.text}'));
+          '${constant.server}api/projects/?search=${controller.text}'));
 
       if (response3.statusCode == 200) {
         // Parse the JSON response

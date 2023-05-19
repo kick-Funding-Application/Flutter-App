@@ -362,8 +362,7 @@ class _StartCharityScreenState extends State<StartCharityScreen> {
       String jsonBody = json.encode(body);
       final encoding = Encoding.getByName('utf-8');
 
-      var url =
-          Uri.parse("https://kickfunding-backend.herokuapp.com/api/projects/");
+      var url = Uri.parse("${constant.server}api/projects/");
       var response = await http.post(url,
           headers: {
             'content-Type': 'application/json',

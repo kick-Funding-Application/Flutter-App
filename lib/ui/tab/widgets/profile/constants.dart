@@ -26,7 +26,9 @@ class constant {
   static File? projectImage;
   static String urlprofile =
       "https://firebasestorage.googleapis.com/v0/b/kickfunding-a2c6e.appspot.com/o/zahraa.jpg?alt=media&token=1e786cec-f5f8-4611-ba5f-9b36838788fd";
-  static String? urlprofileimage;
+  static String? urlprofileimage =
+      "https://firebasestorage.googleapis.com/v0/b/kickfunding-a2c6e.appspot.com/o/zahraa.jpg?alt=media&token=1e786cec-f5f8-4611-ba5f-9b36838788fd";
   static String urlprojectimage =
       "https://github.com/Zahraa5Ashraf/flutter/blob/main/new%20logo%20finalllllllyyyy.jpg?raw=true";
+  static String server = "https://kickfunding.herokuapp.com/";
 }

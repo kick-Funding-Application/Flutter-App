@@ -82,19 +82,19 @@ class _EditContentState extends State<EditContent> {
         _formKey.currentState!.save();
 
         Map<String, dynamic> body = {
-          "country": constant.countryuser,
-          "birth_date": constant.bdateuser,
-          "first_name": constant.first_name,
-          "last_name": constant.last_name,
-          "username": constant.Username,
-          "phone_number": constant.phoneuser,
-          "user_image": constant.urlprofile,
+          "country": "${constant.countryuser}",
+          "birth_date": "${constant.bdateuser}",
+          "first_name": "${constant.first_name}",
+          "last_name": " ${constant.last_name}",
+          "email": "${constant.email}",
+          "username": "${constant.Username}",
+          "phone_number": "${constant.phoneuser}",
+          "user_image": "${constant.urlprofile}",
         };
         String jsonBody = json.encode(body);
         final encoding = Encoding.getByName('utf-8');
 
-        var url = Uri.parse(
-            "https://kickfunding-backend.herokuapp.com/api/dj-rest-auth/user/");
+        var url = Uri.parse("${constant.server}api/dj-rest-auth/user/");
         var response = await http.put(url,
             headers: {
               'content-Type': 'application/json',
@@ -109,6 +109,12 @@ class _EditContentState extends State<EditContent> {
         saveprofile();
 
         /**removecomment when online */
+      } else {
+        showDialog(
+            context: context,
+            builder: (_) => const AlertDialog(
+                  content: Text("Profile NOT updated"),
+                ));
       }
     } catch (e) {
       print(e.toString());
@@ -361,8 +367,8 @@ class _EditContentState extends State<EditContent> {
                   ),
                 ),
                 onPressed: () {
-                  //    _submitForm();
-                  saveprofile();
+                  _submitForm();
+                  //   saveprofile();
                 },
                 child: Text(
                   'Save Change',

@@ -131,8 +131,8 @@ Future getData() async {
   // }
   try {
 /**FOR TEST */
-    final response2 = await http.get(
-        Uri.parse('https://kickfunding-backend.herokuapp.com/api/projects/'));
+    final response2 =
+        await http.get(Uri.parse('${constant.server}api/projects/'));
 
     if (response2.statusCode == 200) {
       // Parse the JSON response

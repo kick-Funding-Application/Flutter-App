@@ -40,7 +40,8 @@ class MyApp extends StatelessWidget {
         title: 'KickFunding',
         theme: AppTheme(context).initTheme(),
         debugShowCheckedModeBanner: false,
-        initialRoute: isLoggedIn ? RouteGenerator.main : RouteGenerator.splash,
+        initialRoute: RouteGenerator.main,
+        // initialRoute: isLoggedIn ? RouteGenerator.main : RouteGenerator.splash,
         onGenerateRoute: RouteGenerator.generateRoute,
       ),
     );

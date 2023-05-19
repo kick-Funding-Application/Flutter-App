@@ -487,8 +487,8 @@ class _DetailScreenState extends State<DetailScreen> {
 
   Future<List<Comment>> fetchAndParseFeedbacks(String projectName) async {
     try {
-      final response = await http.get(
-          Uri.parse('https://kickfunding-backend.herokuapp.com/api/projects/'));
+      final response =
+          await http.get(Uri.parse('${constant.server}api/projects/'));
 
       if (2 == 2) {
         List<dynamic> jsonData = json.decode(response.body);
@@ -786,7 +786,7 @@ class _DetailScreenState extends State<DetailScreen> {
       final encoding = Encoding.getByName('utf-8');
 
       var url = Uri.parse(
-          "https://kickfunding-backend.herokuapp.com/api/projects/${id}/feedback/");
+          "https://kickfunding.herokuapp.com/api/projects/${id}/feedback/");
       var response = await http.post(url,
           headers: {
             'content-Type': 'application/json',

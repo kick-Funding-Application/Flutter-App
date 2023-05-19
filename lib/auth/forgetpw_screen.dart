@@ -6,6 +6,7 @@ import '../../../routes/routes.dart';
 import '../../../theme/app_color.dart';
 import '../ui/custom_input_field.dart';
 import '../ui/signup_form.dart';
+import '/ui/tab/widgets/profile/constants.dart';
 
 class ForgetPwScreen extends StatefulWidget {
   const ForgetPwScreen();
@@ -151,8 +152,7 @@ class _ForgetPwScreenState extends State<ForgetPwScreen> {
       String jsonBody = json.encode(body);
       final encoding = Encoding.getByName('utf-8');
 
-      var url = Uri.parse(
-          "https://kickfunding-backend.herokuapp.com/api/dj-rest-auth/password/reset/");
+      var url = Uri.parse("${constant.server}api/dj-rest-auth/password/reset/");
       var response = await http.post(url,
           headers: {
             'content-Type': 'application/json',

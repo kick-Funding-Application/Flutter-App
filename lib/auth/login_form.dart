@@ -157,6 +157,7 @@ class _LoginFormState extends State<LoginForm> {
                       child: CircularProgressIndicator(),
                     );
                   }
+                  //reload(context);
                   performLogin(context);
 
                   // Store login status
@@ -196,8 +197,7 @@ class _LoginFormState extends State<LoginForm> {
         reload(context);
         //print('Fields have not to be empty');
       } else {
-        var url = Uri.parse(
-            "https://kickfunding-backend.herokuapp.com/api/dj-rest-auth/login/");
+        var url = Uri.parse("${constant.server}api/dj-rest-auth/login/");
 
         var response = await http.post(url,
             headers: {
@@ -237,8 +237,8 @@ class _LoginFormState extends State<LoginForm> {
 
   void getinfo() async {
     try {
-      var url2 = Uri.parse(
-          "https://kickfunding-backend.herokuapp.com/api/dj-rest-auth/login/");
+      var url2 = Uri.parse("${constant.server}api/dj-rest-auth/user/");
+      print(url2);
       var response2 = await http.get(
         url2,
         headers: {

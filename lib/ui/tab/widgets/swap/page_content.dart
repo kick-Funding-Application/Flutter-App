@@ -9,6 +9,7 @@ import 'package:kickfunding/ui/tab/search/search_screen.dart';
 import 'package:kickfunding/ui/tab/widgets/swap/donationstest.dart';
 import 'package:kickfunding/ui/tab/widgets/swap/donators.dart';
 import 'dart:convert';
+import '/ui/tab/widgets/profile/constants.dart';
 import '../../../../auth/login_form.dart';
 import '../../../../bloc/swap/swap_bloc.dart';
 import '../../../../models/donation.dart';
@@ -163,8 +164,7 @@ Future getData() async {
 // Access the filtered results
   try {
 /**FOR TEST */
-    var url2 = Uri.parse(
-        "https://kickfunding-backend.herokuapp.com/api/dj-rest-auth/user/projects");
+    var url2 = Uri.parse("${constant.server}api/dj-rest-auth/user/projects");
     var response2 = await http.get(
       url2,
       headers: {
@@ -316,8 +316,7 @@ Future<List<Donation>> getData2() async {
   ''';
 
   try {
-    var url2 = Uri.parse(
-        "https://kickfunding-backend.herokuapp.com/api/dj-rest-auth/user/donate/");
+    var url2 = Uri.parse("${constant.server}api/dj-rest-auth/user/donate/");
     var response2 = await http.get(
       url2,
       headers: {
@@ -470,7 +469,7 @@ Future<List<Donator>> getData3() async {
 
   try {
     var url2 = Uri.parse(
-        "https://kickfunding-backend.herokuapp.com/api/donate/${charityform.donationID}/history/");
+        "${constant.server}api/donate/${charityform.donationID}/history/");
     var response2 = await http.get(
       url2,
       headers: {

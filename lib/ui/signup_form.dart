@@ -67,8 +67,7 @@ Future SignUp(BuildContext cont) async {
   String jsonBody = json.encode(body);
   final encoding = Encoding.getByName('utf-8');
 
-  var url = Uri.parse(
-      "https://kickfunding-backend.herokuapp.com/api/dj-rest-auth/registration/");
+  var url = Uri.parse("${constant.server}api/dj-rest-auth/registration/");
   var response = await http.post(url,
       headers: {'content-Type': 'application/json'},
       body: jsonBody,
@@ -78,7 +77,7 @@ Future SignUp(BuildContext cont) async {
 
   print('Registration successful');
   print(response.statusCode);
-  if (response.statusCode == 201) {
+  if (response.statusCode == 201 || response.statusCode == 204) {
     print("Registeration Successful");
     ScaffoldMessenger.of(cont).showSnackBar(SnackBar(
         content: Text(
@@ -95,6 +94,12 @@ Future SignUp(BuildContext cont) async {
             ));
   } else if (response.statusCode == 404) {
     print(response.statusCode);
+  } else if (response.statusCode == 500) {
+    showDialog(
+        context: cont,
+        builder: (_) => const AlertDialog(
+              content: Text('FAILED'),
+            ));
   } else {
     showDialog(
         context: cont,
