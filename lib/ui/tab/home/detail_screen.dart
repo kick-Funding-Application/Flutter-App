@@ -406,7 +406,12 @@ class _DetailScreenState extends State<DetailScreen> {
                               shape: RoundedRectangleBorder(
                                 borderRadius: BorderRadius.circular(32.r),
                               ),
-                              builder: (_) => CalculatorBuilder(),
+                              builder: (_) => CalculatorBuilder(
+                                widget.urgent.id.toString(),
+                                projectOwner: '${widget.urgent.organizer}',
+                                projectTitle: '${widget.urgent.title}',
+                                projectImage: '${widget.urgent.assetName}',
+                              ),
                             );
                           },
                           child: Text(
@@ -467,12 +472,18 @@ class _DetailScreenState extends State<DetailScreen> {
               child: Row(
                 children: [
                   GestureDetector(
-                    onTap: () => Navigator.of(context).pushReplacementNamed(
-                      RouteGenerator.main,
-                    ),
-                    child: SvgPicture.asset(
-                      'assets/images/back.svg',
-                      width: 24.w,
+                    onTap: () => Navigator.of(context).pop(),
+                    child: Container(
+                      width: 30.w,
+                      height: 30.w,
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(8.r),
+                        color: AppColor.kPlaceholder2.withOpacity(0.3),
+                      ),
+                      child: Icon(
+                        Icons.keyboard_arrow_left_outlined,
+                        color: AppColor.kForthColor.withOpacity(0.5),
+                      ),
                     ),
                   ),
                   Spacer(),

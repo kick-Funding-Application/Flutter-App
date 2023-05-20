@@ -11,6 +11,7 @@ import '../../../../routes/routes.dart';
 import '../../../../theme/app_color.dart';
 import 'package:http/http.dart' as http;
 
+import '../../../auth/login_form.dart';
 import '../widgets/home/payment_method_widget.dart';
 
 class DonationScreen extends StatefulWidget {
@@ -45,9 +46,35 @@ class _DonationScreenState extends State<DonationScreen> {
     }
   }
 
+  postPayment() async {
+    try {
+      Map<String, dynamic> body = {
+        "input_amount": "${constant.totalpayment}",
+        "project": "${constant.pid}",
+      };
+      String jsonBody = json.encode(body);
+      print(jsonBody);
+      final encoding = Encoding.getByName('utf-8');
+
+      var url = Uri.parse("${constant.server}api/donate/");
+      var response = await http.post(url,
+          headers: {
+            'content-Type': 'application/json',
+            "Authorization": " Token ${token}",
+          },
+          body: jsonBody,
+          encoding: encoding);
+      var result = response.body;
+      print(result);
+    } catch (e) {
+      print(e.toString());
+    }
+  }
+
   displayPaymentSheet() async {
     try {
       await Stripe.instance.presentPaymentSheet().then((value) {
+        postPayment();
         showDialog(
             context: context,
             builder: (_) => AlertDialog(
@@ -60,7 +87,7 @@ class _DonationScreenState extends State<DonationScreen> {
                             Icons.check_circle,
                             color: Colors.green,
                           ),
-                          Text("Payment Successfull"),
+                          Text("Payment Successful"),
                         ],
                       ),
                     ],
@@ -173,72 +200,69 @@ class _DonationScreenState extends State<DonationScreen> {
                             ),
                           ),
                         ),
-                        // Expanded(
-                        //   child: Text(
-                        //     'Donation Detail',
-                        //     style:
-                        //         Theme.of(context).textTheme.headline5!.copyWith(
-                        //               color: AppColor.kTitle,
-                        //               fontWeight: FontWeight.bold,
-                        //             ),
-                        //     textAlign: TextAlign.center,
-                        //   ),
-                        // ),
+                        Expanded(
+                          child: Text(
+                            'Donation Detail',
+                            style:
+                                Theme.of(context).textTheme.headline5!.copyWith(
+                                      color: AppColor.kTitle,
+                                      fontWeight: FontWeight.bold,
+                                    ),
+                            textAlign: TextAlign.center,
+                          ),
+                        ),
                         SizedBox(
                           width: 24.w,
                         )
                       ],
                     ),
-                    // Spacer(),
-                    // SizedBox(
-                    //   height: 72.h,
-                    //   child: Row(
-                    //     crossAxisAlignment: CrossAxisAlignment.stretch,
-                    //     children: [
-                    //       Container(
-                    //         width: 104.w,
-                    //         height: 72.h,
-                    //         decoration: BoxDecoration(
-                    //           borderRadius: BorderRadius.circular(
-                    //             8.r,
-                    //           ),
-                    //           color: AppColor.kPlaceholder1,
-                    //         ),
-                    //         child: Center(
-                    //           child: SvgPicture.asset(
-                    //             'assets/images/image_placeholder.svg',
-                    //             width: 48.w,
-                    //             color: Colors.white,
-                    //           ),
-                    //         ),
-                    //       ),
-                    //       SizedBox(
-                    //         width: 16.w,
-                    //       ),
-                    //       Expanded(
-                    //         child: Column(
-                    //           crossAxisAlignment: CrossAxisAlignment.start,
-                    //           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                    //           children: [
-                    //             Text(
-                    //               'Project title',
-                    //               style: TextStyle(
-                    //                 fontWeight: FontWeight.w900,
-                    //               ),
-                    //             ),
-                    //             Text(
-                    //               'OWNER:',
-                    //               style: TextStyle(
-                    //                 color: AppColor.kTextColor1,
-                    //               ),
-                    //             ),
-                    //           ],
-                    //         ),
-                    //       ),
-                    //     ],
-                    //   ),
-                    // ),
-                    // Spacer(),
+                    Spacer(),
+                    SizedBox(
+                      height: 72.h,
+                      child: Row(
+                        crossAxisAlignment: CrossAxisAlignment.stretch,
+                        children: [
+                          Container(
+                            width: 104.w,
+                            height: 72.h,
+                            decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(
+                                8.r,
+                              ),
+                              color: AppColor.kPlaceholder1,
+                              image: DecorationImage(
+                                  image:
+                                      NetworkImage("${constant.projectphoto}"),
+                                  fit: BoxFit.cover),
+                            ),
+                          ),
+                          SizedBox(
+                            width: 16.w,
+                          ),
+                          Expanded(
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                              children: [
+                                Text(
+                                  'Project title: ${constant.projecttitle}',
+                                  style: TextStyle(
+                                    fontWeight: FontWeight.w900,
+                                  ),
+                                ),
+                                Text(
+                                  'OWNER: ${constant.projectowner}',
+                                  style: TextStyle(
+                                    color: AppColor.kTextColor1,
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                    Spacer(),
                     // ElevatedButton(
                     //   style: ButtonStyle(
                     //     backgroundColor: MaterialStateProperty.all(
@@ -309,7 +333,9 @@ class _DonationScreenState extends State<DonationScreen> {
                         ),
                       ],
                     ),
-                    SizedBox(height: 25,),
+                    SizedBox(
+                      height: 25,
+                    ),
                   ],
                 ),
               ),

@@ -17,6 +17,7 @@ import '../ui/tab/charity/step_two_screen.dart';
 import '../ui/tab/home/detail_screen.dart';
 import '../ui/tab/home/donation_screen.dart';
 import '../ui/tab/search/result_screen.dart';
+import '../ui/tab/widgets/swap/editproject.dart';
 
 class RouteGenerator {
   static const String main = '/tab_screen';
@@ -47,6 +48,7 @@ class RouteGenerator {
         return MaterialPageRoute(
           builder: (_) => OnboardingScreen(),
         );
+
       case login:
         return MaterialPageRoute(
           builder: (_) => const LoginScreen(),

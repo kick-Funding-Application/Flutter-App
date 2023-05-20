@@ -325,7 +325,12 @@ class _ResultScreenState extends State<ResultScreen> {
                         shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(32.r),
                         ),
-                        builder: (_) => CalculatorBuilder(),
+                        builder: (_) => CalculatorBuilder(
+                          widget.result.id.toString(),
+                          projectImage: '${widget.result.assetName}',
+                          projectOwner: '${widget.result.organizer}',
+                          projectTitle: '${widget.result.title}',
+                        ),
                       );
                     },
                     child: Text(

@@ -48,6 +48,7 @@ class _categoryinputfieldState extends State<categoryinputfield> {
         Stack(
           children: [
             DropdownButtonFormField(
+              
               decoration: InputDecoration(
                 enabledBorder: OutlineInputBorder(
                   borderRadius: BorderRadius.circular(8),

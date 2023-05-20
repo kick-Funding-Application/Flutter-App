@@ -10,7 +10,9 @@ import 'package:kickfunding/ui/tab/widgets/profile/projectdate.dart';
 import '../../../../routes/routes.dart';
 import '../../../../theme/app_color.dart';
 import '../../../auth/login_form.dart';
-import '../widgets/profile/birthdate.dart';
+import 'dart:io';
+import 'package:image_picker/image_picker.dart';
+import 'package:firebase_storage/firebase_storage.dart' as firebase_storage;
 import '../widgets/profile/constants.dart';
 import 'dart:convert';
 //import 'package:country_picker/country_picker.dart';
@@ -45,6 +47,8 @@ String validateField(String value) {
 }
 
 int currentStep = 0;
+var photoUrl =
+    'https://www.hi-reit.com/wp-content/uploads/landscape-placeholder-2.png';
 
 class _StartCharityScreenState extends State<StartCharityScreen> {
   @override
@@ -74,9 +78,6 @@ class _StartCharityScreenState extends State<StartCharityScreen> {
                   onchanged: (String value) {
                     setState(() {
                       charityform.title = value;
-                      // Validate the field on each change
-                      String errorMessage = validateField(value);
-                      // Handle the error message or perform other actions
                     });
                   },
                   validateStatus: (value) {
@@ -108,9 +109,6 @@ class _StartCharityScreenState extends State<StartCharityScreen> {
                   onchanged: (String value) {
                     setState(() {
                       charityform.tags = value;
-                      // Validate the field on each change
-                      String errorMessage = validateField(value);
-                      // Handle the error message or perform other actions
                     });
                   },
                   controller: tags,
@@ -127,9 +125,6 @@ class _StartCharityScreenState extends State<StartCharityScreen> {
                   assetName: 'assets/images/dollar.svg',
                   onchanged: (String value) {
                     charityform.target = int.parse(value);
-                    // Validate the field on each change
-                    String errorMessage = validateField(value);
-                    // Handle the error message or perform other actions
                   },
                   validateStatus: (value) {
                     if (value!.isEmpty) {
@@ -182,8 +177,45 @@ class _StartCharityScreenState extends State<StartCharityScreen> {
                       borderType: BorderType.RRect,
                       radius: Radius.circular(8.r),
                       dashPattern: [15, 10],
-                      child: uploadProjectImage(
-                        image: constant.urlprojectimage,
+                      child: GestureDetector(
+                        onTap: () {
+                          _pickImage();
+                        },
+                        child: Container(
+                          padding: EdgeInsets.all(10),
+                          width: double.infinity,
+                          child: Stack(
+                            children: [
+                              Container(
+                                width: double.infinity,
+                                height: 180.h,
+                                padding: EdgeInsets.symmetric(
+                                  horizontal: 8.w,
+                                  vertical: 8.h,
+                                ),
+                                decoration: BoxDecoration(
+                                  borderRadius: BorderRadius.circular(
+                                    32.r,
+                                  ),
+                                  color: AppColor.kPlaceholder2,
+                                ),
+                              ),
+                              Positioned.fill(
+                                child: Container(
+                                  decoration: BoxDecoration(
+                                    borderRadius: BorderRadius.circular(8.r),
+                                    image: DecorationImage(
+                                      image: NetworkImage(
+                                        photoUrl,
+                                      ),
+                                      fit: BoxFit.cover,
+                                    ),
+                                  ),
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
                       ),
                     ),
                     SizedBox(
@@ -204,15 +236,13 @@ class _StartCharityScreenState extends State<StartCharityScreen> {
                       },
                       onChanged: (String value) {
                         setState(() {
-                          // Validate the field on each change
-                          String errorMessage = validateField(value);
-                          // Handle the error message or perform other actions
                           charityform.description = value;
                         });
                       },
                       controller: desc,
                       minLines: null,
-                      maxLines: null,
+                      maxLines: 3,
+                      maxLength: 150,
                       textAlignVertical: TextAlignVertical.top,
                       decoration: InputDecoration(
                         filled: true,
@@ -347,6 +377,58 @@ class _StartCharityScreenState extends State<StartCharityScreen> {
     );
   }
 
+  File? _image;
+  String? _imageUrl;
+  Future<void> _pickImage() async {
+    final picker = ImagePicker();
+    final pickedImage =
+        await picker.getImage(source: ImageSource.gallery, imageQuality: 20);
+
+    if (pickedImage != null) {
+      setState(() {
+        _image = File(pickedImage.path);
+      });
+      _uploadImage();
+    }
+  }
+
+  Future<void> _uploadImage() async {
+    if (_image == null) return;
+
+    try {
+      firebase_storage.Reference ref = firebase_storage.FirebaseStorage.instance
+          .ref()
+          .child('images/${DateTime.now().microsecondsSinceEpoch}.jpg');
+
+      firebase_storage.UploadTask uploadTask = ref.putFile(_image!);
+      firebase_storage.TaskSnapshot taskSnapshot = await uploadTask;
+      String imageUrl = await taskSnapshot.ref.getDownloadURL();
+
+      setState(() {
+        _imageUrl = imageUrl;
+
+        photoUrl = _imageUrl!;
+        print(_imageUrl);
+      });
+      showDialog(
+        context: context,
+        builder: (_) => AlertDialog(
+          content: Text("Uploaded Image"),
+        ),
+      );
+
+      print('Image uploaded successfully. URL: $_imageUrl');
+    } catch (e) {
+      print('Failed to upload image: $e');
+      showDialog(
+        context: context,
+        builder: (_) => AlertDialog(
+          content: Text("Failed to Upload Image"),
+        ),
+      );
+    }
+  }
+
   Future uploadproject(BuildContext cont) async {
     try {
       /**removecomment when online */
@@ -357,7 +439,7 @@ class _StartCharityScreenState extends State<StartCharityScreen> {
         "end_date": "${charityform.deadline}",
         "tags": "${charityform.tags}",
         "category": "${charityform.category}",
-        "image": "${constant.urlprojectimage}",
+        "image": "$photoUrl",
       };
       String jsonBody = json.encode(body);
       final encoding = Encoding.getByName('utf-8');
@@ -381,6 +463,11 @@ class _StartCharityScreenState extends State<StartCharityScreen> {
         //           content: Text("Project Uploaded Successfully"),
         //         ));
         showSheet();
+        title.clear();
+        tags.clear();
+        target.clear();
+        deadline.clear();
+        desc.clear();
         print('Registration successful');
       } else {
         print("Registeration Failed");

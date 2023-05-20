@@ -448,7 +448,7 @@ class _SearchScreenState extends State<SearchScreen> {
     try {
 /**FOR TEST */
       final response3 = await http.get(Uri.parse(
-          '${constant.server}api/projects/?search=${controller.text}'));
+          'https://kickfunding.herokuapp.com/api/projects/?search=${controller.text}'));
 
       if (response3.statusCode == 200) {
         // Parse the JSON response

@@ -246,7 +246,9 @@ class _StartCharityScreenState extends State<StartCharityScreen> {
                               borderType: BorderType.RRect,
                               radius: Radius.circular(8.r),
                               dashPattern: [15, 10],
-                              child: uploadProjectImage(),
+                              child: uploadProjectImage(
+                                image: '',
+                              ),
                             ),
                             SizedBox(
                               height: 16.h,

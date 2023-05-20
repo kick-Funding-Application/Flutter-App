@@ -4,7 +4,11 @@ import 'package:flutter/material.dart';
 
 class constant {
   static var country = 'Egypt';
-
+  static var pid = '1';
+  static var projecttitle = 'RoboBrain';
+  static var projectowner = 'Zahraa';
+  static var projectphoto =
+      'https://github.com/Zahraa5Ashraf/flutter/blob/main/new%20logo%20finalllllllyyyy.jpg?raw=true';
   static bool success = false;
   static var phone = '0';
   static int donation = 0;

@@ -13,11 +13,11 @@ class Urgent {
   final String end_date;
   final int days;
   final double rate;
+  final String userimage;
 
-  Urgent(
-    
-    {
-      required this.id,
+  Urgent({
+    required this.userimage,
+    required this.id,
     required this.title,
     required this.target,
     required this.percent,

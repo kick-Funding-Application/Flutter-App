@@ -4,10 +4,12 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:kickfunding/auth/login_form.dart';
 import 'package:kickfunding/ui/tab/widgets/profile/uploadfirebase.dart';
 import '/ui/custom_input_field.dart';
-
+import 'package:firebase_storage/firebase_storage.dart' as firebase_storage;
 import '../../../../routes/routes.dart';
 import 'constants.dart';
 import '../../../../theme/app_color.dart';
+import 'package:flutter_image_compress/flutter_image_compress.dart';
+
 import '../charity/charity_input_field.dart';
 import 'birthdate.dart';
 import 'package:http/http.dart' as http;
@@ -28,8 +30,8 @@ class _EditContentState extends State<EditContent> {
   File? _profilePicture;
 
   Future<void> pickercamera() async {
-    final XFile? file =
-        await ImagePicker().pickImage(source: ImageSource.gallery);
+    final XFile? file = await ImagePicker()
+        .pickImage(source: ImageSource.gallery, imageQuality: 20);
     if (file != null) {
       setState(() {
         _profilePicture = File(file.path);
@@ -167,19 +169,19 @@ class _EditContentState extends State<EditContent> {
                         ),
                       ),
                     ),
-                    // Positioned(
-                    //   right: -12.w,
-                    //   bottom: -12.w,
-                    //   child: GestureDetector(
-                    //     onTap: () {
-
-                    //     },
-                    //     child: SvgPicture.asset(
-                    //       'assets/images/edit.svg',
-                    //       width: 32.w,
-                    //     ),
-                    //   ),
-                    // ),
+                    Positioned(
+                      right: -12.w,
+                      bottom: -12.w,
+                      child: GestureDetector(
+                        onTap: () {
+                          _pickImage();
+                        },
+                        child: SvgPicture.asset(
+                          'assets/images/edit.svg',
+                          width: 32.w,
+                        ),
+                      ),
+                    ),
                   ],
                 ),
               ),
@@ -340,10 +342,7 @@ class _EditContentState extends State<EditContent> {
             SizedBox(
               height: 25,
             ),
-            uploadfirebase(
-              buttoncolor: AppColor.kPlaceholder2,
-              height: 56,
-            ),
+
             SizedBox(height: 26.h),
             Container(
               height: 50,
@@ -455,6 +454,68 @@ class _EditContentState extends State<EditContent> {
         ),
       ),
     );
+  }
+
+  File? _image;
+  String? _imageUrl;
+
+  void compressWithImageCompress(
+      {required String path, required double quality}) async {
+    final response = await FlutterImageCompress.compressWithFile(
+      path,
+      minWidth: 320,
+      minHeight: 240,
+      quality: quality.truncate(),
+    );
+  }
+
+  Future<void> _pickImage() async {
+    final picker = ImagePicker();
+    final pickedImage =
+        await picker.getImage(source: ImageSource.gallery, imageQuality: 25);
+
+    if (pickedImage != null) {
+      setState(() {
+        _image = File(pickedImage.path);
+      });
+      _uploadImage();
+    }
+  }
+
+  Future<void> _uploadImage() async {
+    if (_image == null) return;
+
+    try {
+      firebase_storage.Reference ref = firebase_storage.FirebaseStorage.instance
+          .ref()
+          .child('images/${DateTime.now().microsecondsSinceEpoch}.jpg');
+
+      firebase_storage.UploadTask uploadTask = ref.putFile(_image!);
+      firebase_storage.TaskSnapshot taskSnapshot = await uploadTask;
+      String imageUrl = await taskSnapshot.ref.getDownloadURL();
+
+      setState(() {
+        _imageUrl = imageUrl;
+        constant.urlprofile = _imageUrl!;
+        print(_imageUrl);
+      });
+      showDialog(
+        context: context,
+        builder: (_) => AlertDialog(
+          content: Text("Uploaded Image"),
+        ),
+      );
+
+      print('Image uploaded successfully. URL: $_imageUrl');
+    } catch (e) {
+      print('Failed to upload image: $e');
+      showDialog(
+        context: context,
+        builder: (_) => AlertDialog(
+          content: Text("Failed to Upload Image"),
+        ),
+      );
+    }
   }
 
   void savepassword() async {

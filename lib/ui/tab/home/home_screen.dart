@@ -160,6 +160,7 @@ Future getData() async {
         Duration remainingDuration = end_date.difference(currentDate);
         int days = remainingDuration.inDays;
         Urgent urgent = Urgent(
+          userimage: data['user_image'],
           id: data['id'],
           title: data['title'],
           target: target2,

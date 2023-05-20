@@ -14,9 +14,11 @@ import 'package:flutter_image_compress/flutter_image_compress.dart';
 class uploadProjectImage extends StatefulWidget {
   const uploadProjectImage({
     super.key,
-    this.image,
+    this.onTap,
+    required this.image,
   });
-  final String? image;
+  final void Function()? onTap;
+  final String image;
 
   @override
   State<uploadProjectImage> createState() => _uploadProjectImageState();
@@ -27,11 +29,8 @@ File? _image;
 class _uploadProjectImageState extends State<uploadProjectImage> {
   @override
   Widget build(BuildContext context) {
-    bool isLoading = constant.urlprojectimage == null;
     return GestureDetector(
-      onTap: () {
-        uploadImage(context);
-      },
+      onTap: widget.onTap,
       child: Container(
         padding: EdgeInsets.all(10),
         width: double.infinity,
@@ -53,18 +52,19 @@ class _uploadProjectImageState extends State<uploadProjectImage> {
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    Icon(
-                      Icons.image,
-                      color: AppColor.kTextColor2,
-                    ),
-                    Container(
-                      decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(8.r),
-                        image: DecorationImage(
-                          image: NetworkImage("${widget.image}"),
-                          fit: BoxFit.cover,
+                    Stack(
+                      children: [
+                        Container(
+                          decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(8.r),
+                            image: DecorationImage(
+                              image: NetworkImage(
+                                  "https://th.bing.com/th/id/OIP.331GjjPitU9zLBRx6caEFgHaF3?pid=ImgDet&rs=1"),
+                              fit: BoxFit.cover,
+                            ),
+                          ),
                         ),
-                      ),
+                      ],
                     ),
                     SizedBox(
                       height: 4.h,

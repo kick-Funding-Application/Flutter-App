@@ -1,110 +1,74 @@
 import 'dart:io';
-import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
-import 'package:path/path.dart' as p;
 import 'package:image_picker/image_picker.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:firebase_storage/firebase_storage.dart' as firebase_storage;
 import 'package:kickfunding/ui/tab/widgets/profile/constants.dart';
-import '../../../../theme/app_color.dart';
-import 'package:image/image.dart' as img; // Import image package
-import 'package:path_provider/path_provider.dart'; // Import path_provider package
-import 'package:flutter_image_compress/flutter_image_compress.dart';
 
-class uploadfirebase extends StatefulWidget {
-  const uploadfirebase(
-      {super.key, required this.buttoncolor, required this.height});
-  final Color buttoncolor;
-  final int height;
-
+class ImagePickerButton extends StatefulWidget {
   @override
-  State<uploadfirebase> createState() => _uploadfirebaseState();
+  _ImagePickerButtonState createState() => _ImagePickerButtonState();
 }
 
-File? _image;
+class _ImagePickerButtonState extends State<ImagePickerButton> {
+  File? _image;
+  String? _imageUrl;
 
-class _uploadfirebaseState extends State<uploadfirebase> {
+  Future<void> _pickImage() async {
+    final picker = ImagePicker();
+    final pickedImage =
+        await picker.getImage(source: ImageSource.gallery, imageQuality: 25);
+
+    if (pickedImage != null) {
+      setState(() {
+        _image = File(pickedImage.path);
+      });
+      _uploadImage();
+    }
+  }
+
+  Future<void> _uploadImage() async {
+    if (_image == null) return;
+
+    try {
+      firebase_storage.Reference ref = firebase_storage.FirebaseStorage.instance
+          .ref()
+          .child('images/${DateTime.now().microsecondsSinceEpoch}.jpg');
+
+      firebase_storage.UploadTask uploadTask = ref.putFile(_image!);
+      firebase_storage.TaskSnapshot taskSnapshot = await uploadTask;
+      String imageUrl = await taskSnapshot.ref.getDownloadURL();
+
+      setState(() {
+        _imageUrl = imageUrl;
+        constant.urlprofile = _imageUrl!;
+        print(_imageUrl);
+      });
+      showDialog(
+        context: context,
+        builder: (_) => AlertDialog(
+          content: Text("Uploaded Image"),
+        ),
+      );
+
+      print('Image uploaded successfully. URL: $_imageUrl');
+    } catch (e) {
+      print('Failed to upload image: $e');
+      showDialog(
+        context: context,
+        builder: (_) => AlertDialog(
+          content: Text("Failed to Upload Image"),
+        ),
+      );
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
-    return ElevatedButton(
-      style: ButtonStyle(
-        backgroundColor: MaterialStateProperty.all(
-          widget.buttoncolor,
-        ),
-        shape: MaterialStateProperty.all(
-          RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(
-              8.r,
-            ),
-          ),
-        ),
-        minimumSize: MaterialStateProperty.all(
-          Size(
-            double.infinity,
-            widget.height.h,
-          ),
-        ),
-      ),
-      onPressed: () {
-        uploadImage(context);
+    return GestureDetector(
+      onTap: () {
+        _pickImage();
       },
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceAround,
-        children: [
-          Expanded(
-            child: Text(
-              constant.photofile,
-              overflow: TextOverflow.ellipsis,
-              maxLines: 1,
-              style: TextStyle(
-                  color: AppColor.kTextColor1,
-                  fontWeight: FontWeight.normal,
-                  fontSize: 13),
-            ),
-          ),
-          Icon(
-            Icons.camera_alt_rounded,
-            color: AppColor.kTextColor1,
-            size: 23,
-          ),
-        ],
-      ),
+      child: Text('Pick Image'),
     );
-  }
-
-  Future<void> pickImage() async {
-    final XFile? file =
-        await ImagePicker().pickImage(source: ImageSource.gallery);
-    if (file != null) {
-      setState(() {
-        _image = File(file.path);
-        constant.image = _image;
-        constant.photofile = _image!.path;
-      });
-    }
-  }
-
-  void uploadImage(context) async {
-    pickImage();
-    try {
-      FirebaseStorage storage = FirebaseStorage.instanceFor(
-          bucket: 'gs://kickfunding-a2c6e.appspot.com');
-      Reference ref = storage
-          .ref()
-          .child(p.basename(_image!.path) + DateTime.now().toString());
-      UploadTask storageUploadTask = ref.putFile(_image!);
-      TaskSnapshot taskSnapshot = await storageUploadTask.whenComplete(() =>
-          ScaffoldMessenger.of(context).showSnackBar(
-              SnackBar(content: Text('Uploaded Image Successfully'))));
-      String url = await taskSnapshot.ref.getDownloadURL();
-
-      setState(() {
-        print(url);
-        constant.urlprofileimage = url;
-        constant.urlprofile = url;
-      });
-    } catch (ex) {
-      ScaffoldMessenger.of(context)
-          .showSnackBar(SnackBar(content: Text(ex.toString())));
-    }
   }
 }

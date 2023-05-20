@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-
+import '/ui/tab/widgets/profile/constants.dart';
 import '../../../../routes/routes.dart';
 import '../../../../theme/app_color.dart';
 
@@ -9,10 +9,14 @@ import 'calculator.dart';
 import 'pushdonation.dart';
 
 class CalculatorBuilder extends StatelessWidget {
-  const CalculatorBuilder({
-    Key? key,
-  }) : super(key: key);
-
+  const CalculatorBuilder(this.projectID,
+      {required this.projectTitle,
+      required this.projectOwner,
+      required this.projectImage});
+  final String projectID;
+  final String projectTitle;
+  final String projectOwner;
+  final String projectImage;
   @override
   Widget build(BuildContext context) {
     String finalValue = '';
@@ -73,9 +77,14 @@ class CalculatorBuilder extends StatelessWidget {
                         ),
                       ),
                     ),
-                    onPressed: () => Navigator.of(context).pushNamed(
-                        RouteGenerator.donation,
-                        arguments: finalValue),
+                    onPressed: () {
+                      constant.pid = projectID;
+                      constant.projectowner = projectOwner;
+                      constant.projecttitle = projectTitle;
+                      constant.projectphoto = projectImage;
+                      Navigator.of(context).pushNamed(RouteGenerator.donation,
+                          arguments: finalValue);
+                    },
                     child: Text(
                       'Donate',
                     ),

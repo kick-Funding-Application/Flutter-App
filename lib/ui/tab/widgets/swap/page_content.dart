@@ -9,6 +9,7 @@ import 'package:kickfunding/ui/tab/search/search_screen.dart';
 import 'package:kickfunding/ui/tab/widgets/swap/donationstest.dart';
 import 'package:kickfunding/ui/tab/widgets/swap/donators.dart';
 import 'dart:convert';
+import '../../../../models/urgent.dart';
 import '/ui/tab/widgets/profile/constants.dart';
 import '../../../../auth/login_form.dart';
 import '../../../../bloc/swap/swap_bloc.dart';
@@ -198,10 +199,10 @@ Future getData() async {
         DateTime currentDate = DateTime.now().toLocal();
         Duration remainingDuration = end_date.difference(currentDate);
         int days = remainingDuration.inDays;
-        Result result = Result(
+       Urgent urgent = Urgent(
           id: data['id'],
-          userimage:
-              'https://th.bing.com/th/id/OIP.OF59vsDmwxPP1tw7b_8clQHaE8?pid=ImgDet&rs=1',
+          userimage:data['user_image'],
+             
           title: data['title'],
           target: target2,
           percent: percent
@@ -218,7 +219,7 @@ Future getData() async {
           tags: data['tags'],
         );
 
-        myprojects.add(result);
+        myprojects.add(urgent);
       }
     }
   } catch (e) {

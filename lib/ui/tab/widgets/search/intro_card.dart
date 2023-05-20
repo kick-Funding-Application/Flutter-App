@@ -66,7 +66,7 @@ class _IntroCardState extends State<IntroCard> {
                       vertical: 8.h,
                     ),
                     decoration: BoxDecoration(
-                      color: AppColor.kTextColor2,
+                      color: AppColor.kTextColor2.withOpacity(0.5),
                       borderRadius: BorderRadius.circular(
                         8.r,
                       ),
