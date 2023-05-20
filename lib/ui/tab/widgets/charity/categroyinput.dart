@@ -31,7 +31,7 @@ class categoryinputfield extends StatefulWidget {
 }
 
 class _categoryinputfieldState extends State<categoryinputfield> {
-  String dropdownValue = 'Education';
+  String dropdownValue = charityform.category;
 
   @override
   Widget build(BuildContext context) {
@@ -48,7 +48,6 @@ class _categoryinputfieldState extends State<categoryinputfield> {
         Stack(
           children: [
             DropdownButtonFormField(
-              
               decoration: InputDecoration(
                 enabledBorder: OutlineInputBorder(
                   borderRadius: BorderRadius.circular(8),

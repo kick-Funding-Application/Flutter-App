@@ -228,6 +228,7 @@ class _StartCharityScreenState extends State<StartCharityScreen> {
                       height: 8.h,
                     ),
                     TextFormField(
+                      textInputAction: TextInputAction.done,
                       validator: (value) {
                         if (value!.isEmpty) {
                           return 'Field must not be empty';

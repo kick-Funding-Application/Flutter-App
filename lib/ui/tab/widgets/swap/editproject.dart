@@ -24,8 +24,8 @@ import 'deleteproject.dart';
 class EditProject extends StatefulWidget {
   const EditProject(
     this.projectID, {
-    super.key,
     required this.Title,
+    required this.category,
     required this.desc,
     required this.tags,
     required this.Target,
@@ -33,6 +33,7 @@ class EditProject extends StatefulWidget {
     required this.image,
     required this.createdAt,
   });
+  final String category;
   final String Title;
   final String desc;
   final String tags;
@@ -64,6 +65,7 @@ class _EditProjectState extends State<EditProject> {
     target = TextEditingController(text: "${widget.Target}");
     deadline = TextEditingController(text: "${widget.deadline}");
     photoUrl = widget.image;
+    charityform.category = widget.category;
   }
 
   void _submitForm() async {

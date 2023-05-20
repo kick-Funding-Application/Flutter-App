@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:kickfunding/auth/sessionmanage.dart';
 import 'package:kickfunding/ui/signup_form.dart';
 //import 'package:flutter_svg/flutter_svg.dart';
 import 'package:kickfunding/ui/tab/widgets/profile/constants.dart';
@@ -40,6 +41,8 @@ var obsecurepassword = true;
 Color iconcolor = Colors.grey;
 
 class _LoginFormState extends State<LoginForm> {
+  SessionManager sessionManager = SessionManager();
+
   bool check = false;
   @override
   Widget build(BuildContext context) {
@@ -160,7 +163,7 @@ class _LoginFormState extends State<LoginForm> {
                   //reload(context);
                   performLogin(context);
 
-                  // Store login status
+                  //    Store login status
                   // if (constant.success) {
                   //   SharedPreferences prefs =
                   //       await SharedPreferences.getInstance();
@@ -171,7 +174,7 @@ class _LoginFormState extends State<LoginForm> {
                   // }
                   //  print('successful');
 
-                  //   Login(context);
+                  //    Login(context);
                 }
                 ;
               },
@@ -286,8 +289,8 @@ class _LoginFormState extends State<LoginForm> {
     setState(() {
       check = true;
     });
-    SharedPreferences prefs = await SharedPreferences.getInstance();
-    prefs.setBool('isLoggedIn', true);
+    await sessionManager.setLoggedIn(true);
+
     // ignore: unnecessary_null_comparison
     await Future.delayed(Duration(seconds: 3));
     Navigator.of(context).pushReplacementNamed(

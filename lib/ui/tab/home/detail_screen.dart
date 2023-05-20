@@ -28,11 +28,10 @@ final List<Comment> feedbacks = [];
 bool showTextField = true;
 bool nocomments = false;
 
-var rate;
-String feedback = '';
 String id = '1';
-
-String test = '''
+double rate = 0;
+String test =
+    '''
 [
     {
         "id": 2,
@@ -94,11 +93,21 @@ String test = '''
 ''';
 
 class _DetailScreenState extends State<DetailScreen> {
+  String feedback = '';
+
+  void resetVariables() {
+    setState(() {
+      rate = 0;
+      feedback = '';
+    });
+  }
+
   @override
   void initState() {
     setState(() {
       id = widget.urgent.id.toString();
     });
+    resetVariables();
     super.initState();
   }
 
@@ -623,7 +632,7 @@ class _DetailScreenState extends State<DetailScreen> {
                             ),
                             RatingBar.builder(
                               itemSize: 30,
-                              initialRating: rate != null ? rate! : 0,
+                              initialRating: rate,
                               minRating: 0,
                               direction: Axis.horizontal,
                               allowHalfRating: false,
@@ -653,6 +662,7 @@ class _DetailScreenState extends State<DetailScreen> {
                                   height: 8.h,
                                 ),
                                 TextFormField(
+                                  textInputAction: TextInputAction.done,
                                   validator: (value) {
                                     if (value!.isEmpty) {
                                       return 'Field must not be empty';

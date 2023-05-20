@@ -108,6 +108,7 @@ class _EditContentState extends State<EditContent> {
         print(result);
 
         print('Profile Edited successfully');
+
         saveprofile();
 
         /**removecomment when online */
@@ -519,23 +520,28 @@ class _EditContentState extends State<EditContent> {
   }
 
   void savepassword() async {
-    // Map<String, dynamic> body = {
-    //   "password1": password1,
-    //   "password2": password2,
-    // };
-    // String jsonBody = json.encode(body);
-    // final encoding = Encoding.getByName('utf-8');
+    try {
+      Map<String, dynamic> body = {
+        "new_password1": password1,
+        "new_password2": password2,
+      };
+      String jsonBody = json.encode(body);
+      final encoding = Encoding.getByName('utf-8');
 
-    // var url = Uri.parse(
-    //     "https://73ec-197-54-244-163.ngrok-free.app/api/dj-rest-auth/registration/");
-    // var response = await http.post(url,
-    //     headers: {'content-Type': 'application/json'},
-    //     body: jsonBody,
-    //     encoding: encoding);
-    // var result = response.body;
-    // print(result);
-
-    print('Profile Edited successfully');
+      var url =
+          Uri.parse("${constant.server}api/dj-rest-auth/password/change/");
+      var response = await http.post(url,
+          headers: {
+            'content-Type': 'application/json',
+            "Authorization": " Token ${token}",
+          },
+          body: jsonBody,
+          encoding: encoding);
+      var result = response.body;
+      print(result);
+    } catch (e) {
+      print(e.toString());
+    }
   }
 
   void updatePassword(context) {

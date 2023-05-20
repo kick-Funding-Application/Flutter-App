@@ -12,7 +12,7 @@ class constant {
   static bool success = false;
   static var phone = '0';
   static int donation = 0;
-  static var Username = 'Zahraa';
+  static var Username = '';
   static String first_name = 'g';
   static String last_name = 'g';
   static String email = 'zucchinihack2020@gmail.com';
@@ -35,4 +35,7 @@ class constant {
   static String urlprojectimage =
       "https://github.com/Zahraa5Ashraf/flutter/blob/main/new%20logo%20finalllllllyyyy.jpg?raw=true";
   static String server = "https://kickfunding.herokuapp.com/";
+
+  static String feedback = '';
+  static double rate = 0;
 }

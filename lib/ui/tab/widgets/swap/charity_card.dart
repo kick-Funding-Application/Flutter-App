@@ -124,6 +124,7 @@ class _CharityCardState extends State<CharityCard> {
                               context,
                               MaterialPageRoute(
                                 builder: (context) => EditProject(
+                                  category: '${widget.urgent.category}',
                                   Target: '${widget.urgent.target}',
                                   Title: '${widget.urgent.title}',
                                   deadline: '${widget.urgent.end_date}',
