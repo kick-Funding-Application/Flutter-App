@@ -5,9 +5,14 @@ import 'package:flutter_svg/flutter_svg.dart';
 
 import '../../../../bloc/profile/profile_bloc.dart';
 import '../../../../theme/app_color.dart';
+import 'constants.dart';
 
 class ProfileCard extends StatelessWidget {
-  const ProfileCard();
+  const ProfileCard(
+      {required this.phone, required this.firstname, required this.lastname});
+  final String firstname;
+  final String lastname;
+  final String phone;
 
   @override
   Widget build(BuildContext context) {
@@ -22,11 +27,32 @@ class ProfileCard extends StatelessWidget {
             ),
             color: AppColor.kForthColor,
           ),
-          child: Center(
-            child: SvgPicture.asset(
-              'assets/images/image_placeholder.svg',
-              width: 32.w,
-            ),
+          child: Stack(
+            children: [
+              Positioned.fill(
+                child: Center(
+                  child: CircularProgressIndicator(),
+                ),
+              ),
+              Center(
+                child: Container(
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(
+                      8.r,
+                    ),
+                    image: DecorationImage(
+                        image: NetworkImage(constant.urlprofile),
+                        fit: BoxFit.cover),
+                    // constant.image != null
+                    //     ? DecorationImage(
+                    //         image: FileImage(constant.image!),
+                    //         fit: BoxFit.cover,
+                    //       )
+                    //     : null,
+                  ),
+                ),
+              ),
+            ],
           ),
         ),
         SizedBox(
@@ -37,13 +63,13 @@ class ProfileCard extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Text(
-                'Zahraa Ashraf',
+                '${firstname} ${lastname}',
                 style: Theme.of(context).textTheme.headline5!.copyWith(
                       fontWeight: FontWeight.bold,
                     ),
               ),
               Text(
-                'EG +0201222318030',
+                '${phone}',
                 style: Theme.of(context).textTheme.headline6!.copyWith(
                       color: AppColor.kTextColor1,
                     ),

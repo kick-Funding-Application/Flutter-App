@@ -9,7 +9,6 @@ import '../widgets/profile/payment_header.dart';
 import '../widgets/profile/profile_content.dart';
 import '../widgets/profile/profile_header.dart';
 
-
 class ProfileScreen extends StatelessWidget {
   const ProfileScreen({Key? key}) : super(key: key);
 
@@ -75,6 +74,3 @@ class ProfileScreen extends StatelessWidget {
     );
   }
 }
-
-
-

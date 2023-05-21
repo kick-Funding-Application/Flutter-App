@@ -12,6 +12,8 @@ class CustomInputField extends StatelessWidget {
     this.hintText,
     this.validateStatus,
     this.sufficon,
+    this.backgroundcolor,
+    this.height,
   });
 
   final bool isPassword;
@@ -21,37 +23,46 @@ class CustomInputField extends StatelessWidget {
   final String? hintText;
   final FormFieldValidator? validateStatus;
   final IconButton? sufficon;
+  final Color? backgroundcolor;
+  final int? height;
 
   @override
   Widget build(BuildContext context) {
-    return TextFormField(
-      obscureText: isPassword,
-      controller: controller,
-      textInputAction: textInputAction,
-      validator: validateStatus,
-      onChanged: onChanged,
-      cursorColor: AppColor.kPrimaryColor,
-      style: Theme.of(context).textTheme.bodyText2,
-      decoration: InputDecoration(
-        suffixIcon: sufficon,
-        filled: true,
-        fillColor: AppColor.kPlaceholder1,
-        border: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(
-            8.r,
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        TextFormField(
+          
+          obscureText: isPassword,
+          controller: controller,
+          textInputAction: textInputAction,
+          validator: validateStatus,
+          onChanged: onChanged,
+          cursorColor: AppColor.kPrimaryColor,
+          style: Theme.of(context).textTheme.bodyText2,
+          decoration: InputDecoration(
+            labelText: hintText,
+            suffixIcon: sufficon,
+            filled: true,
+            fillColor: backgroundcolor,
+            border: OutlineInputBorder(
+              borderRadius: BorderRadius.circular(
+                8.r,
+              ),
+              borderSide: BorderSide.none,
+            ),
+            hintText: hintText,
+            hintStyle: TextStyle(
+              color: AppColor.kTextColor1,
+              fontSize: 14.sp,
+            ),
+            contentPadding: EdgeInsets.symmetric(
+              horizontal: 12.w,
+              vertical: 8.h,
+            ),
           ),
-          borderSide: BorderSide.none,
         ),
-        hintText: hintText,
-        hintStyle: TextStyle(
-          color: AppColor.kTextColor1,
-          fontSize: 14.sp,
-        ),
-        contentPadding: EdgeInsets.symmetric(
-          horizontal: 12.w,
-          vertical: 8.h,
-        ),
-      ),
+      ],
     );
   }
 }

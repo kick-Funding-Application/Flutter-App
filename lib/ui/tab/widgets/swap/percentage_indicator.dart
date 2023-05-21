@@ -56,8 +56,12 @@ class _PercentageIndicatiorState extends State<PercentageIndicatior> {
                   BoxDecoration(shape: BoxShape.circle, color: Colors.white),
               child: Center(
                 child: Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    Text(' ${widget.percentage} %'),
+                    Text(
+                      ' ${widget.percentage} %',
+                      textAlign: TextAlign.center,
+                    ),
                   ],
                 ),
               ),

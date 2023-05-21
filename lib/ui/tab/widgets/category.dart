@@ -1,21 +1,16 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:kickfunding/initials/constants.dart';
 
 import '../../../theme/app_color.dart';
-
-
-final List<String> categories = [
-  'Education',
-  'Health',
-  'Animal',
-  'Environment',
-];
+import '../search/search_screen.dart';
 
 class Category extends StatefulWidget {
   const Category({
     Key? key,
+    this.onTap,
   }) : super(key: key);
-
+  final void Function()? onTap;
   @override
   _CategoryState createState() => _CategoryState();
 }
@@ -35,11 +30,15 @@ class _CategoryState extends State<Category> {
           scrollDirection: Axis.horizontal,
           child: Row(
             children: List.generate(
-                categories.length,
+                charityform.categories.length,
                 (index) => GestureDetector(
                       onTap: () {
                         setState(() {
-                          selectedCat = index;
+                          charityform.selectcategory = index;
+                          charityform.specificCategory =
+                              charityform.categories[index];
+
+                          widget.onTap!();
                         });
                       },
                       child: Row(
@@ -50,7 +49,7 @@ class _CategoryState extends State<Category> {
                               horizontal: 8.w,
                             ),
                             decoration: BoxDecoration(
-                              color: selectedCat == index
+                              color: charityform.selectcategory == index
                                   ? AppColor.kPrimaryColor
                                   : AppColor.kPlaceholder2,
                               borderRadius: BorderRadius.circular(
@@ -58,9 +57,9 @@ class _CategoryState extends State<Category> {
                               ),
                             ),
                             child: Text(
-                              categories[index],
+                              charityform.categories[index],
                               style: TextStyle(
-                                color: selectedCat == index
+                                color: charityform.selectcategory == index
                                     ? Colors.white
                                     : AppColor.kTextColor1,
                               ),

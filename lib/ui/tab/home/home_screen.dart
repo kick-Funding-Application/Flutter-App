@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
-
+import '../widgets/profile/constants.dart';
 import '../../../../models/urgent.dart';
 import '../../../../theme/app_color.dart';
 import 'package:http/http.dart' as http;
@@ -9,72 +9,72 @@ import 'dart:convert';
 import '../widgets/category.dart';
 import '../widgets/home/header.dart';
 import '../widgets/home/urgent_card.dart';
+import '/initials/constants.dart';
 
-final List<Urgent> urgents = [
-  Urgent(
-    title: 'Title of project',
-    target: '500.00',
-    percent: '50',
-    assetName: 'assets/images/image_placeholder.svg',
-    categories: ['Children', 'Education'],
-    days: 40,
-    organizer: 'Organizer',
-    remaining: '250.00',
-    desc: 'details............'
-        '...........................'
-        '..............',
-    people: 99,
-  ),
-  Urgent(
-    title: 'Title of project',
-    target: '500.00',
-    percent: '50',
-    assetName: 'assets/images/image_placeholder.svg',
-    categories: ['Children', 'Education'],
-    days: 40,
-    organizer: 'Organizer',
-    remaining: '250.00',
-    desc: 'details............'
-        '........................... '
-        '..............',
-    people: 99,
-  ),
-  Urgent(
-    title: 'Title of project',
-    target: '500.00',
-    percent: '50',
-    assetName: 'assets/images/image_placeholder.svg',
-    categories: ['Children', 'Education'],
-    days: 40,
-    organizer: 'Organizer',
-    remaining: '250.00',
-    desc: 'details............'
-        '........................... '
-        '..............',
-    people: 99,
-  ),
-  Urgent(
-    title: 'Title of project',
-    target: '500.00',
-    percent: '50',
-    assetName: 'assets/images/image_placeholder.svg',
-    categories: ['Children', 'Education'],
-    days: 40,
-    organizer: 'Organizer',
-    remaining: '250.00',
-    desc: 'details............'
-        '........................... '
-        '..............',
-    people: 99,
-  ),
-];
+final List<Urgent> urgents = [];
+final List<dynamic> specificurgents = [];
 
 Future getData() async {
-  var url = Uri.parse("https://dummyjson.com/quotes");
-  var response = await http.get(url);
-  var responsebody = jsonDecode(response.body);
-  print(responsebody["quotes"][1]);
-  return responsebody["quotes"];
+
+
+  try {
+/**FOR TEST */
+    final response2 =
+        await http.get(Uri.parse('${constant.server}api/projects/'));
+
+    if (response2.statusCode == 200) {
+      // Parse the JSON response
+      final jsonData = json.decode(response2.body);
+
+      // Clear the specificurgents list before starting the loop
+      specificurgents.clear();
+
+      // Iterate over the parsed data and append to the urgents list
+      for (var data in jsonData) {
+        int target = data['target_amount'];
+        String target2 = data['target_amount'].toString();
+        int current_amount = data['current_amount'];
+        int remaining = ((target - current_amount));
+        double percent;
+        if (target == 0) {
+          percent = 0;
+        } else {
+          percent = ((target - remaining) / target) * 100;
+        }
+
+        DateTime end_date = DateTime.parse(data['end_date']).toLocal();
+        DateTime currentDate = DateTime.now().toLocal();
+        Duration remainingDuration = end_date.difference(currentDate);
+        int days = remainingDuration.inDays;
+        Urgent urgent = Urgent(
+          userimage: data['user_image'],
+          id: data['id'],
+          title: data['title'],
+          target: target2,
+          percent: percent
+              .toStringAsFixed(2), // Convert to string with 2 decimal places
+          assetName: data['image'],
+          category: data['category'],
+          organizer: data['created_by'],
+          remaining: remaining.toString(),
+          rate: double.parse(data['rate']['avg_rate'].toString()),
+          details: data['details'],
+          end_date: data['end_date'],
+          start_date: data['start_date'],
+          days: days,
+          tags: data['tags'],
+        );
+
+        if (urgent.category == charityform.specificCategory) {
+          urgents.add(urgent);
+          specificurgents.add(urgent);
+        }
+      }
+    }
+  } catch (e) {
+    print(e.toString());
+  }
+  return specificurgents;
 }
 
 class HomeScreen extends StatefulWidget {
@@ -110,11 +110,7 @@ class _HomeScreenState extends State<HomeScreen> {
     super.initState();
   }
 
-  @override
-  void dispose() {
-    controller.dispose();
-    super.dispose();
-  }
+
 
   @override
   Widget build(BuildContext context) {
@@ -219,7 +215,14 @@ class _HomeScreenState extends State<HomeScreen> {
                     ),
                   ),
                   Spacer(),
-                  Category(),
+                  buildcategory(),
+                  // Category(
+                  //   onTap: () {
+                  //     setState(() {
+                  //       _buildurgent(context);
+                  //     });
+                  //   },
+                  // ),
                   Spacer(),
                   Padding(
                     padding: EdgeInsets.symmetric(
@@ -238,7 +241,7 @@ class _HomeScreenState extends State<HomeScreen> {
                         Row(
                           mainAxisSize: MainAxisSize.min,
                           children: List.generate(
-                            urgents.length,
+                            specificurgents.length,
                             (index) => Row(
                               children: [
                                 SizedBox(
@@ -262,33 +265,8 @@ class _HomeScreenState extends State<HomeScreen> {
                     ),
                   ),
                   Spacer(),
-                  Padding(
-                    padding: EdgeInsets.only(
-                      left: 16.0.w,
-                    ),
-                    child: SingleChildScrollView(
-                      controller: controller,
-                      scrollDirection: Axis.horizontal,
-                      padding: EdgeInsets.only(
-                        top: 8.h,
-                        bottom: 8.h,
-                        right: 8.w,
-                      ),
-                      child: Row(
-                        children: List.generate(
-                          urgents.length,
-                          (index) => Row(
-                            children: [
-                              UrgentCard(urgents[index]),
-                              SizedBox(
-                                width: 16.w,
-                              ),
-                            ],
-                          ),
-                        ),
-                      ),
-                    ),
-                  ),
+                  _buildurgent(context),
+                 
                   Spacer(),
                 ],
               ),
@@ -297,5 +275,52 @@ class _HomeScreenState extends State<HomeScreen> {
             return Center(child: CircularProgressIndicator());
           }
         });
+  }
+
+  Widget buildcategory() {
+    return Category(onTap: () {
+      setState(() {
+        _buildurgent(context);
+      });
+    });
+  }
+
+  Widget _buildurgent(BuildContext context) {
+    return FutureBuilder(
+      future: getData(),
+      builder: (context, AsyncSnapshot snapshot) {
+        if (snapshot.hasData) {
+          return Padding(
+            padding: EdgeInsets.only(
+              left: 16.0.w,
+            ),
+            child: SingleChildScrollView(
+              controller: controller,
+              scrollDirection: Axis.horizontal,
+              padding: EdgeInsets.only(
+                top: 8.h,
+                bottom: 8.h,
+                right: 8.w,
+              ),
+              child: Row(
+                children: List.generate(
+                  specificurgents.length,
+                  (index) => Row(
+                    children: [
+                      UrgentCard(specificurgents[index]),
+                      SizedBox(
+                        width: 16.w,
+                      ),
+                    ],
+                  ),
+                ),
+              ),
+            ),
+          );
+        } else {
+          return Center(child: CircularProgressIndicator());
+        }
+      },
+    );
   }
 }

@@ -1,13 +1,18 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-
+import '/ui/tab/widgets/profile/constants.dart';
 import '../../../theme/app_color.dart';
 import '../routes/routes.dart';
 import '../ui/signup_form.dart';
 
-class SignupScreen extends StatelessWidget {
+class SignupScreen extends StatefulWidget {
   const SignupScreen();
 
+  @override
+  State<SignupScreen> createState() => _SignupScreenState();
+}
+
+class _SignupScreenState extends State<SignupScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -19,7 +24,7 @@ class SignupScreen extends StatelessWidget {
               Text(
                 'KickFunding',
                 style: Theme.of(context).textTheme.headline1!.copyWith(
-                      color: Colors.white,
+                      color: AppColor.kAccentColor,
                     ),
               ),
               SizedBox(
@@ -55,68 +60,81 @@ class SignupScreen extends StatelessWidget {
                         ],
                       ),
                     ),
-                    Container(
-                      width: double.infinity,
-                      padding: EdgeInsets.symmetric(
-                        horizontal: 16.w,
-                        vertical: 24.h,
-                      ),
-                      decoration: BoxDecoration(
-                        color: Colors.white,
-                        borderRadius: BorderRadius.circular(
-                          16.r,
-                        ),
-                        boxShadow: [
-                          BoxShadow(
-                            color: AppColor.kBlue.withOpacity(
-                              0.5,
-                            ),
-                            offset: Offset(
-                              0,
-                              2.h,
-                            ),
-                            blurRadius: 10,
+                    Column(
+                      children: [
+                        Container(
+                          height: 750.h,
+                          width: double.infinity,
+                          padding: EdgeInsets.symmetric(
+                            horizontal: 16.w,
+                            vertical: 24.h,
                           ),
-                        ],
-                      ),
-                      child: Column(
-                        children: [
-                          SignupForm(),
-                          SizedBox(
-                            height: 40.h,
-                          ),
-                          GestureDetector(
-                            onTap: () =>
-                                Navigator.of(context).pushReplacementNamed(
-                              RouteGenerator.login,
+                          decoration: BoxDecoration(
+                            color: Colors.white,
+                            borderRadius: BorderRadius.circular(
+                              16.r,
                             ),
-                            child: Row(
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              children: [
-                                Text(
-                                  'Already have account? ',
-                                  style: Theme.of(context)
-                                      .textTheme
-                                      .bodyText1!
-                                      .copyWith(
-                                        color: AppColor.kTextColor1,
-                                      ),
+                            boxShadow: [
+                              BoxShadow(
+                                color: AppColor.kBlue.withOpacity(
+                                  0.5,
                                 ),
-                                Text(
-                                  'Sign in',
-                                  style: Theme.of(context)
-                                      .textTheme
-                                      .bodyText1!
-                                      .copyWith(
-                                        color: AppColor.kAccentColor,
-                                        fontWeight: FontWeight.bold,
+                                offset: Offset(
+                                  0,
+                                  2.h,
+                                ),
+                                blurRadius: 10,
+                              ),
+                            ],
+                          ),
+                          child: SingleChildScrollView(
+                            physics: ScrollPhysics(),
+                            child: Column(
+                              children: [
+                                SignupForm(),
+                                SizedBox(
+                                  height: 15.h,
+                                ),
+                                GestureDetector(
+                                  onTap: () {
+                                    setState(() {
+                                      constant.photofile = 'Upload Picture';
+                                    });
+
+                                    Navigator.of(context).pushReplacementNamed(
+                                      RouteGenerator.login,
+                                    );
+                                  },
+                                  child: Row(
+                                    mainAxisAlignment: MainAxisAlignment.center,
+                                    children: [
+                                      Text(
+                                        'Already have account? ',
+                                        style: Theme.of(context)
+                                            .textTheme
+                                            .bodyText1!
+                                            .copyWith(
+                                              color: AppColor.kTextColor1,
+                                            ),
                                       ),
-                                )
+                                      Text(
+                                        'Sign in',
+                                        style: Theme.of(context)
+                                            .textTheme
+                                            .bodyText1!
+                                            .copyWith(
+                                              color: AppColor.kAccentColor,
+                                              fontWeight: FontWeight.bold,
+                                            ),
+                                      )
+                                    ],
+                                  ),
+                                ),
                               ],
                             ),
                           ),
-                        ],
-                      ),
+                        ),
+                      ],
                     ),
                   ],
                 ),

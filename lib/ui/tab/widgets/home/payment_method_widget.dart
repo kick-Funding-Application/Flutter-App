@@ -7,22 +7,19 @@ import '../../../../models/payment_method.dart';
 import '../../../../theme/app_animation.dart';
 import '../../../../theme/app_color.dart';
 
-
-
-
 final List<PaymentMethod> methods = [
   PaymentMethod(
-    name: 'Credit Card',
+    name: 'Visa',
     assetName: 'assets/images/visa.png',
-  ),
-  PaymentMethod(
-    name: 'Bank Transfer',
-    assetName: 'assets/images/bca.png',
   ),
   PaymentMethod(
     name: 'PayPal',
     assetName: 'assets/images/paypal.png',
-  )
+  ),
+  PaymentMethod(
+    name: 'BCA',
+    assetName: 'assets/images/bca.png',
+  ),
 ];
 
 class PaymentMethodWidget extends StatelessWidget {
@@ -57,16 +54,16 @@ class PaymentMethodWidget extends StatelessWidget {
                   ),
                 ),
                 child: Center(
-                  child: state.index == index
-                      ? Container(
-                          width: 16.w,
-                          height: 16.w,
-                          decoration: BoxDecoration(
-                            shape: BoxShape.circle,
-                            color: AppColor.kPrimaryColor,
-                          ),
-                        )
-                      : Container(),
+                  child: //state.index == index?
+                      Container(
+                    width: 16.w,
+                    height: 16.w,
+                    decoration: BoxDecoration(
+                      shape: BoxShape.circle,
+                      color: AppColor.kPrimaryColor,
+                    ),
+                  ),
+                  //   : Container(),
                 ),
               ),
             ),

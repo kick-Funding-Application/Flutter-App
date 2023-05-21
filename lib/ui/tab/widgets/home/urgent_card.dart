@@ -6,7 +6,7 @@ import '../../../../models/urgent.dart';
 import '../../../../routes/routes.dart';
 import '../../../../theme/app_color.dart';
 
-class UrgentCard extends StatelessWidget {
+class UrgentCard extends StatefulWidget {
   const UrgentCard(
     this.urgent,
   );
@@ -14,11 +14,16 @@ class UrgentCard extends StatelessWidget {
   final Urgent urgent;
 
   @override
+  State<UrgentCard> createState() => _UrgentCardState();
+}
+
+class _UrgentCardState extends State<UrgentCard> {
+  @override
   Widget build(BuildContext context) {
     return GestureDetector(
       onTap: () {
         Navigator.of(context)
-            .pushNamed(RouteGenerator.details, arguments: urgent);
+            .pushNamed(RouteGenerator.details, arguments: widget.urgent);
       },
       child: Container(
         height: 310.h,
@@ -54,26 +59,33 @@ class UrgentCard extends StatelessWidget {
                     color: AppColor.kPlaceholder1,
                   ),
                   child: Center(
-                    child: SvgPicture.asset(
-                      'assets/images/image_placeholder.svg',
-                      width: 80.w,
+                    child: Container(
+                      // width: 180.h,
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(
+                          8.r,
+                        ),
+                        image: DecorationImage(
+                            image: NetworkImage(widget.urgent.assetName),
+                            fit: BoxFit.cover),
+                      ),
                     ),
                   ),
                 ),
-                Positioned(
-                  bottom: 8.h,
-                  right: 8.w,
-                  child: SvgPicture.asset(
-                    'assets/images/bookmark.svg',
-                  ),
-                )
+                // Positioned(
+                //   bottom: 8.h,
+                //   right: 8.w,
+                //   child: SvgPicture.asset(
+                //     'assets/images/bookmark.svg',
+                //   ),
+                // )
               ],
             ),
             SizedBox(
               height: 8.h,
             ),
             Text(
-              urgent.title,
+              widget.urgent.title,
               style: Theme.of(context).textTheme.headline6!.copyWith(
                     fontWeight: FontWeight.bold,
                   ),
@@ -82,7 +94,9 @@ class UrgentCard extends StatelessWidget {
             Row(
               children: [
                 Container(
-                  width: (240.w - 20.w) * double.parse(urgent.percent) / 100,
+                  width: (240.w - 20.w) *
+                      double.parse(widget.urgent.percent) /
+                      100,
                   height: 4.h,
                   decoration: ShapeDecoration(
                     shape: const StadiumBorder(),
@@ -92,7 +106,7 @@ class UrgentCard extends StatelessWidget {
                 Spacer(),
                 Container(
                   width: (240.w - 20.w) *
-                      (100 - double.parse(urgent.percent)) /
+                      (100 - double.parse(widget.urgent.percent)) /
                       100,
                   height: 4.h,
                   decoration: ShapeDecoration(
@@ -117,14 +131,14 @@ class UrgentCard extends StatelessWidget {
                 Row(
                   children: [
                     Text(
-                      '\$${urgent.target} ',
+                      '\$${widget.urgent.target} ',
                       style: TextStyle(
                         color: AppColor.kTitle,
                         fontWeight: FontWeight.w600,
                       ),
                     ),
                     Text(
-                      '(${urgent.percent}%)',
+                      '(${widget.urgent.percent}%)',
                       style: TextStyle(
                         color: AppColor.kTextColor1,
                       ),

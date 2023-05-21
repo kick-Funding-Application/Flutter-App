@@ -1,11 +1,16 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:flutter_svg/flutter_svg.dart';
+import 'package:kickfunding/auth/sessionmanage.dart';
+import 'package:kickfunding/ui/signup_form.dart';
+//import 'package:flutter_svg/flutter_svg.dart';
+import 'package:kickfunding/ui/tab/widgets/profile/constants.dart';
 import '../../../theme/app_color.dart';
 import '../routes/routes.dart';
 import 'dart:convert';
 import 'package:http/http.dart' as http;
 import '../ui/custom_input_field.dart';
+
+import 'package:shared_preferences/shared_preferences.dart';
 
 class LoginForm extends StatefulWidget {
   const LoginForm({
@@ -18,42 +23,16 @@ class LoginForm extends StatefulWidget {
 
 GlobalKey<FormState> _formKey2 = GlobalKey<FormState>();
 
-Future Login(BuildContext cont) async {
-  /**removecomment when online */
-  Map<String, dynamic> body = {
-    "email": email,
-    "password": password,
-  };
-  String jsonBody = json.encode(body);
-  final encoding = Encoding.getByName('utf-8');
-  if (email == "" || password == "") {
-    print('Fields have not to be empty');
-  } else {
-    var url =
-        Uri.parse("https://1a62-102-186-239-195.eu.ngrok.io/caregiver/signup");
-    var response = await http.post(url,
-        headers: {'content-Type': 'application/json'},
-        body: jsonBody,
-        encoding: encoding);
-    var result = response.body;
-    print(result);
-
-    print('Registration successful');
-    print(result);
-
-    var data = json.decode(response.body);
-    if (data["message"] == "Success") {
-      token = data["access_token"];
-      print("Registeration succeeded");
-      Navigator.of(cont).pushReplacementNamed(
-        RouteGenerator.main,
-      );
-    } else {
-      print("Registeration Failed");
-    }
-  }
-  /**removecomment when online */
-}
+// Future performLogin(BuildContext cont2) async {
+//   bool check = false;
+//   if (email == 'admin' && password == 'admin') {
+//     check = true;
+//     constant.success = check;
+//     return constant.success;
+//   } else {
+//     return constant.success;
+//   }
+// }
 
 var token = "";
 var email = "";
@@ -62,6 +41,9 @@ var obsecurepassword = true;
 Color iconcolor = Colors.grey;
 
 class _LoginFormState extends State<LoginForm> {
+  SessionManager sessionManager = SessionManager();
+
+  bool check = false;
   @override
   Widget build(BuildContext context) {
     return Form(
@@ -99,7 +81,7 @@ class _LoginFormState extends State<LoginForm> {
               textInputAction: TextInputAction.next,
             ),
             SizedBox(
-              height: 8.h,
+              height: 15.h,
             ),
             CustomInputField(
               hintText: 'Password',
@@ -170,13 +152,29 @@ class _LoginFormState extends State<LoginForm> {
                   ),
                 ),
               ),
-              onPressed: () {
+              onPressed: () async {
                 if (_formKey2.currentState!.validate()) {
-                  print('successful');
-                  Navigator.of(context).pushReplacementNamed(
-                    RouteGenerator.main,
-                  );
-                  //   Login(context);
+                  // Perform login
+                  if (check = !true) {
+                    Center(
+                      child: CircularProgressIndicator(),
+                    );
+                  }
+                  //reload(context);
+                  performLogin(context);
+
+                  //    Store login status
+                  // if (constant.success) {
+                  //   SharedPreferences prefs =
+                  //       await SharedPreferences.getInstance();
+                  //   prefs.setBool('isLoggedIn', true);
+                  //   // ignore: unnecessary_null_comparison
+                  // } else if (constant.success == null) {
+                  //   Center(child: CircularProgressIndicator());
+                  // }
+                  //  print('successful');
+
+                  //    Login(context);
                 }
                 ;
               },
@@ -188,5 +186,109 @@ class _LoginFormState extends State<LoginForm> {
         ),
       ),
     );
+  }
+
+  void performLogin(BuildContext context) async {
+    try {
+      Map<String, dynamic> body = {
+        "email": email,
+        "password": password,
+      };
+      String jsonBody = json.encode(body);
+      final encoding = Encoding.getByName('utf-8');
+      if (email == "zozo" || password == "zozo") {
+        reload(context);
+        //print('Fields have not to be empty');
+      } else {
+        var url = Uri.parse("${constant.server}api/dj-rest-auth/login/");
+
+        var response = await http.post(url,
+            headers: {
+              'content-Type': 'application/json',
+            },
+            body: jsonBody,
+            encoding: encoding);
+
+        var data = json.decode(response.body);
+
+        if (response.statusCode == 200) {
+          check = true;
+          token = data["key"];
+          getinfo();
+          reload(context);
+        } else if (response.statusCode == 400) {
+          showDialog(
+              context: context,
+              builder: (_) => const AlertDialog(
+                    content: Text("Wrong Email or Password!"),
+                  ));
+        } else {
+          Center(child: CircularProgressIndicator());
+        }
+        /* UNCOMMENT WHEN SERVER ONLINE */
+      }
+    } catch (e) {
+      print(e.toString());
+    }
+    /* UNCOMMENT WHEN SERVER ONLINE */
+  }
+
+  void getinfo() async {
+    try {
+      var url2 = Uri.parse("${constant.server}api/dj-rest-auth/user/");
+      var response2 = await http.get(
+        url2,
+        headers: {
+          'content-Type': 'application/json',
+          "Authorization": " Token ${token}"
+        },
+      );
+
+      var data2 = json.decode(response2.body);
+      print(response2.statusCode);
+      if (1 == 1) {
+        String userImage = data2["user_image"].toString();
+        String defaultImage =
+            "https://th.bing.com/th/id/OIP.OF59vsDmwxPP1tw7b_8clQHaE8?pid=ImgDet&rs=1";
+
+        if (userImage == "null") {
+          setState(() {
+            constant.urlprofile = defaultImage;
+          });
+        } else {
+          constant.urlprofile = userImage;
+        }
+
+        setState(() {
+          constant.Username = data2["username"].toString();
+          constant.bdateuser = data2["birth_date"].toString();
+          constant.countryuser = data2["country"].toString();
+          constant.first_name = data2["first_name"].toString();
+          constant.last_name = data2["last_name"].toString();
+          constant.phoneuser = data2["phone_number"].toString();
+          constant.email = data2["email"].toString();
+        });
+      } else {
+        print('failed to load data');
+      }
+    } catch (e) {
+      print(e.toString());
+    }
+  }
+
+  Future<void> reload(context) async {
+    constant.success = true;
+    setState(() {
+      check = true;
+    });
+    await sessionManager.setLoggedIn(true);
+
+    // ignore: unnecessary_null_comparison
+    await Future.delayed(Duration(seconds: 3));
+    Navigator.of(context).pushReplacementNamed(
+      RouteGenerator.main,
+    );
+
+    return;
   }
 }

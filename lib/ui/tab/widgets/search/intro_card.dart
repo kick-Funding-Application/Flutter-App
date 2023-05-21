@@ -2,15 +2,14 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 
+import '../../../../models/result.dart';
+import '../../../../routes/routes.dart';
 import '../../../../theme/app_color.dart';
 
 class IntroCard extends StatefulWidget {
-  IntroCard( {required this.title, required this.Owner, required this.category, required this.Date});
-  final String title;
-  final String category;
-  final String Owner;
-  final DateTime Date;
+  const IntroCard(this.result);
 
+  final Result result;
   @override
   State<IntroCard> createState() => _IntroCardState();
 }
@@ -19,7 +18,10 @@ class _IntroCardState extends State<IntroCard> {
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
-      onTap: () {},
+      onTap: () {
+        Navigator.of(context)
+            .pushNamed(RouteGenerator.result, arguments: widget.result);
+      },
       child: Container(
         height: 340.h,
         decoration: BoxDecoration(
@@ -43,9 +45,15 @@ class _IntroCardState extends State<IntroCard> {
                     color: AppColor.kPlaceholder1,
                   ),
                   child: Center(
-                    child: SvgPicture.asset(
-                      'assets/images/image_placeholder.svg',
-                      width: 80.w,
+                    child: Container(
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(
+                          8.r,
+                        ),
+                        image: DecorationImage(
+                            image: NetworkImage(widget.result.assetName),
+                            fit: BoxFit.cover),
+                      ),
                     ),
                   ),
                 ),
@@ -58,13 +66,13 @@ class _IntroCardState extends State<IntroCard> {
                       vertical: 8.h,
                     ),
                     decoration: BoxDecoration(
-                      color: AppColor.kTextColor2,
+                      color: AppColor.kTextColor2.withOpacity(0.5),
                       borderRadius: BorderRadius.circular(
                         8.r,
                       ),
                     ),
                     child: Text(
-                      '${widget.category}',
+                      '${widget.result.category}',
                       style: TextStyle(
                         color: Colors.white,
                       ),
@@ -81,7 +89,7 @@ class _IntroCardState extends State<IntroCard> {
                     height: 8.h,
                   ),
                   Text(
-                    '${widget.title}',
+                    '${widget.result.title}',
                     style: Theme.of(context).textTheme.headline6!.copyWith(
                           fontWeight: FontWeight.bold,
                         ),
@@ -100,9 +108,15 @@ class _IntroCardState extends State<IntroCard> {
                           color: AppColor.kPlaceholder1,
                         ),
                         child: Center(
-                          child: SvgPicture.asset(
-                            'assets/images/image_placeholder.svg',
-                            width: 24.w,
+                          child: Container(
+                            decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(
+                                8.r,
+                              ),
+                              image: DecorationImage(
+                                  image: NetworkImage(widget.result.userimage),
+                                  fit: BoxFit.cover),
+                            ),
                           ),
                         ),
                       ),
@@ -113,13 +127,13 @@ class _IntroCardState extends State<IntroCard> {
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           Text(
-                            '${widget.Owner}',
+                            '${widget.result.organizer}',
                             style: TextStyle(
                               fontWeight: FontWeight.bold,
                             ),
                           ),
                           Text(
-                            '${widget.Date}',
+                            '${widget.result.start_date}',
                             style: TextStyle(
                               color: AppColor.kTextColor1,
                             ),

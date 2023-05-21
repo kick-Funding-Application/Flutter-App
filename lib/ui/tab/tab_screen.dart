@@ -28,16 +28,38 @@ class TabScreen extends StatefulWidget {
 
 class _TabScreenState extends State<TabScreen> {
   late int tabIndex;
+  late PageController pageController;
 
   @override
   void initState() {
     tabIndex = 0;
+    pageController = PageController(initialPage: tabIndex);
     super.initState();
   }
 
   @override
   void dispose() {
+    pageController.dispose(); // Dispose the PageController
     super.dispose();
+  }
+
+  void navigateToTab(int index) async {
+    setState(() {
+      tabIndex = index;
+    });
+    if (index == 2) {
+      await Navigator.of(context).pushNamed(RouteGenerator.startCharity);
+
+      setState(() {
+        tabIndex = 0;
+      });
+    }
+    pageController.animateToPage(
+      index,
+      duration: const Duration(milliseconds: 100),
+      curve:
+          Curves.easeInCubic, // Use Curves.easeOutCubic for a faded animation
+    );
   }
 
   @override
@@ -52,19 +74,20 @@ class _TabScreenState extends State<TabScreen> {
           currentIndex: tabIndex,
           elevation: 0,
           type: BottomNavigationBarType.fixed,
-          onTap: (index) async {
-            setState(() {
-              tabIndex = index;
-            });
-            if (index == 2) {
-              await Navigator.of(context)
-                  .pushNamed(RouteGenerator.startCharity);
+          onTap: navigateToTab, // Modify the onTap callback
+          // (index) async {
+          //   setState(() {
+          //     tabIndex = index;
+          //   });
+          //   if (index == 2) {
+          //     await Navigator.of(context)
+          //         .pushNamed(RouteGenerator.startCharity);
 
-              setState(() {
-                tabIndex = 0;
-              });
-            }
-          },
+          //     setState(() {
+          //       tabIndex = 0;
+          //     });
+          //   }
+          // },
           showSelectedLabels: false,
           showUnselectedLabels: false,
           enableFeedback: true,
@@ -207,7 +230,15 @@ class _TabScreenState extends State<TabScreen> {
       body: SizedBox(
         height: double.infinity,
         width: double.infinity,
-        child: pages.elementAt(tabIndex),
+        child: PageView(
+          controller: pageController, // Use the PageController
+          onPageChanged: (index) {
+            setState(() {
+              tabIndex = index;
+            });
+          },
+          children: pages,
+        ),
       ),
     );
   }

@@ -3,8 +3,6 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 import '../../../../theme/app_color.dart';
 
-
-
 class CustomInputField extends StatelessWidget {
   const CustomInputField({
     this.textInputAction,
@@ -31,7 +29,7 @@ class CustomInputField extends StatelessWidget {
       style: Theme.of(context).textTheme.bodyText2,
       decoration: InputDecoration(
         filled: true,
-        fillColor: AppColor.kPlaceholder3,
+        fillColor: AppColor.kPlaceholder1,
         border: OutlineInputBorder(
           borderRadius: BorderRadius.circular(
             8.r,

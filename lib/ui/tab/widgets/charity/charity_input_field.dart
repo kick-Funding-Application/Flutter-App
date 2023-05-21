@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 
@@ -8,15 +9,19 @@ class CharityInputField extends StatelessWidget {
   const CharityInputField(
     this.title, {
     this.assetName,
+    this.focusnode,
     this.onTap,
     this.hintText,
     required this.onchanged,
     this.controller,
     required this.validateStatus,
+    this.keyboardtype,
   });
 
   final String title;
   final String? assetName;
+  final FocusNode? focusnode;
+  final TextInputType? keyboardtype;
   final void Function()? onTap;
   final String? hintText;
   final ValueChanged<String> onchanged;
@@ -38,6 +43,9 @@ class CharityInputField extends StatelessWidget {
         Stack(
           children: [
             TextFormField(
+              style: TextStyle(color: AppColor.kTextColor1),
+              focusNode: focusnode,
+              keyboardType: keyboardtype,
               controller: controller,
               onChanged: onchanged,
               decoration: InputDecoration(
@@ -63,7 +71,7 @@ class CharityInputField extends StatelessWidget {
               Positioned(
                 top: 0,
                 bottom: 0,
-                left: 8.w,
+                right: 8.w,
                 child: Center(
                   child: GestureDetector(
                     onTap: onTap,
