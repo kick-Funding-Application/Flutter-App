@@ -455,7 +455,6 @@ class _EditProjectState extends State<EditProject> {
         _imageUrl = imageUrl;
         constant.urlprojectimage = _imageUrl!;
         photoUrl = _imageUrl;
-        print(_imageUrl);
       });
       showDialog(
         context: context,
@@ -463,10 +462,7 @@ class _EditProjectState extends State<EditProject> {
           content: Text("Uploaded Image"),
         ),
       );
-
-      print('Image uploaded successfully. URL: $_imageUrl');
     } catch (e) {
-      print('Failed to upload image: $e');
       showDialog(
         context: context,
         builder: (_) => AlertDialog(
@@ -503,17 +499,12 @@ class _EditProjectState extends State<EditProject> {
         },
       );
       var result = response.body;
-      print(result);
-      print(response.statusCode);
 
       if (response.statusCode == 204) {
-        print("Deleted successfully");
-
         ScaffoldMessenger.of(context)
             .showSnackBar(SnackBar(content: Text('Deleted Successfully')));
         Navigator.of(context).pushNamed(RouteGenerator.main);
       } else {
-        print("Failed to delete");
         showDialog(
           context: context,
           builder: (_) => AlertDialog(

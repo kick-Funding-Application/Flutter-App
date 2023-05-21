@@ -53,7 +53,6 @@ class _DonationScreenState extends State<DonationScreen> {
         "project": "${constant.pid}",
       };
       String jsonBody = json.encode(body);
-      print(jsonBody);
       final encoding = Encoding.getByName('utf-8');
 
       var url = Uri.parse("${constant.server}api/donate/");
@@ -65,7 +64,6 @@ class _DonationScreenState extends State<DonationScreen> {
           body: jsonBody,
           encoding: encoding);
       var result = response.body;
-      print(result);
     } catch (e) {
       print(e.toString());
     }
@@ -130,7 +128,6 @@ class _DonationScreenState extends State<DonationScreen> {
         body: body,
       );
       // ignore: avoid_print
-      print('Payment Intent Body->>> ${response.body.toString()}');
       return jsonDecode(response.body);
     } catch (err) {
       // ignore: avoid_print

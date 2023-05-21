@@ -210,14 +210,10 @@ class _LoginFormState extends State<LoginForm> {
             encoding: encoding);
 
         var data = json.decode(response.body);
-        print(response.statusCode);
 
-        print(data);
         if (response.statusCode == 200) {
           check = true;
           token = data["key"];
-          print(token);
-          print("Login succeeded");
           getinfo();
           reload(context);
         } else if (response.statusCode == 400) {
@@ -227,7 +223,6 @@ class _LoginFormState extends State<LoginForm> {
                     content: Text("Wrong Email or Password!"),
                   ));
         } else {
-          print(response.statusCode);
           Center(child: CircularProgressIndicator());
         }
         /* UNCOMMENT WHEN SERVER ONLINE */
@@ -241,7 +236,6 @@ class _LoginFormState extends State<LoginForm> {
   void getinfo() async {
     try {
       var url2 = Uri.parse("${constant.server}api/dj-rest-auth/user/");
-      print(url2);
       var response2 = await http.get(
         url2,
         headers: {
@@ -251,7 +245,6 @@ class _LoginFormState extends State<LoginForm> {
       );
 
       var data2 = json.decode(response2.body);
-      print(data2);
       print(response2.statusCode);
       if (1 == 1) {
         String userImage = data2["user_image"].toString();
@@ -275,7 +268,6 @@ class _LoginFormState extends State<LoginForm> {
           constant.phoneuser = data2["phone_number"].toString();
           constant.email = data2["email"].toString();
         });
-        print(constant.first_name);
       } else {
         print('failed to load data');
       }

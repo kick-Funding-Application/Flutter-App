@@ -15,120 +15,8 @@ final List<Urgent> urgents = [];
 final List<dynamic> specificurgents = [];
 
 Future getData() async {
-  // var url = Uri.parse("https://dummyjson.com/quotes");
-  // var response = await http.get(url);
-  // var responsebody = jsonDecode(response.body);
-  // print(responsebody["quotes"][1]["id"]);
-  //return responsebody["quotes"];
 
-// Make the HTTP GET request
 
-/**FOR TEST */
-
-  String test = '''
-    [
-      {    "title": "Hospital project",
-    "target": "500.00",
-    "percent": "50",
-    "assetName": "assets/images/image_placeholder.svg",
-    "category": "Health",
-    "organizer": "Organizer",
-    "remaining": "250.00",
-    "rate": "0.0",
-    "details": "details",
-    "end_date": "2024-05-26",
-    "start_date": "2022-02-01",
-    "days": "10",
-    "tags": "help"},
-     {    "title": "Save the environoment",
-    "target": "500.00",
-    "percent": "50",
-    "assetName": "assets/images/image_placeholder.svg",
-    "category": "Environment",
-    "organizer": "Organizer",
-    "remaining": "250.00",
-    "rate": "0.0",
-    "details": "details",
-    "end_date": "2024-05-26",
-    "start_date": "2022-02-01",
-    "days": "10",
-    "tags": "help"},
-      {"title": "Education project",
-    "target": "500.00",
-    "percent": "50",
-    "assetName": "assets/images/image_placeholder.svg",
-    "category": "Education",
-    "organizer": "Organizer",
-    "remaining": "250.00",
-    "rate": "0.0",
-    "details": "details",
-    "end_date": "2024-05-26",
-    "start_date": "2022-02-01",
-    "days": "10",
-    "tags": "help"},
-      {"title": "Animal Project",
-    "target": "500.00",
-    "percent": "50",
-    "assetName": "assets/images/image_placeholder.svg",
-    "category": "Animal",
-    "organizer": "Organizer",
-    "remaining": "200.00",
-    "rate": "0.0",
-    "details": "details..",
-    "end_date": "2024-05-26",
-    "start_date": "2022-02-01",
-    "days": "10",
-    "tags": "help"},
-    {"title": "School Project",
-    "target": "1000.00",
-    "percent": "50",
-    "assetName": "assets/images/image_placeholder.svg",
-    "category": "Education",
-    "organizer": "Organizer",
-    "remaining": "100.00",
-    "rate": "0.0",
-    "details": "details..",
-    "end_date": "2024-05-26",
-    "start_date": "2022-02-01",
-    "days": "10",
-    "tags": "help"}
-    ]
-  '''; // Example JSON data
-
-  // List<dynamic> jsonData = json.decode(test);
-  // urgents.clear();
-  // specificurgents.clear();
-
-  // for (var data in jsonData) {
-  //   double target = double.parse(data['target']);
-  //   double remaining = double.parse(data['remaining']);
-  //   double percent = ((target - remaining) / target) * 100;
-  //   DateTime end_date = DateTime.parse(data['end_date']).toLocal();
-  //   DateTime currentDate = DateTime.now().toLocal();
-  //   Duration remainingDuration = end_date.difference(currentDate);
-  //   int days = remainingDuration.inDays;
-  //   Urgent urgent = Urgent(
-  //     title: data['title'],
-  //     target: data['target'],
-  //     percent:
-  //         percent.toStringAsFixed(2), // Convert to string with 2 decimal places
-  //     assetName: data['assetName'],
-  //     category: data['category'],
-  //     organizer: data['organizer'],
-  //     remaining: data['remaining'],
-  //     rate: double.parse(data['rate'].toString()),
-  //     details: data['details'],
-  //     end_date: data['end_date'],
-  //     start_date: data['start_date'],
-  //     days: days,
-  //     tags: data['tags'],
-  //   );
-
-  //   urgents.add(urgent);
-  //   if (urgent.category == charityform.specificCategory) {
-  //     specificurgents.add(urgent);
-  //   }
-  // }
   try {
 /**FOR TEST */
     final response2 =
@@ -137,7 +25,6 @@ Future getData() async {
     if (response2.statusCode == 200) {
       // Parse the JSON response
       final jsonData = json.decode(response2.body);
-      print(jsonData);
 
       // Clear the specificurgents list before starting the loop
       specificurgents.clear();
@@ -223,11 +110,7 @@ class _HomeScreenState extends State<HomeScreen> {
     super.initState();
   }
 
-  // @override
-  // void dispose() {
-  //   controller.dispose();
-  //   super.dispose();
-  // }
+
 
   @override
   Widget build(BuildContext context) {
@@ -383,33 +266,7 @@ class _HomeScreenState extends State<HomeScreen> {
                   ),
                   Spacer(),
                   _buildurgent(context),
-                  // Padding(
-                  //   padding: EdgeInsets.only(
-                  //     left: 16.0.w,
-                  //   ),
-                  //   child: SingleChildScrollView(
-                  //     controller: controller,
-                  //     scrollDirection: Axis.horizontal,
-                  //     padding: EdgeInsets.only(
-                  //       top: 8.h,
-                  //       bottom: 8.h,
-                  //       right: 8.w,
-                  //     ),
-                  //     child: Row(
-                  //       children: List.generate(
-                  //         specificurgents.length,
-                  //         (index) => Row(
-                  //           children: [
-                  //             UrgentCard(specificurgents[index]),
-                  //             SizedBox(
-                  //               width: 16.w,
-                  //             ),
-                  //           ],
-                  //         ),
-                  //       ),
-                  //     ),
-                  //   ),
-                  // ),
+                 
                   Spacer(),
                 ],
               ),

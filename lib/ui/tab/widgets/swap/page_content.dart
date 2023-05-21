@@ -53,14 +53,14 @@ Future getData() async {
   var url = Uri.parse("https://dummyjson.com/quotes");
   var response = await http.get(url);
   var responsebody = jsonDecode(response.body);
-  print(responsebody["quotes"][1]["id"]);
   //return responsebody["quotes"];
 
 // Make the HTTP GET request
 
 /**FOR TEST */
 
-  String test = '''
+  String test =
+      '''
     [
       {    "title": "Title of project",
     "target": "500.00",
@@ -177,7 +177,6 @@ Future getData() async {
     if (response2.statusCode == 200) {
       // Parse the JSON response
       final jsonData = json.decode(response2.body);
-      print(jsonData);
 
       // Clear the specificurgents list before starting the loop
       myprojects.clear();
@@ -199,10 +198,10 @@ Future getData() async {
         DateTime currentDate = DateTime.now().toLocal();
         Duration remainingDuration = end_date.difference(currentDate);
         int days = remainingDuration.inDays;
-       Urgent urgent = Urgent(
+        Urgent urgent = Urgent(
           id: data['id'],
-          userimage:data['user_image'],
-             
+          userimage: data['user_image'],
+
           title: data['title'],
           target: target2,
           percent: percent
@@ -280,6 +279,7 @@ class _CharityContentState extends State<CharityContent> {
 }
 
 class DonationContent extends StatefulWidget {
+
   const DonationContent();
 
   @override
@@ -289,7 +289,8 @@ class DonationContent extends StatefulWidget {
 List<Donation> mydonations = [];
 
 Future<List<Donation>> getData2() async {
-  String test2 = '''
+  String test2 =
+      '''
    [
   {
     "transaction_list": {
@@ -335,7 +336,6 @@ Future<List<Donation>> getData2() async {
 
       // Sort and display transactions for each date
       transactionList.keys.forEach((date) {
-        print('Date: $date');
         List<dynamic> transactionsByDate = transactionList[date];
 
         transactionsByDate.sort((a, b) => a['amount'].compareTo(b['amount']));
@@ -347,7 +347,6 @@ Future<List<Donation>> getData2() async {
               total: transaction['amount'],
               date: date);
           mydonations.add(mydonation);
-          print(mydonations.length);
         }
       });
     }
@@ -372,6 +371,22 @@ class _DonationContentState extends State<DonationContent> {
               List<Donation> donations = snapshot.data!;
               Set<String> uniqueDates =
                   donations.map((donation) => donation.date).toSet();
+              if (uniqueDates.isEmpty) {
+                return Center(
+                  child: Column(
+                    children: [
+                      SizedBox(
+                        height: 250,
+                      ),
+                      Text(
+                        'You Haven\'t Donated Yet!',
+                        style: TextStyle(
+                            color: AppColor.kTextColor1, fontSize: 20),
+                      ),
+                    ],
+                  ),
+                );
+              }
 
               return ListView.builder(
                 scrollDirection: Axis.vertical,
@@ -429,7 +444,8 @@ class DonatorContent extends StatefulWidget {
 List<Donator> donators = [];
 
 Future<List<Donator>> getData3() async {
-  String test3 = '''
+  String test3 =
+      '''
 [
   {
     "donation_list": {
@@ -469,6 +485,7 @@ Future<List<Donator>> getData3() async {
   //List<dynamic> jsonData = json.decode(test3);
 
   try {
+    
     var url2 = Uri.parse(
         "${constant.server}api/donate/${charityform.donationID}/history/");
     var response2 = await http.get(
@@ -478,14 +495,10 @@ Future<List<Donator>> getData3() async {
         "Authorization": " Token ${token}"
       },
     );
-    print(response2.statusCode);
     if (response2.statusCode == 404) {
-      print('No donations');
     } else {
       List<dynamic> jsonData = json.decode(response2.body);
-      print(jsonData);
 
-      print(response2.statusCode);
       donators.clear();
 
       for (var entry in jsonData) {
@@ -493,7 +506,6 @@ Future<List<Donator>> getData3() async {
 
         // Sort and display transactions for each date
         transactionList.keys.forEach((date) {
-          print('Date: $date');
           List<dynamic> transactionsByDate = transactionList[date];
 
           transactionsByDate.sort((a, b) => a['amount'].compareTo(b['amount']));
@@ -505,7 +517,6 @@ Future<List<Donator>> getData3() async {
                 date: date,
                 phone: transaction['phone_number']);
             donators.add(donator);
-            print(donators.length);
           }
         });
       }
@@ -531,6 +542,23 @@ class _DonatorContentState extends State<DonatorContent> {
               List<Donator> donations = snapshot.data!;
               Set<String> uniqueDates =
                   donations.map((donation) => donation.date).toSet();
+
+              if (uniqueDates.isEmpty) {
+                return Center(
+                  child: Column(
+                    children: [
+                      SizedBox(
+                        height: 250,
+                      ),
+                      Text(
+                        'No Donations Yet!',
+                        style: TextStyle(
+                            color: AppColor.kTextColor1, fontSize: 20),
+                      ),
+                    ],
+                  ),
+                );
+              }
 
               return ListView.builder(
                 scrollDirection: Axis.vertical,

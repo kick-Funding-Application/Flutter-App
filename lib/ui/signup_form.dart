@@ -65,7 +65,7 @@ Future SignUp(BuildContext cont) async {
     "user_image": "${constant.urlprofile}",
   };
   String jsonBody = json.encode(body);
-  print(jsonBody);
+
   final encoding = Encoding.getByName('utf-8');
 
   var url = Uri.parse("${constant.server}api/dj-rest-auth/registration/");
@@ -76,12 +76,8 @@ Future SignUp(BuildContext cont) async {
       body: jsonBody,
       encoding: encoding);
   var result = response.body;
-  print(result);
 
-  print('Registration successful');
-  print(response.statusCode);
   if (response.statusCode == 201 || response.statusCode == 204) {
-    print("Registeration Successful");
     ScaffoldMessenger.of(cont).showSnackBar(SnackBar(
         content: Text(
             'Follow the instructions sent in your mail to confirm your email')));
@@ -89,7 +85,6 @@ Future SignUp(BuildContext cont) async {
       RouteGenerator.login,
     );
   } else if (response.statusCode == 404) {
-    print("Registeration Failed");
     showDialog(
         context: cont,
         builder: (_) => const AlertDialog(
@@ -133,18 +128,9 @@ bool isEmailValid(String email) {
   return email.contains('@') && email.contains('.');
 }
 
-// List<String> existingUsernames = ['john', 'mary', 'jane'];
-
-// bool isUsernameUnique(String username) {
-//   // Check if the username already exists in the list
-//   return !existingUsernames.contains(username);
-// }
-
 void _submitForm() {
   if (_formKey1.currentState!.validate()) {
     _formKey1.currentState!.save();
-
-    print('Selected Country: ${constant.country}');
   }
 }
 
@@ -274,13 +260,6 @@ class _SignupFormState extends State<SignupForm> {
               Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  // Text(
-                  //   'Country',
-                  //   style: TextStyle(),
-                  // ),
-                  // SizedBox(
-                  //   height: 2.h,
-                  // ),
                   CountryInputField(
                     validateStatus: (value) {
                       if (value!.isEmpty) {
@@ -429,10 +408,6 @@ class _SignupFormState extends State<SignupForm> {
                 ),
                 onPressed: () {
                   if (_formKey1.currentState!.validate()) {
-                    print(
-                        '${email},${password1},${selectedCountry},${phoneno},${birthdate},${first_name},${last_name},${username},${password2}');
-                    print(constant.urlprofile);
-
                     SignUp(context);
                   }
                 },

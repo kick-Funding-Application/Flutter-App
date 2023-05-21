@@ -51,6 +51,19 @@ var photoUrl =
     'https://www.hi-reit.com/wp-content/uploads/landscape-placeholder-2.png';
 
 class _StartCharityScreenState extends State<StartCharityScreen> {
+  // void resetVariables() {
+  //   setState(() {
+  //     var photoUrl =
+  //         'https://www.hi-reit.com/wp-content/uploads/landscape-placeholder-2.png';
+  //   });
+  // }
+
+  // @override
+  // void initState() {
+  //   resetVariables();
+  //   super.initState();
+  // }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -469,6 +482,9 @@ class _StartCharityScreenState extends State<StartCharityScreen> {
         target.clear();
         deadline.clear();
         desc.clear();
+        photoUrl =
+            'https://www.hi-reit.com/wp-content/uploads/landscape-placeholder-2.png';
+
         print('Registration successful');
       } else {
         print("Registeration Failed");

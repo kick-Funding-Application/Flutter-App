@@ -129,6 +129,16 @@ class _ForgetPwScreenState extends State<ForgetPwScreen> {
                                 'Submit',
                               ),
                             ),
+                            SizedBox(
+                              height: 8.h,
+                            ),
+                            TextButton(
+                                onPressed: () {
+                                  Navigator.of(context).pushReplacementNamed(
+                                    RouteGenerator.login,
+                                  );
+                                },
+                                child: Text('Back'))
                           ],
                         ),
                       ),
@@ -161,18 +171,20 @@ class _ForgetPwScreenState extends State<ForgetPwScreen> {
           encoding: encoding);
       var result = response.body;
       print(response.statusCode);
-      print(result);
-
-      print('Registration successful');
-      print(response.statusCode);
-
-      print("Registeration Successful");
-      ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-          content: Text(
-              'Follow the instructions sent in your mail to reset your password')));
-      Navigator.of(context).pushReplacementNamed(
-        RouteGenerator.login,
-      );
+      if (response.statusCode == 400) {
+        ScaffoldMessenger.of(context)
+            .showSnackBar(SnackBar(content: Text('Reset Failed')));
+        Navigator.of(context).pushReplacementNamed(
+          RouteGenerator.login,
+        );
+      } else {
+        ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+            content: Text(
+                'Follow the instructions sent in your mail to reset your password')));
+        Navigator.of(context).pushReplacementNamed(
+          RouteGenerator.login,
+        );
+      }
     } catch (e) {
       print(e.toString());
     }

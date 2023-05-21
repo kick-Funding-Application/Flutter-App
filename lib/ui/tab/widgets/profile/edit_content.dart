@@ -3,6 +3,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:kickfunding/auth/login_form.dart';
 import 'package:kickfunding/ui/tab/widgets/profile/uploadfirebase.dart';
+import '../../../../auth/sessionmanage.dart';
 import '/ui/custom_input_field.dart';
 import 'package:firebase_storage/firebase_storage.dart' as firebase_storage;
 import '../../../../routes/routes.dart';
@@ -20,8 +21,6 @@ import 'dart:io';
 import 'package:image_picker/image_picker.dart';
 
 class EditContent extends StatefulWidget {
-  const EditContent({super.key});
-
   @override
   State<EditContent> createState() => _EditContentState();
 }
@@ -105,9 +104,6 @@ class _EditContentState extends State<EditContent> {
             body: jsonBody,
             encoding: encoding);
         var result = response.body;
-        print(result);
-
-        print('Profile Edited successfully');
 
         saveprofile();
 
@@ -538,163 +534,173 @@ class _EditContentState extends State<EditContent> {
           body: jsonBody,
           encoding: encoding);
       var result = response.body;
-      print(result);
     } catch (e) {
       print(e.toString());
     }
   }
 
-  void updatePassword(context) {
+  void updatePassword(BuildContext context) {
     showModalBottomSheet(
       context: context,
       isScrollControlled: true,
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(32.r),
       ),
-      builder: (BuildContext context) => SingleChildScrollView(
-        child: Container(
-          height: 500,
-          child: Padding(
-            padding: EdgeInsets.only(
-              bottom: MediaQuery.of(context).viewInsets.bottom,
-              top: 32.h,
-              left: 16.w,
-              right: 16.w,
-            ),
-            child: Column(
-              mainAxisSize: MainAxisSize.min,
-              children: [
-                SizedBox(
-                  height: 8.h,
+      builder: (BuildContext context) {
+        bool obsecurepassword = true;
+        bool obsecurepassword2 = true;
+        Color iconcolor = Colors.grey;
+        Color iconcolor2 = Colors.grey;
+        return StatefulBuilder(
+            builder: (BuildContext context, StateSetter mystate) {
+          return SingleChildScrollView(
+            child: Container(
+              height: 500,
+              child: Padding(
+                padding: EdgeInsets.only(
+                  bottom: MediaQuery.of(context).viewInsets.bottom,
+                  top: 32.h,
+                  left: 16.w,
+                  right: 16.w,
                 ),
-                Text(
-                  'Update Password',
-                  style: Theme.of(context).textTheme.headline4!.copyWith(
-                        fontWeight: FontWeight.bold,
-                        color: AppColor.kPrimaryColor,
+                child: Column(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    SizedBox(
+                      height: 8.h,
+                    ),
+                    Text(
+                      'Update Password',
+                      style: Theme.of(context).textTheme.headline4!.copyWith(
+                            fontWeight: FontWeight.bold,
+                            color: AppColor.kPrimaryColor,
+                          ),
+                    ),
+                    SizedBox(
+                      height: 15.h,
+                    ),
+                    CustomInputField(
+                      hintText: 'New Password',
+                      backgroundcolor: AppColor.kPlaceholder1,
+                      isPassword: obsecurepassword,
+                      textInputAction: TextInputAction.next,
+                      sufficon: IconButton(
+                        icon: Icon(
+                          obsecurepassword
+                              ? Icons.visibility
+                              : Icons.visibility_off,
+                          color: iconcolor,
+                        ),
+                        onPressed: () {
+                          mystate(() {
+                            if (iconcolor == Colors.grey) {
+                              iconcolor = AppColor.kPrimaryColor;
+                            } else {
+                              iconcolor = Colors.grey;
+                            }
+                            obsecurepassword = !obsecurepassword;
+                          });
+                        },
                       ),
-                ),
-                SizedBox(
-                  height: 15.h,
-                ),
-                CustomInputField(
-                  hintText: 'New Password',
-                  backgroundcolor: AppColor.kPlaceholder1,
-                  isPassword: obsecurepassword,
-                  textInputAction: TextInputAction.next,
-                  sufficon: IconButton(
-                    icon: Icon(
-                      obsecurepassword
-                          ? Icons.visibility
-                          : Icons.visibility_off,
-                      color: iconcolor,
-                    ),
-                    onPressed: () {
-                      setState(() {
-                        if (iconcolor == Colors.grey) {
-                          iconcolor = AppColor.kPrimaryColor;
-                        } else {
-                          iconcolor = Colors.grey;
+                      onChanged: (value) {
+                        mystate(() {
+                          password1 = value;
+                        });
+                      },
+                      validateStatus: (value) {
+                        if (value!.isEmpty) {
+                          return 'Field must not be empty';
                         }
-                        obsecurepassword = !obsecurepassword;
-                      });
-                    },
-                  ),
-                  onChanged: (value) {
-                    setState(() {
-                      password1 = value;
-                    });
-                  },
-                  validateStatus: (value) {
-                    if (value!.isEmpty) {
-                      return 'Field must not be empty';
-                    }
-                    return null;
-                  },
-                ),
-                SizedBox(
-                  height: 10.h,
-                ),
-                CustomInputField(
-                  hintText: 'Repeat the Password',
-                  backgroundcolor: AppColor.kPlaceholder1,
-                  isPassword: obsecurepassword2,
-                  textInputAction: TextInputAction.done,
-                  sufficon: IconButton(
-                    icon: Icon(
-                      obsecurepassword2
-                          ? Icons.visibility
-                          : Icons.visibility_off,
-                      color: iconcolor2,
+                        return null;
+                      },
                     ),
-                    onPressed: () {
-                      setState(() {
-                        if (iconcolor2 == Colors.grey) {
-                          iconcolor2 = AppColor.kPrimaryColor;
-                        } else {
-                          iconcolor2 = Colors.grey;
+                    SizedBox(
+                      height: 10.h,
+                    ),
+                    CustomInputField(
+                      hintText: 'Repeat the Password',
+                      backgroundcolor: AppColor.kPlaceholder1,
+                      isPassword: obsecurepassword2,
+                      textInputAction: TextInputAction.done,
+                      sufficon: IconButton(
+                        icon: Icon(
+                          obsecurepassword2
+                              ? Icons.visibility
+                              : Icons.visibility_off,
+                          color: iconcolor2,
+                        ),
+                        onPressed: () {
+                          mystate(() {
+                            if (iconcolor2 == Colors.grey) {
+                              iconcolor2 = AppColor.kPrimaryColor;
+                            } else {
+                              iconcolor2 = Colors.grey;
+                            }
+                            obsecurepassword2 = !obsecurepassword2;
+                          });
+                        },
+                      ),
+                      onChanged: (value) {
+                        mystate(() {
+                          password2 = value;
+                        });
+                      },
+                      validateStatus: (value) {
+                        if (value!.isEmpty) {
+                          return 'Field must not be empty';
                         }
-                        obsecurepassword2 = !obsecurepassword2;
-                      });
-                    },
-                  ),
-                  onChanged: (value) {
-                    setState(() {
-                      password2 = value;
-                    });
-                  },
-                  validateStatus: (value) {
-                    if (value!.isEmpty) {
-                      return 'Field must not be empty';
-                    }
-                    return null;
-                  },
-                ),
-                SizedBox(
-                  height: 50.h,
-                ),
-                ElevatedButton(
-                  style: ButtonStyle(
-                    backgroundColor: MaterialStateProperty.all(
-                      AppColor.kPrimaryColor,
+                        return null;
+                      },
                     ),
-                    shape: MaterialStateProperty.all(
-                      RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(
-                          8.r,
+                    SizedBox(
+                      height: 50.h,
+                    ),
+                    ElevatedButton(
+                      style: ButtonStyle(
+                        backgroundColor: MaterialStateProperty.all(
+                          AppColor.kPrimaryColor,
+                        ),
+                        shape: MaterialStateProperty.all(
+                          RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(
+                              8.r,
+                            ),
+                          ),
+                        ),
+                        minimumSize: MaterialStateProperty.all(
+                          Size(
+                            double.infinity,
+                            56.h,
+                          ),
                         ),
                       ),
-                    ),
-                    minimumSize: MaterialStateProperty.all(
-                      Size(
-                        double.infinity,
-                        56.h,
+                      onPressed: () {
+                        if (password1 == password2) {
+                          savepassword();
+                          ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                            content: Text('Updated the password Successfully'),
+                          ));
+                          Navigator.pop(context);
+                        } else {
+                          ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                            content:
+                                Text("ERROR: The two passwords don't match"),
+                          ));
+                          Navigator.pop(context);
+                        }
+                      },
+                      child: Text(
+                        'Save Changes',
+                        style: TextStyle(color: Colors.white),
                       ),
                     ),
-                  ),
-                  onPressed: () {
-                    if (password1 == password2) {
-                      savepassword();
-                      ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-                          content: Text('Updated the password Successfully')));
-                      Navigator.pop(context);
-                    } else {
-                      ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-                          content:
-                              Text('ERROR : The Two passwords don\'t Match')));
-                      Navigator.pop(context);
-                    }
-                  },
-                  child: Text(
-                    'Save Changes',
-                    style: TextStyle(color: Colors.white),
-                  ),
-                )
-              ],
+                  ],
+                ),
+              ),
             ),
-          ),
-        ),
-      ),
+          );
+        });
+      },
     );
   }
 }

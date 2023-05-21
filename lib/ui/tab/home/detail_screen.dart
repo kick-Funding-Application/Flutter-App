@@ -790,7 +790,6 @@ class _DetailScreenState extends State<DetailScreen> {
         );
       },
     );
-    print(rate);
   }
 
   Future submitComment() async {
@@ -816,7 +815,6 @@ class _DetailScreenState extends State<DetailScreen> {
           body: jsonBody,
           encoding: encoding);
       var result = response.body;
-      print(result);
 
       if (response.statusCode == 201) {
         print("Registeration succeeded");
@@ -831,8 +829,6 @@ class _DetailScreenState extends State<DetailScreen> {
 
         print('Registration successful');
       } else if (response.statusCode == 403) {
-        print(response.statusCode);
-        print("Registeration Failed");
         showDialog(
             context: context,
             builder: (_) => const AlertDialog(
@@ -845,7 +841,6 @@ class _DetailScreenState extends State<DetailScreen> {
                   content: Text("Server is lagging please wait "),
                 ));
       } else {
-        print(response.statusCode);
         showDialog(
             context: context,
             builder: (_) => const AlertDialog(

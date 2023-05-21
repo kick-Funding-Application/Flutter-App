@@ -67,8 +67,6 @@ class _countrycodepickerState extends State<countrycodepicker> {
                     setState(() {
                       constant.country = country.phoneCode;
                     });
-
-                    print('Select country: ${country.displayName}');
                   },
                 );
               },

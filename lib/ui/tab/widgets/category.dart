@@ -37,12 +37,9 @@ class _CategoryState extends State<Category> {
                           charityform.selectcategory = index;
                           charityform.specificCategory =
                               charityform.categories[index];
-                          print(charityform.specificCategory);
-                          
+
                           widget.onTap!();
-                        }
-                        );
-                        
+                        });
                       },
                       child: Row(
                         children: [

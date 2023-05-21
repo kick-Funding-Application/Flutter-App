@@ -77,6 +77,7 @@ class _ResultCardState extends State<ResultCard> {
                     maxLines: 1,
                     overflow: TextOverflow.ellipsis,
                   ),
+                  
                   Row(
                     children: [
                       Text(

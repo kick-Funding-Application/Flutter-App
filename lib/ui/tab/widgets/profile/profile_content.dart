@@ -6,6 +6,7 @@ import 'package:kickfunding/ui/signup_form.dart';
 import 'package:http/http.dart' as http;
 import 'package:kickfunding/ui/tab/widgets/profile/constants.dart';
 import 'dart:convert';
+import '../../../../auth/sessionmanage.dart';
 import '../../../../bloc/profile/profile_bloc.dart';
 import '../../../../routes/routes.dart';
 import '../../../../theme/app_color.dart';
@@ -24,11 +25,12 @@ Future getData() async {
   var url = Uri.parse("https://dummyjson.com/quotes");
   var response = await http.get(url);
   var responsebody = jsonDecode(response.body);
-  print(responsebody["quotes"][1]["id"]);
   return responsebody["quotes"];
 }
 
 class _ProfileContentState extends State<ProfileContent> {
+  late final SessionManager sessionManager;
+
   @override
   Widget build(BuildContext context) {
     return FutureBuilder(
