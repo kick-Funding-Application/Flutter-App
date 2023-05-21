@@ -1,326 +1,348 @@
 // import 'package:flutter/material.dart';
 // import 'package:flutter_screenutil/flutter_screenutil.dart';
-// import 'package:flutter_svg/svg.dart';
-// import '../widgets/profile/constants.dart';
-// import '../../../../models/urgent.dart';
-// import '../../../../theme/app_color.dart';
+// import 'package:flutter_svg/flutter_svg.dart';
 // import 'package:http/http.dart' as http;
+// import 'package:kickfunding/models/result.dart';
 // import 'dart:convert';
+// import '/ui/tab/widgets/profile/constants.dart';
+// import '../../../../theme/app_animation.dart';
+// import '../../../../theme/app_color.dart';
 // import '../widgets/category.dart';
-// import '../widgets/home/header.dart';
-// import '../widgets/home/urgent_card.dart';
+// import '../widgets/search/intro_card.dart';
+// import '../widgets/search/result_card.dart';
+// import '../widgets/search/search_bar.dart';
 // import '/initials/constants.dart';
 
-// final List<Urgent> urgents = [];
-// final List<dynamic> specificurgents = [];
-
-// Future getData() async {
-
-
-//   try {
-// /**FOR TEST */
-//     final response2 =
-//         await http.get(Uri.parse('${constant.server}api/projects/'));
-
-//     if (response2.statusCode == 200) {
-//       // Parse the JSON response
-//       final jsonData = json.decode(response2.body);
-
-//       // Clear the specificurgents list before starting the loop
-//       specificurgents.clear();
-
-//       // Iterate over the parsed data and append to the urgents list
-//       for (var data in jsonData) {
-//         int target = data['target_amount'];
-//         String target2 = data['target_amount'].toString();
-//         int current_amount = data['current_amount'];
-//         int remaining = ((target - current_amount));
-//         double percent;
-//         if (target == 0) {
-//           percent = 0;
-//         } else {
-//           percent = ((target - remaining) / target) * 100;
-//         }
-
-//         DateTime end_date = DateTime.parse(data['end_date']).toLocal();
-//         DateTime currentDate = DateTime.now().toLocal();
-//         Duration remainingDuration = end_date.difference(currentDate);
-//         int days = remainingDuration.inDays;
-//         Urgent urgent = Urgent(
-//           userimage: data['user_image'],
-//           id: data['id'],
-//           title: data['title'],
-//           target: target2,
-//           percent: percent
-//               .toStringAsFixed(2), // Convert to string with 2 decimal places
-//           assetName: data['image'],
-//           category: data['category'],
-//           organizer: data['created_by'],
-//           remaining: remaining.toString(),
-//           rate: double.parse(data['rate']['avg_rate'].toString()),
-//           details: data['details'],
-//           end_date: data['end_date'],
-//           start_date: data['start_date'],
-//           days: days,
-//           tags: data['tags'],
-//         );
-
-//         if (urgent.category == charityform.specificCategory) {
-//           urgents.add(urgent);
-//           specificurgents.add(urgent);
-//         }
-//       }
-//     }
-//   } catch (e) {
-//     print(e.toString());
-//   }
-//   return specificurgents;
-// }
-
-// class HomeScreen extends StatefulWidget {
-//   const HomeScreen();
+// class SearchScreen extends StatefulWidget {
+//   const SearchScreen();
 
 //   @override
-//   _HomeScreenState createState() => _HomeScreenState();
+//   _SearchScreenState createState() => _SearchScreenState();
 // }
 
-// class _HomeScreenState extends State<HomeScreen> {
-//   late final ScrollController controller;
-//   int currentIndex = 0;
-//   final double oneCardWidth = 256.w;
-//   double position = 0;
+// final List<dynamic> results = [];
+
+// final List<dynamic> specificresults = [];
+
+// final List<dynamic> results2 = [];
+
+// final List<dynamic> specificresults2 = [];
+
+// String specificCategory =
+//     'Education'; // Replace 'exampleCategory' with the desired category value
+
+// class _SearchScreenState extends State<SearchScreen> {
 //   @override
 //   void initState() {
-//     controller = ScrollController();
-//     controller.addListener(() {
-//       position = controller.offset;
-//       if ((position / oneCardWidth).floor() < 0) {
-//         return;
-//       }
-//       if (controller.offset == 0) {
-//         setState(() {
-//           currentIndex = 0;
-//         });
-//         return;
-//       }
-//       setState(() {
-//         currentIndex = (position / oneCardWidth).floor() + 1;
-//       });
-//     });
+//     fetchData();
+
+//     super.initState();
+
+//     controller = TextEditingController();
 //     super.initState();
 //   }
 
+//   void fetchData() async {
+//     List<dynamic> specificresults = await getData();
+//     List<dynamic> specificresults2 = await getData2();
 
-
-//   @override
-//   Widget build(BuildContext context) {
-//     return FutureBuilder(
-//         future: getData(),
-//         builder: (context, AsyncSnapshot snapshot) {
-//           if (snapshot.hasData) {
-//             return Container(
-//               decoration: BoxDecoration(
-//                 color: Colors.white,
-//                 borderRadius: BorderRadius.only(
-//                   bottomLeft: Radius.circular(
-//                     32.r,
-//                   ),
-//                   bottomRight: Radius.circular(
-//                     32.r,
-//                   ),
-//                 ),
-//               ),
-//               padding: EdgeInsets.only(
-//                 top: MediaQuery.of(context).viewPadding.top,
-//               ),
-//               child: Column(
-//                 crossAxisAlignment: CrossAxisAlignment.start,
-//                 children: [
-//                   Spacer(),
-//                   Header(),
-//                   Spacer(),
-//                   Padding(
-//                     padding: EdgeInsets.symmetric(
-//                       horizontal: 16.0.w,
-//                     ),
-//                     child: Container(
-//                       width: double.infinity,
-//                       height: 120.h,
-//                       decoration: BoxDecoration(
-//                         color: AppColor.kForthColor,
-//                         borderRadius: BorderRadius.circular(
-//                           12.r,
-//                         ),
-//                       ),
-//                       child: Stack(
-//                         children: [
-//                           SvgPicture.asset(
-//                             'assets/images/mask_diamond.svg',
-//                             fit: BoxFit.fitWidth,
-//                           ),
-//                           SizedBox(
-//                             width: double.infinity,
-//                             child: Column(
-//                               mainAxisAlignment: MainAxisAlignment.center,
-//                               children: [
-//                                 Text(
-//                                   'Change the world with',
-//                                   textAlign: TextAlign.center,
-//                                   style: Theme.of(context)
-//                                       .textTheme
-//                                       .headline6!
-//                                       .copyWith(
-//                                         color: Colors.white,
-//                                         fontWeight: FontWeight.w600,
-//                                       ),
-//                                 ),
-//                                 Text(
-//                                   'your little help',
-//                                   textAlign: TextAlign.center,
-//                                   style: Theme.of(context)
-//                                       .textTheme
-//                                       .headline6!
-//                                       .copyWith(
-//                                         color: Colors.white,
-//                                         fontWeight: FontWeight.w600,
-//                                       ),
-//                                 ),
-//                                 SizedBox(
-//                                   height: 4.h,
-//                                 ),
-//                                 ElevatedButton(
-//                                   style: ButtonStyle(
-//                                     minimumSize: MaterialStateProperty.all(
-//                                       Size(
-//                                         0,
-//                                         0,
-//                                       ),
-//                                     ),
-//                                     shape: MaterialStateProperty.all(
-//                                       RoundedRectangleBorder(
-//                                         borderRadius: BorderRadius.circular(
-//                                           8.r,
-//                                         ),
-//                                       ),
-//                                     ),
-//                                   ),
-//                                   onPressed: () {},
-//                                   child: Text('Donate'),
-//                                 )
-//                               ],
-//                             ),
-//                           )
-//                         ],
-//                       ),
-//                     ),
-//                   ),
-//                   Spacer(),
-//                   buildcategory(),
-//                   // Category(
-//                   //   onTap: () {
-//                   //     setState(() {
-//                   //       _buildurgent(context);
-//                   //     });
-//                   //   },
-//                   // ),
-//                   Spacer(),
-//                   Padding(
-//                     padding: EdgeInsets.symmetric(
-//                       horizontal: 16.0.w,
-//                     ),
-//                     child: Row(
-//                       children: [
-//                         Text(
-//                           'Urgently Needed',
-//                           style:
-//                               Theme.of(context).textTheme.headline6!.copyWith(
-//                                     fontWeight: FontWeight.bold,
-//                                   ),
-//                         ),
-//                         Spacer(),
-//                         Row(
-//                           mainAxisSize: MainAxisSize.min,
-//                           children: List.generate(
-//                             specificurgents.length,
-//                             (index) => Row(
-//                               children: [
-//                                 SizedBox(
-//                                   width: 2.w,
-//                                 ),
-//                                 Container(
-//                                   width: 8.w,
-//                                   height: 8.w,
-//                                   decoration: BoxDecoration(
-//                                     color: index == currentIndex
-//                                         ? AppColor.kAccentColor
-//                                         : AppColor.kPlaceholder1,
-//                                     shape: BoxShape.circle,
-//                                   ),
-//                                 ),
-//                               ],
-//                             ),
-//                           ),
-//                         ),
-//                       ],
-//                     ),
-//                   ),
-//                   Spacer(),
-//                   _buildurgent(context),
-                 
-//                   Spacer(),
-//                 ],
-//               ),
-//             );
-//           } else {
-//             return Center(child: CircularProgressIndicator());
-//           }
-//         });
+//     setState(() {});
 //   }
 
 //   Widget buildcategory() {
 //     return Category(onTap: () {
-//       setState(() {
-//         _buildurgent(context);
-//       });
+//       fetchData();
 //     });
 //   }
 
-//   Widget _buildurgent(BuildContext context) {
-//     return FutureBuilder(
-//       future: getData(),
-//       builder: (context, AsyncSnapshot snapshot) {
-//         if (snapshot.hasData) {
-//           return Padding(
-//             padding: EdgeInsets.only(
-//               left: 16.0.w,
-//             ),
-//             child: SingleChildScrollView(
-//               controller: controller,
-//               scrollDirection: Axis.horizontal,
-//               padding: EdgeInsets.only(
-//                 top: 8.h,
-//                 bottom: 8.h,
-//                 right: 8.w,
-//               ),
-//               child: Row(
-//                 children: List.generate(
-//                   specificurgents.length,
-//                   (index) => Row(
-//                     children: [
-//                       UrgentCard(specificurgents[index]),
-//                       SizedBox(
-//                         width: 16.w,
+//   Future getData() async {
+//     try {
+//       /**FOR TEST */
+//       final response2 =
+//           await http.get(Uri.parse('${constant.server}api/projects/'));
+
+//       if (response2.statusCode == 200) {
+//         // Parse the JSON response
+//         final jsonData = json.decode(response2.body);
+//         print(jsonData);
+
+//         // Clear the specificurgents list before starting the loop
+//         specificresults.clear();
+
+//         // Iterate over the parsed data and append to the urgents list
+//         for (var data in jsonData) {
+//           int target = data['target_amount'];
+//           String target2 = data['target_amount'].toString();
+//           int current_amount = data['current_amount'];
+//           int remaining = ((target - current_amount));
+//           double percent = ((target - remaining) / target) * 100;
+//           DateTime end_date = DateTime.parse(data['end_date']).toLocal();
+//           DateTime currentDate = DateTime.now().toLocal();
+//           Duration remainingDuration = end_date.difference(currentDate);
+//           int days = remainingDuration.inDays;
+//           Result urgent = Result(
+//             id: data['id'],
+//             title: data['title'],
+//             target: target2,
+//             percent: percent
+//                 .toStringAsFixed(2), // Convert to string with 2 decimal places
+//             assetName: data['image'],
+//             userimage: data['user_image'],
+//             category: data['category'],
+//             organizer: data['created_by'],
+//             remaining: remaining.toString(),
+//             rate: double.parse(data['rate']['avg_rate'].toString()),
+//             details: data['details'],
+//             end_date: data['end_date'],
+//             start_date: data['start_date'],
+//             days: days,
+//             tags: data['tags'],
+//           );
+
+//           if (urgent.category == charityform.specificCategory) {
+//             results.add(urgent);
+//             specificresults.add(urgent);
+//           }
+//         }
+//       }
+//     } catch (e) {
+//       print(e.toString());
+//     }
+//     return specificresults;
+//   }
+
+//   late final TextEditingController controller;
+//   bool isSearching = false;
+
+//   @override
+//   Widget build(BuildContext context) {
+//     return Container(
+//       decoration: BoxDecoration(
+//         color: Colors.white,
+//         borderRadius: BorderRadius.only(
+//           bottomLeft: Radius.circular(
+//             32.r,
+//           ),
+//           bottomRight: Radius.circular(
+//             32.r,
+//           ),
+//         ),
+//       ),
+//       child: SafeArea(
+//         child: Padding(
+//           padding: const EdgeInsets.all(8.0),
+//           child: SingleChildScrollView(
+//             child: Column(
+//               crossAxisAlignment: CrossAxisAlignment.start,
+//               children: [
+//                 Padding(
+//                   padding: EdgeInsets.symmetric(horizontal: 16.0.w),
+//                   child: AnimatedSwitcher(
+//                     duration: AppAnimation.kAnimationDuration,
+//                     switchInCurve: AppAnimation.kAnimationCurve,
+//                     switchOutCurve: Curves.easeInOutBack,
+//                     child: !isSearching
+//                         ? Text(
+//                             'Explore',
+//                             style:
+//                                 Theme.of(context).textTheme.headline5!.copyWith(
+//                                       fontWeight: FontWeight.bold,
+//                                     ),
+//                           )
+//                         : Row(
+//                             children: [
+//                               GestureDetector(
+//                                 onTap: () {
+//                                   setState(() {
+//                                     isSearching = false;
+//                                   });
+//                                 },
+//                                 child: SizedBox(
+//                                   width: 24.w,
+//                                   child: SvgPicture.asset(
+//                                     'assets/images/back.svg',
+//                                     width: 24.w,
+//                                     color: AppColor.kTitle,
+//                                   ),
+//                                 ),
+//                               ),
+//                               Expanded(
+//                                 child: Text(
+//                                   'Search Result',
+//                                   style: Theme.of(context)
+//                                       .textTheme
+//                                       .headline5!
+//                                       .copyWith(
+//                                         color: AppColor.kTitle,
+//                                         fontWeight: FontWeight.bold,
+//                                       ),
+//                                   textAlign: TextAlign.center,
+//                                 ),
+//                               ),
+//                               SizedBox(
+//                                 width: 24.w,
+//                               )
+//                             ],
+//                           ),
+//                   ),
+//                 ),
+//                 SizedBox(
+//                   height: 16.h,
+//                 ),
+//                 Padding(
+//                   padding: EdgeInsets.symmetric(horizontal: 16.0.w),
+//                   child: searchBarWidget(
+//                     controller: controller,
+//                     onTap: () {
+//                       setState(() {
+//                         isSearching = true;
+//                       });
+//                     },
+//                     hintText: 'Search by name...',
+//                   ),
+//                 ),
+//                 SizedBox(
+//                   height: 16.h,
+//                 ),
+//                 !isSearching
+//                     ? buildcategory()
+//                     : SizedBox(
+//                         height: 10,
 //                       ),
+//                 // Category(onTap: () {
+//                 //   setState(() {
+//                 //     _buildSearching(context);
+//                 //   });
+//                 // }),
+//                 !isSearching ? _buildSearching(context) : _buildResult()
+//               ],
+//             ),
+//           ),
+//         ),
+//       ),
+//     );
+//   }
+
+//   Future getData2() async {
+//     try {
+// /**FOR TEST */
+//       final response3 = await http.get(Uri.parse(
+//           '${constant.server}api/projects/?search=${controller.text}'));
+
+//       if (response3.statusCode == 200) {
+//         // Parse the JSON response
+//         final jsonData = json.decode(response3.body);
+//         print(jsonData);
+
+//         // Clear the specificurgents list before starting the loop
+//         specificresults2.clear();
+
+//         // Iterate over the parsed data and append to the urgents list
+//         for (var data in jsonData) {
+//           int target = data['target_amount'];
+//           String target2 = data['target_amount'].toString();
+//           int current_amount = data['current_amount'];
+//           int remaining = ((target - current_amount));
+//           int percent = ((target - remaining) * 100 ~/ target);
+//           DateTime end_date = DateTime.parse(data['end_date']).toLocal();
+//           DateTime currentDate = DateTime.now().toLocal();
+//           Duration remainingDuration = end_date.difference(currentDate);
+//           int days = remainingDuration.inDays;
+//           Result result2 = Result(
+//             title: data['title'],
+//             id: data['id'],
+//             target: target2,
+//             percent: percent.toString(),
+//             assetName: data['image'],
+//             userimage: data['user_image'],
+//             category: data['category'],
+//             organizer: data['created_by'],
+//             remaining: remaining.toString(),
+//             rate: double.parse(data['rate']['avg_rate'].toString()),
+//             details: data['details'],
+//             end_date: data['end_date'],
+//             start_date: data['start_date'],
+//             days: days,
+//             tags: data['tags'],
+//           );
+
+//           specificresults2.add(result2);
+//         }
+//       }
+//     } catch (e) {
+//       print(e.toString());
+//     }
+
+//     return specificresults2;
+//   }
+
+//   Widget _buildResult() {
+//     return specificresults2.isEmpty
+//         ? Center(child: CircularProgressIndicator())
+//         : Padding(
+//             padding: EdgeInsets.symmetric(horizontal: 16.0.w),
+//             child: Column(
+//               crossAxisAlignment: CrossAxisAlignment.start,
+//               children: [
+//                 Text(
+//                   'Showing search result \'${controller.text}\'',
+//                   style: TextStyle(
+//                     fontWeight: FontWeight.bold,
+//                   ),
+//                 ),
+//                 SizedBox(
+//                   height: 16.h,
+//                 ),
+//                 Padding(
+//                   padding: EdgeInsets.symmetric(
+//                     //   horizontal: 16.0.w,
+//                     vertical: 16.h,
+//                   ),
+//                   child: Column(
+//                     children: [
+//                       ListView.builder(
+//                           scrollDirection: Axis.vertical,
+//                           physics: ScrollPhysics(),
+//                           shrinkWrap: true,
+//                           itemCount: specificresults2.length,
+//                           itemBuilder: (context, i) {
+//                             return ResultCard(specificresults2[i]);
+//                           }),
 //                     ],
 //                   ),
 //                 ),
-//               ),
+//               ],
 //             ),
 //           );
-//         } else {
-//           return Center(child: CircularProgressIndicator());
-//         }
-//       },
-//     );
+//   }
+
+//   Widget _buildSearching(BuildContext context) {
+//     return specificresults.isEmpty
+//         ? Center(child: CircularProgressIndicator())
+//         : Column(
+//             crossAxisAlignment: CrossAxisAlignment.start,
+//             children: [
+//               SizedBox(
+//                 height: 16.h,
+//               ),
+//               Padding(
+//                 padding: EdgeInsets.symmetric(
+//                   horizontal: 16.0.w,
+//                 ),
+//                 child: Column(
+//                   children: [
+//                     ListView.builder(
+//                         scrollDirection: Axis.vertical,
+//                         physics: ScrollPhysics(),
+//                         shrinkWrap: true,
+//                         itemCount: specificresults.length,
+//                         itemBuilder: (context, i) {
+//                           return IntroCard(specificresults[i]);
+//                         }),
+//                   ],
+//                 ),
+//               ),
+//             ],
+//           );
 //   }
 // }

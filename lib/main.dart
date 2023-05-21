@@ -65,7 +65,7 @@ class _MyAppState extends State<MyApp> {
         theme: AppTheme(context).initTheme(),
         debugShowCheckedModeBanner: false,
         initialRoute:
-            widget.isLoggedIn ? RouteGenerator.main : RouteGenerator.splash,
+            RouteGenerator.splash,
         onGenerateRoute: RouteGenerator.generateRoute,
       ),
     );

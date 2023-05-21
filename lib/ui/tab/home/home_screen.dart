@@ -13,14 +13,18 @@ import '/initials/constants.dart';
 
 final List<Urgent> urgents = [];
 final List<dynamic> specificurgents = [];
+Future getData2() async {
+  var url = Uri.parse("https://dummyjson.com/quotes");
+  var response = await http.get(url);
+  var responsebody = jsonDecode(response.body);
+  return responsebody["quotes"];
+}
 
-Future getData() async {
-
-
+Future getData(String category) async {
   try {
 /**FOR TEST */
-    final response2 =
-        await http.get(Uri.parse('${constant.server}api/projects/'));
+    final response2 = await http
+        .get(Uri.parse('${constant.server}api/projects/$category/filter'));
 
     if (response2.statusCode == 200) {
       // Parse the JSON response
@@ -28,7 +32,7 @@ Future getData() async {
 
       // Clear the specificurgents list before starting the loop
       specificurgents.clear();
-
+      print(jsonData);
       // Iterate over the parsed data and append to the urgents list
       for (var data in jsonData) {
         int target = data['target_amount'];
@@ -85,12 +89,9 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> {
-  late final ScrollController controller;
-  int currentIndex = 0;
-  final double oneCardWidth = 256.w;
-  double position = 0;
   @override
   void initState() {
+    fetchData();
     controller = ScrollController();
     controller.addListener(() {
       position = controller.offset;
@@ -110,12 +111,26 @@ class _HomeScreenState extends State<HomeScreen> {
     super.initState();
   }
 
+  void fetchData() async {
+    List<dynamic> specificurgents = await getData(charityform.specificCategory);
+    setState(() {});
+  }
 
+  Widget buildcategory() {
+    return Category(onTap: () {
+      fetchData();
+    });
+  }
+
+  late final ScrollController controller;
+  int currentIndex = 0;
+  final double oneCardWidth = 256.w;
+  double position = 0;
 
   @override
   Widget build(BuildContext context) {
     return FutureBuilder(
-        future: getData(),
+        future: getData2(),
         builder: (context, AsyncSnapshot snapshot) {
           if (snapshot.hasData) {
             return Container(
@@ -266,7 +281,7 @@ class _HomeScreenState extends State<HomeScreen> {
                   ),
                   Spacer(),
                   _buildurgent(context),
-                 
+
                   Spacer(),
                 ],
               ),
@@ -277,20 +292,10 @@ class _HomeScreenState extends State<HomeScreen> {
         });
   }
 
-  Widget buildcategory() {
-    return Category(onTap: () {
-      setState(() {
-        _buildurgent(context);
-      });
-    });
-  }
-
   Widget _buildurgent(BuildContext context) {
-    return FutureBuilder(
-      future: getData(),
-      builder: (context, AsyncSnapshot snapshot) {
-        if (snapshot.hasData) {
-          return Padding(
+    return specificurgents.isEmpty
+        ? Center(child: CircularProgressIndicator())
+        : Padding(
             padding: EdgeInsets.only(
               left: 16.0.w,
             ),
@@ -317,10 +322,5 @@ class _HomeScreenState extends State<HomeScreen> {
               ),
             ),
           );
-        } else {
-          return Center(child: CircularProgressIndicator());
-        }
-      },
-    );
   }
 }

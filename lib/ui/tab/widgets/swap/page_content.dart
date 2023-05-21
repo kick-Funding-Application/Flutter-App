@@ -59,8 +59,7 @@ Future getData() async {
 
 /**FOR TEST */
 
-  String test =
-      '''
+  String test = '''
     [
       {    "title": "Title of project",
     "target": "500.00",
@@ -279,7 +278,6 @@ class _CharityContentState extends State<CharityContent> {
 }
 
 class DonationContent extends StatefulWidget {
-
   const DonationContent();
 
   @override
@@ -289,8 +287,7 @@ class DonationContent extends StatefulWidget {
 List<Donation> mydonations = [];
 
 Future<List<Donation>> getData2() async {
-  String test2 =
-      '''
+  String test2 = '''
    [
   {
     "transaction_list": {
@@ -418,6 +415,7 @@ class _DonationContentState extends State<DonationContent> {
                           return donationCard(donation);
                         },
                       ),
+                      Divider(),
                     ],
                   );
                 },
@@ -444,8 +442,7 @@ class DonatorContent extends StatefulWidget {
 List<Donator> donators = [];
 
 Future<List<Donator>> getData3() async {
-  String test3 =
-      '''
+  String test3 = '''
 [
   {
     "donation_list": {
@@ -485,7 +482,6 @@ Future<List<Donator>> getData3() async {
   //List<dynamic> jsonData = json.decode(test3);
 
   try {
-    
     var url2 = Uri.parse(
         "${constant.server}api/donate/${charityform.donationID}/history/");
     var response2 = await http.get(
@@ -590,6 +586,7 @@ class _DonatorContentState extends State<DonatorContent> {
                           return DonatorCard(donation);
                         },
                       ),
+                      Divider(),
                     ],
                   );
                 },

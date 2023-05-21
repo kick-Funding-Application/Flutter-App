@@ -34,141 +34,35 @@ String specificCategory =
 class _SearchScreenState extends State<SearchScreen> {
   @override
   void initState() {
+    fetchData();
+
     super.initState();
 
     controller = TextEditingController();
     super.initState();
   }
 
-  Future getData() async {
-//     var url = Uri.parse("https://dummyjson.com/quotes");
-//     var response = await http.get(url);
-//     var responsebody = jsonDecode(response.body);
-//     print(responsebody["quotes"][1]["id"]);
-//     //return responsebody["quotes"];
+  void fetchData() async {
+    List<dynamic> specificresults = await getData(charityform.specificCategory);
 
-// // Make the HTTP GET request
-//     final response2 =
-//         await http.get(Uri.parse('http://example.com/api/urgents'));
+    setState(() {});
+  }
 
-/**FOR TEST */
+  Widget buildcategory() {
+    return Category(onTap: () {
+      fetchData();
+    });
+  }
 
-    String test = '''
-    [
-      {    "title": "Title of project",
-    "target": "500.00",
-    "percent": "50",
-    "assetName": "assets/images/image_placeholder.svg",
-    "category": "Education",
-    "organizer": "Organizer",
-    "remaining": "250.00",
-    "rate": "0.0",
-    "details": "details",
-    "end_date": "2024-05-26",
-    "start_date": "2022-02-01",
-    "days": "10",
-    "tags": "help"},
-      {"title": "Title of project",
-    "target": "500.00",
-    "percent": "50",
-    "assetName": "assets/images/image_placeholder.svg",
-    "category": "Animal",
-    "organizer": "Organizer",
-    "remaining": "250.00",
-    "rate": "0.0",
-    "details": "details",
-    "end_date": "2024-05-26",
-    "start_date": "2022-02-01",
-    "days": "10",
-    "tags": "help"},
-      {"title": "Title of project",
-    "target": "500.00",
-    "percent": "50",
-    "assetName": "assets/images/image_placeholder.svg",
-    "category": "Education",
-    "organizer": "Organizer",
-    "remaining": "200.00",
-    "rate": "0.0",
-    "details": "details..",
-    "end_date": "2024-05-26",
-    "start_date": "2022-02-01",
-    "days": "10",
-    "tags": "help"},
-    {"title": "Zahraa",
-    "target": "1000.00",
-    "percent": "50",
-    "assetName": "assets/images/image_placeholder.svg",
-    "category": "Health",
-    "organizer": "Organizer",
-    "remaining": "100.00",
-    "rate": "0.0",
-    "details": "details..",
-    "end_date": "2024-05-26",
-    "start_date": "2022-02-01",
-    "days": "10",
-    "tags": "help"},
-    {"title": "Help The environment",
-    "target": "1000.00",
-    "percent": "50",
-    "assetName": "assets/images/image_placeholder.svg",
-    "category": "Environment",
-    "organizer": "Organizer",
-    "remaining": "100.00",
-    "rate": "0.0",
-    "details": "details..",
-    "end_date": "2024-05-26",
-    "start_date": "2022-02-01",
-    "days": "10",
-    "tags": "help"}
-    ]
-  '''; // Example JSON data
-
-//     List<dynamic> jsonData = json.decode(test);
-//     results.clear();
-//     specificresults.clear();
-
-//     for (var data in jsonData) {
-//       double target = double.parse(data['target']);
-//       double remaining = double.parse(data['remaining']);
-//       double percent = ((target - remaining) / target) * 100;
-//       DateTime end_date = DateTime.parse(data['end_date']).toLocal();
-//       DateTime currentDate = DateTime.now().toLocal();
-//       Duration remainingDuration = end_date.difference(currentDate);
-//       int days = remainingDuration.inDays;
-//       Result result = Result(
-//         title: data['title'],
-//         target: data['target'],
-//         percent: percent
-//             .toStringAsFixed(2), // Convert to string with 2 decimal places
-//         assetName: data['assetName'],
-//         category: data['category'],
-//         organizer: data['organizer'],
-//         remaining: data['remaining'],
-//         rate: double.parse(data['rate'].toString()),
-//         details: data['details'],
-//         end_date: data['end_date'],
-//         start_date: data['start_date'],
-//         days: days,
-//         tags: data['tags'],
-//       );
-
-//       results.add(result);
-
-// // Access the filtered results
-
-//       if (result.category == charityform.specificCategory) {
-//         specificresults.add(result);
-//       }
-//     }
+  Future getData(String category) async {
     try {
       /**FOR TEST */
-      final response2 =
-          await http.get(Uri.parse('${constant.server}api/projects/'));
+      final response2 = await http
+          .get(Uri.parse('${constant.server}api/projects/$category/filter'));
 
       if (response2.statusCode == 200) {
         // Parse the JSON response
         final jsonData = json.decode(response2.body);
-        print(jsonData);
 
         // Clear the specificurgents list before starting the loop
         specificresults.clear();
@@ -313,11 +207,6 @@ class _SearchScreenState extends State<SearchScreen> {
                     : SizedBox(
                         height: 10,
                       ),
-                // Category(onTap: () {
-                //   setState(() {
-                //     _buildSearching(context);
-                //   });
-                // }),
                 !isSearching ? _buildSearching(context) : _buildResult()
               ],
             ),
@@ -328,123 +217,6 @@ class _SearchScreenState extends State<SearchScreen> {
   }
 
   Future getData2() async {
-    // var url = Uri.parse("https://dummyjson.com/quotes");
-    // var response = await http.get(url);
-    // var responsebody = jsonDecode(response.body);
-    // print(responsebody["quotes"][1]["id"]);
-    //return responsebody["quotes"];
-
-// Make the HTTP GET request
-
-/**FOR TEST */
-
-    String test = '''
-    [
-      {    "title": "Title of project",
-    "target": "500.00",
-    "percent": "50",
-    "assetName": "assets/images/image_placeholder.svg",
-    "category": "Education",
-    "organizer": "Organizer",
-    "remaining": "250.00",
-    "rate": "0.0",
-    "details": "details",
-    "end_date": "2024-05-26",
-    "start_date": "2022-02-01",
-    "days": "10",
-    "tags": "help"},
-      {"title": "Title of project",
-    "target": "500.00",
-    "percent": "50",
-    "assetName": "assets/images/image_placeholder.svg",
-    "category": "Animal",
-    "organizer": "Organizer",
-    "remaining": "250.00",
-    "rate": "0.0",
-    "details": "details",
-    "end_date": "2024-05-26",
-    "start_date": "2022-02-01",
-    "days": "10",
-    "tags": "help"},
-      {"title": "Title of project",
-    "target": "500.00",
-    "percent": "50",
-    "assetName": "assets/images/image_placeholder.svg",
-    "category": "Education",
-    "organizer": "Organizer",
-    "remaining": "200.00",
-    "rate": "0.0",
-    "details": "details..",
-    "end_date": "2024-05-26",
-    "start_date": "2022-02-01",
-    "days": "10",
-    "tags": "help"},
-    {"title": "Zahraa",
-    "target": "1000.00",
-    "percent": "50",
-    "assetName": "assets/images/image_placeholder.svg",
-    "category": "Health",
-    "organizer": "Organizer",
-    "remaining": "100.00",
-    "rate": "0.0",
-    "details": "details..",
-    "end_date": "2024-05-26",
-    "start_date": "2022-02-01",
-    "days": "10",
-    "tags": "help"},
-    {"title": "Help The environment",
-    "target": "1000.00",
-    "percent": "50",
-    "assetName": "assets/images/image_placeholder.svg",
-    "category": "Environment",
-    "organizer": "Organizer",
-    "remaining": "100.00",
-    "rate": "0.0",
-    "details": "details..",
-    "end_date": "2024-05-26",
-    "start_date": "2022-02-01",
-    "days": "10",
-    "tags": "help"}
-    ]
-  '''; // Example JSON data
-
-//     List<dynamic> jsonData = json.decode(test);
-//     results2.clear();
-//     specificresults2.clear();
-
-//     for (var data in jsonData) {
-//       double target = double.parse(data['target']);
-//       double remaining = double.parse(data['remaining']);
-//       double percent = ((target - remaining) / target) * 100;
-//       DateTime end_date = DateTime.parse(data['end_date']).toLocal();
-//       DateTime currentDate = DateTime.now().toLocal();
-//       Duration remainingDuration = end_date.difference(currentDate);
-//       int days = remainingDuration.inDays;
-//       Result result2 = Result(
-//         title: data['title'],
-//         target: data['target'],
-//         percent: percent
-//             .toStringAsFixed(0), // Convert to string with 2 decimal places
-//         assetName: data['assetName'],
-//         category: data['category'],
-//         organizer: data['organizer'],
-//         remaining: data['remaining'],
-//         rate: double.parse(data['rate'].toString()),
-//         details: data['details'],
-//         end_date: data['end_date'],
-//         start_date: data['start_date'],
-//         days: days,
-//         tags: data['tags'],
-//       );
-
-//       results2.add(result2);
-
-// // Access the filtered results
-
-//       if (result2.category == charityform.specificCategory) {
-//         specificresults.add(result2);
-//       }
-//     }
     try {
 /**FOR TEST */
       final response3 = await http.get(Uri.parse(
@@ -453,7 +225,6 @@ class _SearchScreenState extends State<SearchScreen> {
       if (response3.statusCode == 200) {
         // Parse the JSON response
         final jsonData = json.decode(response3.body);
-        print(jsonData);
 
         // Clear the specificurgents list before starting the loop
         specificresults2.clear();
@@ -547,52 +318,33 @@ class _SearchScreenState extends State<SearchScreen> {
         });
   }
 
-  Widget buildcategory() {
-    return Category(onTap: () {
-      setState(() {
-        _buildSearching(context);
-      });
-    });
-  }
-
   Widget _buildSearching(BuildContext context) {
-    return //FutureBuilder<List<dynamic>>(
-        FutureBuilder(
-            future: getData(),
-            builder: (BuildContext context, AsyncSnapshot snapshot) {
-              if (snapshot.connectionState == ConnectionState.waiting) {
-                return Center(child: CircularProgressIndicator());
-              } else if (snapshot.hasError) {
-                return Text('Error: ${snapshot.error}');
-              } else if (snapshot.hasData) {
-                return Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
+    return specificresults.isEmpty
+        ? Center(child: CircularProgressIndicator())
+        : Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              SizedBox(
+                height: 16.h,
+              ),
+              Padding(
+                padding: EdgeInsets.symmetric(
+                  horizontal: 16.0.w,
+                ),
+                child: Column(
                   children: [
-                    SizedBox(
-                      height: 16.h,
-                    ),
-                    Padding(
-                      padding: EdgeInsets.symmetric(
-                        horizontal: 16.0.w,
-                      ),
-                      child: Column(
-                        children: [
-                          ListView.builder(
-                              scrollDirection: Axis.vertical,
-                              physics: ScrollPhysics(),
-                              shrinkWrap: true,
-                              itemCount: specificresults.length,
-                              itemBuilder: (context, i) {
-                                return IntroCard(specificresults[i]);
-                              }),
-                        ],
-                      ),
-                    ),
+                    ListView.builder(
+                        scrollDirection: Axis.vertical,
+                        physics: ScrollPhysics(),
+                        shrinkWrap: true,
+                        itemCount: specificresults.length,
+                        itemBuilder: (context, i) {
+                          return IntroCard(specificresults[i]);
+                        }),
                   ],
-                );
-              } else {
-                return Center(child: CircularProgressIndicator());
-              }
-            });
+                ),
+              ),
+            ],
+          );
   }
 }

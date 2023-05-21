@@ -64,6 +64,7 @@ class _donationCardState extends State<donationCard> {
                         color: AppColor.kPrimaryColor,
                       ),
                 ),
+                
               ],
             ),
             SizedBox(
