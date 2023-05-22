@@ -99,7 +99,7 @@ class _EditContentState extends State<EditContent> {
         var response = await http.put(url,
             headers: {
               'content-Type': 'application/json',
-              "Authorization": " Token ${token}"
+              "Authorization": " Token ${token}" 
             },
             body: jsonBody,
             encoding: encoding);

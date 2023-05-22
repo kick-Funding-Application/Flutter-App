@@ -1,6 +1,4 @@
-//import 'dart:io';
-//import 'package:image_picker/image_picker.dart';
-import 'dart:io';
+import 'dart:io';  ///important for upload image
 import 'dart:math';
 import 'package:http_parser/http_parser.dart';
 import 'package:flutter/material.dart';
@@ -8,9 +6,8 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import '../../../theme/app_color.dart';
 import '../routes/routes.dart';
 import '../ui/custom_input_field.dart';
-import 'dart:convert';
-//import 'package:country_picker/country_picker.dart';
-import 'package:http/http.dart' as http;
+import 'dart:convert';   ///important for json convert
+import 'package:http/http.dart' as http; ///important for (api)
 import '../ui/constants.dart';
 import '../ui/tab/widgets/profile/birthdate.dart';
 import '../ui/tab/widgets/profile/country.dart';
@@ -90,9 +87,7 @@ Future SignUp(BuildContext cont) async {
         builder: (_) => const AlertDialog(
               content: Text("Password is too common"),
             ));
-  } else if (response.statusCode == 404) {
-    print(response.statusCode);
-  } else if (response.statusCode == 500) {
+  }  else if (response.statusCode == 500) {
     showDialog(
         context: cont,
         builder: (_) => const AlertDialog(

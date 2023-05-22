@@ -470,7 +470,7 @@ class _StartCharityScreenState extends State<StartCharityScreen> {
       print(result);
 
       if (response.statusCode == 201) {
-        print("Registeration succeeded");
+       
         // showDialog(
         //     context: context,
         //     builder: (_) => const AlertDialog(
