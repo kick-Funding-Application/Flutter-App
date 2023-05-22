@@ -2,17 +2,18 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-import 'package:kickfunding/ui/signup_form.dart';
+import 'package:kickfunding/auth/signup_form.dart';
 import 'package:http/http.dart' as http;
-import 'package:kickfunding/ui/tab/widgets/profile/constants.dart';
+import 'package:kickfunding/ui/constants.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'dart:convert';
-import '../../../../auth/sessionmanage.dart';
-import '../../../../bloc/profile/profile_bloc.dart';
-import '../../../../routes/routes.dart';
-import '../../../../theme/app_color.dart';
+import 'sessionmanage.dart';
+import '../bloc/profile/profile_bloc.dart';
+import '../routes/routes.dart';
+import '../theme/app_color.dart';
 
-import 'details.dart';
-import 'profile_card.dart';
+import '../ui/tab/widgets/profile/details.dart';
+import '../ui/tab/widgets/profile/profile_card.dart';
 
 class ProfileContent extends StatefulWidget {
   const ProfileContent();
@@ -96,6 +97,7 @@ class _ProfileContentState extends State<ProfileContent> {
                     ),
                   ),
                   onPressed: () {
+                    removeToken();
                     Navigator.of(context).pushReplacementNamed(
                       RouteGenerator.splash,
                     );
@@ -122,5 +124,10 @@ class _ProfileContentState extends State<ProfileContent> {
             return Center(child: CircularProgressIndicator());
           }
         });
+  }
+
+  removeToken() async {
+    final prefs = await SharedPreferences.getInstance();
+    prefs.clear();
   }
 }

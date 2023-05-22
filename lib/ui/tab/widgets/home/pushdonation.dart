@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-import 'package:kickfunding/ui/tab/widgets/profile/constants.dart';
+import 'package:kickfunding/ui/constants.dart';
 
 import '../../../../theme/app_color.dart';
 

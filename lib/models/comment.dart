@@ -6,7 +6,8 @@ class Comment {
   final int days;
   final double rate;
 
-  Comment({
+
+  Comment( {
     required this.comment,
     required this.userimage,
     required this.date,

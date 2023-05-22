@@ -4,12 +4,12 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:http/http.dart' as http;
 import 'package:kickfunding/models/result.dart';
 import 'dart:convert';
-import '/ui/tab/widgets/profile/constants.dart';
+import '../../constants.dart';
 import '../../../../theme/app_animation.dart';
 import '../../../../theme/app_color.dart';
 import '../widgets/category.dart';
-import '../widgets/search/intro_card.dart';
-import '../widgets/search/result_card.dart';
+import 'intro_card.dart';
+import 'result_card.dart';
 import '../widgets/search/search_bar.dart';
 import '/initials/constants.dart';
 
@@ -34,21 +34,32 @@ String specificCategory =
 class _SearchScreenState extends State<SearchScreen> {
   @override
   void initState() {
-    fetchData();
-
     super.initState();
 
-    controller = TextEditingController();
-    super.initState();
+    fetchData(); // Call the fetchData() method
+
+    controller = TextEditingController(); // Initialize the controller
+  }
+
+  @override
+  void dispose() {
+    controller.dispose(); // Dispose the controller
+    super.dispose();
   }
 
   void fetchData() async {
-    List<dynamic> specificresults = await getData(charityform.specificCategory);
+    List<dynamic> specificResults = await getData(charityform.specificCategory);
 
-    setState(() {});
+    if (mounted) {
+      // Check if the widget is still mounted before calling setState()
+      setState(() {
+        // Update the state with the fetched data
+        // Perform any other necessary state updates
+      });
+    }
   }
 
-  Widget buildcategory() {
+  Widget buildCategory() {
     return Category(onTap: () {
       fetchData();
     });
@@ -63,7 +74,6 @@ class _SearchScreenState extends State<SearchScreen> {
       if (response2.statusCode == 200) {
         // Parse the JSON response
         final jsonData = json.decode(response2.body);
-
         // Clear the specificurgents list before starting the loop
         specificresults.clear();
 
@@ -203,7 +213,7 @@ class _SearchScreenState extends State<SearchScreen> {
                   height: 16.h,
                 ),
                 !isSearching
-                    ? buildcategory()
+                    ? buildCategory()
                     : SizedBox(
                         height: 10,
                       ),
@@ -225,7 +235,6 @@ class _SearchScreenState extends State<SearchScreen> {
       if (response3.statusCode == 200) {
         // Parse the JSON response
         final jsonData = json.decode(response3.body);
-
         // Clear the specificurgents list before starting the loop
         specificresults2.clear();
 

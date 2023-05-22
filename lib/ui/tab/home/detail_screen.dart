@@ -1,16 +1,17 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:kickfunding/ui/tab/widgets/home/Ratefeedback.dart';
-import 'package:kickfunding/ui/tab/widgets/profile/constants.dart';
+import 'package:kickfunding/ui/constants.dart';
 import '../../../../models/urgent.dart';
 import '../../../../theme/app_color.dart';
 import '../../../auth/login_form.dart';
 import '../../../models/comment.dart';
 import '../../../routes/routes.dart';
 import '../widgets/home/calculator_builder.dart';
-import '../widgets/home/peoplecomment.dart';
+import 'peoplecomment.dart';
 import 'rate.dart';
 import 'dart:convert';
 import 'package:http/http.dart' as http;
@@ -30,8 +31,7 @@ bool nocomments = false;
 
 String id = '1';
 double rate = 0;
-String test =
-    '''
+String test = '''
 [
     {
         "id": 2,
@@ -96,19 +96,27 @@ class _DetailScreenState extends State<DetailScreen> {
   String feedback = '';
 
   void resetVariables() {
-    setState(() {
-      rate = 0;
-      feedback = '';
-    });
+    if (mounted) {
+      // Check if the widget is still mounted before calling setState()
+      setState(() {
+        rate = 0;
+        feedback = '';
+      });
+    }
   }
 
   @override
   void initState() {
-    setState(() {
-      id = widget.urgent.id.toString();
-    });
-    resetVariables();
     super.initState();
+
+    if (mounted) {
+      // Check if the widget is still mounted before calling setState()
+      setState(() {
+        id = widget.urgent.id.toString();
+      });
+    }
+
+    resetVariables();
   }
 
   @override
@@ -797,61 +805,61 @@ class _DetailScreenState extends State<DetailScreen> {
       return; // Widget is no longer mounted, exit early
     }
     /**removecomment when online */
-    try {
-      Map<String, dynamic> body = {
-        "rate": rate,
-        "content": feedback,
-      };
-      String jsonBody = json.encode(body);
-      final encoding = Encoding.getByName('utf-8');
+    if (rate == 0) {
+      showDialog(
+          context: context,
+          builder: (_) => const AlertDialog(
+                content: Text("No Rate Selected"),
+              ));
+    } else {
+      try {
+        Map<String, dynamic> body = {
+          "rate": rate,
+          "content": feedback,
+        };
+        String jsonBody = json.encode(body);
+        final encoding = Encoding.getByName('utf-8');
 
-      var url = Uri.parse(
-          "https://kickfunding.herokuapp.com/api/projects/${id}/feedback/");
-      var response = await http.post(url,
-          headers: {
-            'content-Type': 'application/json',
-            "Authorization": "Token ${token}"
-          },
-          body: jsonBody,
-          encoding: encoding);
-      var result = response.body;
+        var url = Uri.parse(
+            "https://kickfunding.herokuapp.com/api/projects/${id}/feedback/");
+        var response = await http.post(url,
+            headers: {
+              'content-Type': 'application/json',
+              "Authorization": "Token ${token}"
+            },
+            body: jsonBody,
+            encoding: encoding);
+        var result = response.body;
 
-      if (response.statusCode == 201) {
-        print("Registeration succeeded");
-        showDialog(
-            context: context,
-            builder: (_) => const AlertDialog(
-                  content: Text("Comment Posted!"),
-                ));
-        Navigator.of(context).pushReplacementNamed(
-          RouteGenerator.main,
-        );
+        if (response.statusCode == 201) {
+          print("Registeration succeeded");
+          ScaffoldMessenger.of(context).showSnackBar(
+              SnackBar(content: Text("Thanks for your feedback!")));
+          Navigator.of(context).pushReplacementNamed(
+            RouteGenerator.main,
+          );
 
-        print('Registration successful');
-      } else if (response.statusCode == 403) {
-        showDialog(
-            context: context,
-            builder: (_) => const AlertDialog(
-                  content: Text("You Can\'t rate for the same project twice! "),
-                ));
-      } else if (response.statusCode == 404) {
-        showDialog(
-            context: context,
-            builder: (_) => const AlertDialog(
-                  content: Text("Server is lagging please wait "),
-                ));
-      } else {
-        showDialog(
-            context: context,
-            builder: (_) => const AlertDialog(
-                  content: Text("No Rate Selected"),
-                ));
+          print('Registration successful');
+        } else if (response.statusCode == 403) {
+          showDialog(
+              context: context,
+              builder: (_) => const AlertDialog(
+                    content:
+                        Text("You Can\'t rate for the same project twice! "),
+                  ));
+        } else if (response.statusCode == 404) {
+          showDialog(
+              context: context,
+              builder: (_) => const AlertDialog(
+                    content: Text("Server is lagging please wait "),
+                  ));
+        }
+      } catch (e) {
+        print(e.toString());
       }
-    } catch (e) {
-      print(e.toString());
-    }
 
-    /**removecomment when online */
+      /**removecomment when online */
+    }
   }
 }
 

@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:kickfunding/ui/tab/widgets/charity/charity_input_field.dart';
-import '../profile/constants.dart';
+import '../../../constants.dart';
 import '../../../../theme/app_color.dart';
 
 class Calculator extends StatefulWidget {

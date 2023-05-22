@@ -3,6 +3,7 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 
 class constant {
+  static var tokenuser;
   static var country = 'Egypt';
   static var pid = '1';
   static var projecttitle = 'RoboBrain';

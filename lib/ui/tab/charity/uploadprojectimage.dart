@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:path/path.dart' as p;
 import 'package:image_picker/image_picker.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:kickfunding/ui/tab/widgets/profile/constants.dart';
+import 'package:kickfunding/ui/constants.dart';
 import '../../../../theme/app_color.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:image/image.dart' as img; // Import image package

@@ -3,20 +3,20 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:kickfunding/auth/login_form.dart';
 import 'package:kickfunding/ui/tab/widgets/profile/uploadfirebase.dart';
-import '../../../../auth/sessionmanage.dart';
+import 'sessionmanage.dart';
 import '/ui/custom_input_field.dart';
 import 'package:firebase_storage/firebase_storage.dart' as firebase_storage;
-import '../../../../routes/routes.dart';
-import 'constants.dart';
-import '../../../../theme/app_color.dart';
+import '../routes/routes.dart';
+import '../ui/constants.dart';
+import '../theme/app_color.dart';
 import 'package:flutter_image_compress/flutter_image_compress.dart';
 
-import '../charity/charity_input_field.dart';
-import 'birthdate.dart';
+import '../ui/tab/widgets/charity/charity_input_field.dart';
+import '../ui/tab/widgets/profile/birthdate.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
-import 'country.dart';
-import 'uploadphoto.dart';
+import '../ui/tab/widgets/profile/country.dart';
+import '../ui/tab/widgets/profile/uploadphoto.dart';
 import 'dart:io';
 import 'package:image_picker/image_picker.dart';
 

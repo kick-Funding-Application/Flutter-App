@@ -9,7 +9,7 @@ import '../auth/signup_screen.dart';
 import '../initials/onboarding_screen.dart';
 import '../initials/SplashScreen.dart';
 import '../ui/tab/tab_screen.dart';
-import '../ui/tab/charity/start_charity_screen.dart';
+import '../ui/tab/search/start_charity_screen.dart';
 import '../ui/tab/charity/step_four_screen.dart';
 import '../ui/tab/charity/step_one_screen.dart';
 import '../ui/tab/charity/step_three_screen.dart';

@@ -7,8 +7,8 @@ import '../../../../bloc/profile/profile_bloc.dart';
 import '../../../../theme/app_color.dart';
 import '../../../constants.dart';
 
-class ProfileCard extends StatelessWidget {
-  const ProfileCard(
+class ProfileCardUser extends StatelessWidget {
+  const ProfileCardUser(
       {required this.phone, required this.firstname, required this.lastname});
   final String firstname;
   final String lastname;

@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:firebase_storage/firebase_storage.dart' as firebase_storage;
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:kickfunding/ui/tab/widgets/profile/constants.dart';
+import 'package:kickfunding/ui/constants.dart';
 import '../../../../theme/app_color.dart';
 import 'package:image/image.dart' as img; // Import image package
 import 'package:path_provider/path_provider.dart'; // Import path_provider package

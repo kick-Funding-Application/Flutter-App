@@ -4,9 +4,9 @@ import 'package:flutter_svg/flutter_svg.dart';
 
 // import '../../../../models/result.dart';
 // import '../../../../routes/routes.dart';
-import '../../../../models/result.dart';
-import '../../../../routes/routes.dart';
-import '../../../../theme/app_color.dart';
+import '../../../models/result.dart';
+import '../../../routes/routes.dart';
+import '../../../theme/app_color.dart';
 
 class ResultCard extends StatefulWidget {
   ResultCard(this.result);

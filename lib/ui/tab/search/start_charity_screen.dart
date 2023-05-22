@@ -13,7 +13,7 @@ import '../../../auth/login_form.dart';
 import 'dart:io';
 import 'package:image_picker/image_picker.dart';
 import 'package:firebase_storage/firebase_storage.dart' as firebase_storage;
-import '../widgets/profile/constants.dart';
+import '../../constants.dart';
 import 'dart:convert';
 //import 'package:country_picker/country_picker.dart';
 import 'package:http/http.dart' as http;

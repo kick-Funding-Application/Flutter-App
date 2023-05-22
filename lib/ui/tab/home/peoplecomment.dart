@@ -2,10 +2,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:kickfunding/ui/tab/profile/profile_user.dart';
 
-import '../../../../models/comment.dart';
-import '../../../../routes/routes.dart';
-import '../../../../theme/app_color.dart';
+import '../../../models/comment.dart';
+import '../../../routes/routes.dart';
+import '../../../theme/app_color.dart';
 
 class PeopleComment extends StatefulWidget {
   const PeopleComment(this.comment);
@@ -32,10 +33,12 @@ class _PeopleCommentState extends State<PeopleComment> {
                     color: AppColor.kPlaceholder1,
                   ),
                   child: Center(
-                    child: CircleAvatar(
-                      radius: 40,
-                      backgroundImage: NetworkImage(
-                          widget.comment.userimage),
+                    child: GestureDetector(
+                      onTap: () {},
+                      child: CircleAvatar(
+                        radius: 40,
+                        backgroundImage: NetworkImage(widget.comment.userimage),
+                      ),
                     ),
                   ),
                 ),
@@ -91,7 +94,7 @@ class _PeopleCommentState extends State<PeopleComment> {
                       ),
                     ),
                   ],
-                )
+                ),
               ],
             ),
             Divider(),

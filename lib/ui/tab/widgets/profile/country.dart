@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import '../../../../theme/app_color.dart';
-import 'constants.dart';
+import '../../../constants.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:country_picker/country_picker.dart';
 

@@ -7,15 +7,15 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import '../../../theme/app_color.dart';
 import '../routes/routes.dart';
-import 'custom_input_field.dart';
+import '../ui/custom_input_field.dart';
 import 'dart:convert';
 //import 'package:country_picker/country_picker.dart';
 import 'package:http/http.dart' as http;
-import 'tab/widgets/profile/constants.dart';
-import 'tab/widgets/profile/birthdate.dart';
-import 'tab/widgets/profile/country.dart';
-import 'tab/widgets/profile/phone.dart';
-import 'tab/widgets/profile/uploadphoto.dart';
+import '../ui/constants.dart';
+import '../ui/tab/widgets/profile/birthdate.dart';
+import '../ui/tab/widgets/profile/country.dart';
+import '../ui/tab/widgets/profile/phone.dart';
+import '../ui/tab/widgets/profile/uploadphoto.dart';
 
 class SignupForm extends StatefulWidget {
   const SignupForm({

@@ -37,11 +37,11 @@ class _TabScreenState extends State<TabScreen> {
     super.initState();
   }
 
-  @override
-  void dispose() {
-    pageController.dispose(); // Dispose the PageController
-    super.dispose();
-  }
+  // @override
+  // void dispose() {
+  //   pageController.dispose(); // Dispose the PageController
+  //   super.dispose();
+  // }
 
   void navigateToTab(int index) async {
     setState(() {

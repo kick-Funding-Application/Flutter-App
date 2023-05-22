@@ -4,7 +4,7 @@ import 'package:flutter_svg/flutter_svg.dart';
 
 import '../../../../routes/routes.dart';
 import '../../../../theme/app_color.dart';
-import '../profile/constants.dart';
+import '../../../constants.dart';
 
 class Header extends StatefulWidget {
   const Header();

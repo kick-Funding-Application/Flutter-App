@@ -1,7 +1,7 @@
 import 'package:intl_phone_number_input/intl_phone_number_input.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'constants.dart';
+import '../../../constants.dart';
 import '../../../../theme/app_color.dart';
 
 class IntlPhoneField extends StatefulWidget {

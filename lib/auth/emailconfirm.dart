@@ -1,13 +1,13 @@
 import 'package:email_auth/email_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:kickfunding/ui/tab/widgets/profile/constants.dart';
+import 'package:kickfunding/ui/constants.dart';
 import 'dart:convert';
 import 'package:http/http.dart' as http;
 import '../../../routes/routes.dart';
 import '../../../theme/app_color.dart';
 import '../ui/custom_input_field.dart';
-import '../ui/signup_form.dart';
+import 'signup_form.dart';
 
 class emailConfirm extends StatefulWidget {
   const emailConfirm();

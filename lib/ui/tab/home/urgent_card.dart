@@ -2,9 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 
-import '../../../../models/urgent.dart';
-import '../../../../routes/routes.dart';
-import '../../../../theme/app_color.dart';
+import '../../../models/urgent.dart';
+import '../../../routes/routes.dart';
+import '../../../theme/app_color.dart';
 
 class UrgentCard extends StatefulWidget {
   const UrgentCard(

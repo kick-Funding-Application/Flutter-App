@@ -1,14 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
-import '../widgets/profile/constants.dart';
+import '../../constants.dart';
 import '../../../../models/urgent.dart';
 import '../../../../theme/app_color.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
 import '../widgets/category.dart';
 import '../widgets/home/header.dart';
-import '../widgets/home/urgent_card.dart';
+import 'urgent_card.dart';
 import '/initials/constants.dart';
 
 final List<Urgent> urgents = [];
@@ -29,10 +29,9 @@ Future getData(String category) async {
     if (response2.statusCode == 200) {
       // Parse the JSON response
       final jsonData = json.decode(response2.body);
-
       // Clear the specificurgents list before starting the loop
       specificurgents.clear();
-      print(jsonData);
+
       // Iterate over the parsed data and append to the urgents list
       for (var data in jsonData) {
         int target = data['target_amount'];
@@ -91,7 +90,10 @@ class HomeScreen extends StatefulWidget {
 class _HomeScreenState extends State<HomeScreen> {
   @override
   void initState() {
+    super.initState();
+
     fetchData();
+
     controller = ScrollController();
     controller.addListener(() {
       position = controller.offset;
@@ -99,24 +101,40 @@ class _HomeScreenState extends State<HomeScreen> {
         return;
       }
       if (controller.offset == 0) {
-        setState(() {
-          currentIndex = 0;
-        });
+        if (mounted) {
+          setState(() {
+            currentIndex = 0;
+          });
+        }
         return;
       }
-      setState(() {
-        currentIndex = (position / oneCardWidth).floor() + 1;
-      });
+      if (mounted) {
+        setState(() {
+          currentIndex = (position / oneCardWidth).floor() + 1;
+        });
+      }
     });
-    super.initState();
+  }
+
+  @override
+  void dispose() {
+    controller.dispose(); // Dispose the controller
+    super.dispose();
   }
 
   void fetchData() async {
-    List<dynamic> specificurgents = await getData(charityform.specificCategory);
-    setState(() {});
+    List<dynamic> specificUrgents = await getData(charityform.specificCategory);
+
+    if (mounted) {
+      // Check if the widget is still mounted before calling setState()
+      setState(() {
+        // Update the state with the fetched data
+        // Perform any other necessary state updates
+      });
+    }
   }
 
-  Widget buildcategory() {
+  Widget buildCategory() {
     return Category(onTap: () {
       fetchData();
     });
@@ -230,7 +248,7 @@ class _HomeScreenState extends State<HomeScreen> {
                     ),
                   ),
                   Spacer(),
-                  buildcategory(),
+                  buildCategory(),
                   // Category(
                   //   onTap: () {
                   //     setState(() {

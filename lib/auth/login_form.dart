@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:kickfunding/auth/sessionmanage.dart';
-import 'package:kickfunding/ui/signup_form.dart';
+import 'package:kickfunding/auth/signup_form.dart';
 //import 'package:flutter_svg/flutter_svg.dart';
-import 'package:kickfunding/ui/tab/widgets/profile/constants.dart';
+import 'package:kickfunding/ui/constants.dart';
 import '../../../theme/app_color.dart';
 import '../routes/routes.dart';
 import 'dart:convert';
@@ -214,6 +214,7 @@ class _LoginFormState extends State<LoginForm> {
         if (response.statusCode == 200) {
           check = true;
           token = data["key"];
+
           getinfo();
           reload(context);
         } else if (response.statusCode == 400) {
@@ -276,13 +277,20 @@ class _LoginFormState extends State<LoginForm> {
     }
   }
 
+  storeToken() async {
+    final prefs = await SharedPreferences.getInstance();
+    await prefs.setString('token', '${token}');
+  }
+
+ 
+
   Future<void> reload(context) async {
     constant.success = true;
     setState(() {
       check = true;
     });
     await sessionManager.setLoggedIn(true);
-
+    storeToken();
     // ignore: unnecessary_null_comparison
     await Future.delayed(Duration(seconds: 3));
     Navigator.of(context).pushReplacementNamed(

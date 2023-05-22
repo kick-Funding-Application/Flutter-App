@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import '/ui/tab/widgets/profile/constants.dart';
+import '../ui/constants.dart';
 import '../../../theme/app_color.dart';
 import '../routes/routes.dart';
-import '../ui/signup_form.dart';
+import 'signup_form.dart';
 
 class SignupScreen extends StatefulWidget {
   const SignupScreen();

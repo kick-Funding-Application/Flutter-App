@@ -10,7 +10,7 @@ import '/ui/custom_input_field.dart';
 import '../../../../routes/routes.dart';
 import '../../../../theme/app_color.dart';
 import '../charity/charity_input_field.dart';
-import '/ui/tab/widgets/profile/constants.dart';
+import '../../../constants.dart';
 import '/initials/constants.dart';
 import 'package:http/http.dart' as http;
 import 'dart:io';

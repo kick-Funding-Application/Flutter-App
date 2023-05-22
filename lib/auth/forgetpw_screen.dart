@@ -5,8 +5,8 @@ import 'package:http/http.dart' as http;
 import '../../../routes/routes.dart';
 import '../../../theme/app_color.dart';
 import '../ui/custom_input_field.dart';
-import '../ui/signup_form.dart';
-import '/ui/tab/widgets/profile/constants.dart';
+import 'signup_form.dart';
+import '../ui/constants.dart';
 
 class ForgetPwScreen extends StatefulWidget {
   const ForgetPwScreen();

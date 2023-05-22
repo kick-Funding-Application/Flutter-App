@@ -4,13 +4,13 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 //import 'package:intl/intl.dart';
 import 'package:http/http.dart' as http;
 import 'package:kickfunding/models/donator.dart';
-import 'package:kickfunding/ui/tab/charity/start_charity_screen.dart';
+import 'package:kickfunding/ui/tab/search/start_charity_screen.dart';
 import 'package:kickfunding/ui/tab/search/search_screen.dart';
 import 'package:kickfunding/ui/tab/widgets/swap/donationstest.dart';
 import 'package:kickfunding/ui/tab/widgets/swap/donators.dart';
 import 'dart:convert';
 import '../../../../models/urgent.dart';
-import '/ui/tab/widgets/profile/constants.dart';
+import '../../../constants.dart';
 import '../../../../auth/login_form.dart';
 import '../../../../bloc/swap/swap_bloc.dart';
 import '../../../../models/donation.dart';
@@ -50,118 +50,7 @@ class CharityContent extends StatefulWidget {
 final List<dynamic> myprojects = [];
 
 Future getData() async {
-  var url = Uri.parse("https://dummyjson.com/quotes");
-  var response = await http.get(url);
-  var responsebody = jsonDecode(response.body);
-  //return responsebody["quotes"];
 
-// Make the HTTP GET request
-
-/**FOR TEST */
-
-  String test = '''
-    [
-      {    "title": "Title of project",
-    "target": "500.00",
-    "percent": "50",
-    "assetName": "assets/images/image_placeholder.svg",
-    "category": "Education",
-     "organizer": "organizer",
-    "remaining": "250.00",
-    "rate": "0.0",
-    "details": "details",
-    "end_date": "2024-05-26",
-    "start_date": "2022-02-01",
-    "days": "10",
-    "tags": "help"},
-      {"title": "Title of project",
-    "target": "500.00",
-    "percent": "50",
-    "assetName": "assets/images/image_placeholder.svg",
-    "category": "Animal",
-     "organizer": "organizer",
-    "remaining": "250.00",
-    "rate": "0.0",
-    "details": "details",
-    "end_date": "2024-05-26",
-    "start_date": "2022-02-01",
-    "days": "10",
-    "tags": "help"},
-      {"title": "Title of project",
-    "target": "500.00",
-    "percent": "50",
-    "assetName": "assets/images/image_placeholder.svg",
-    "category": "Education",
-     "organizer": "organizer",
-    "remaining": "200.00",
-    "rate": "0.0",
-    "details": "details..",
-    "end_date": "2024-05-26",
-    "start_date": "2022-02-01",
-    "days": "10",
-    "tags": "help"},
-    {"title": "Zahraa",
-    "target": "1000.00",
-    "percent": "50",
-    "assetName": "assets/images/image_placeholder.svg",
-    "category": "Health",
-     "organizer": "organizer",
-    "remaining": "100.00",
-    "rate": "0.0",
-    "details": "details..",
-    "end_date": "2024-05-26",
-    "start_date": "2022-02-01",
-    "days": "10",
-    "tags": "help"},
-    {"title": "Help The environment",
-    "target": "1000.00",
-    "percent": "50",
-    "assetName": "assets/images/image_placeholder.svg",
-    "category": "Environment",
-    "organizer": "organizer",
-    "remaining": "100.00",
-    "rate": "0.0",
-    "details": "details..",
-    "end_date": "2024-05-26",
-    "start_date": "2022-02-01",
-    "days": "10",
-    "tags": "help"}
-    ]
-  '''; // Example JSON data
-
-  // List<dynamic> jsonData = json.decode(test);
-  // myprojects.clear();
-
-  // for (var data in jsonData) {
-  //   double target = double.parse(data['target']);
-  //   double remaining = double.parse(data['remaining']);
-  //   double percent = ((target - remaining) / target) * 100;
-  //   DateTime end_date = DateTime.parse(data['end_date']).toLocal();
-  //   DateTime currentDate = DateTime.now().toLocal();
-  //   Duration remainingDuration = end_date.difference(currentDate);
-  //   int days = remainingDuration.inDays;
-  //   Result result = Result(
-  //     userimage:
-  //         'https://th.bing.com/th/id/OIP.OF59vsDmwxPP1tw7b_8clQHaE8?pid=ImgDet&rs=1',
-  //     title: data['title'],
-  //     target: data['target'],
-  //     percent:
-  //         percent.toStringAsFixed(0), // Convert to string with 2 decimal places
-  //     assetName: data['assetName'],
-  //     category: data['category'],
-  //     organizer: data['organizer'],
-  //     remaining: data['remaining'],
-  //     rate: double.parse(data['rate'].toString()),
-  //     details: data['details'],
-  //     end_date: data['end_date'],
-  //     start_date: data['start_date'],
-  //     days: days,
-  //     tags: data['tags'],
-  //   );
-
-  //   myprojects.add(result);
-
-// Access the filtered results
   try {
 /**FOR TEST */
     var url2 = Uri.parse("${constant.server}api/dj-rest-auth/user/projects");
@@ -221,7 +110,7 @@ Future getData() async {
       }
     }
   } catch (e) {
-    print(e.toString());
+    print(e.toString()); // print error
   }
   return myprojects;
 }
@@ -230,7 +119,8 @@ class _CharityContentState extends State<CharityContent> {
   @override
   Widget build(BuildContext context) {
     return FutureBuilder(
-      future: getData(), // Replace with your async operation or future
+      //future to wait for data to be collected
+      future: getData(), // call the function
       builder: (BuildContext context, AsyncSnapshot snapshot) {
         if (snapshot.connectionState == ConnectionState.waiting) {
           return Center(child: CircularProgressIndicator());
@@ -240,6 +130,7 @@ class _CharityContentState extends State<CharityContent> {
           return Container(
             padding: EdgeInsets.symmetric(horizontal: 16.0.w),
             child: BlocBuilder<SwapBloc, SwapState>(
+              /// to يسمع في السكرينات
               builder: (context, state) {
                 return SingleChildScrollView(
                   child: Column(
@@ -287,33 +178,6 @@ class DonationContent extends StatefulWidget {
 List<Donation> mydonations = [];
 
 Future<List<Donation>> getData2() async {
-  String test2 = '''
-   [
-  {
-    "transaction_list": {
-      "2023-05-18": [
-        {
-          "amount": 100.0,
-          "project": "Hospital",
-          "details": "A hospital is a vital healthcare facility that serves the community by providing comprehensive medical services. It is staffed by a diverse team of healthcare professionals, including doctors, nurses, specialists, and support staff, who work together to deliver high-quality care."
-        },
-        {
-          "amount": 50.0,
-          "project": "Hospital",
-          "details": "A hospital is a vital healthcare facility that serves the community by providing comprehensive medical services. It is staffed by a diverse team of healthcare professionals, including doctors, nurses, specialists, and support staff, who work together to deliver high-quality care."
-        },
-        {
-          "amount": 10.0,
-          "project": "Help the Deer",
-          "details": "Deer are medium-sized mammals known for their grace and agility. They have slender bodies, long legs, and hooves, which enable them to move swiftly through various habitats. Their fur can vary in color, ranging from reddish-brown to grayish-brown, depending on the species and the season."
-        }
-      ]
-    }
-  }
-]
-
-  ''';
-
   try {
     var url2 = Uri.parse("${constant.server}api/dj-rest-auth/user/donate/");
     var response2 = await http.get(
@@ -323,7 +187,6 @@ Future<List<Donation>> getData2() async {
         "Authorization": " Token ${token}"
       },
     );
-
     List<dynamic> transactions = json.decode(response2.body);
 
     // Iterate over each transaction entry
@@ -344,6 +207,7 @@ Future<List<Donation>> getData2() async {
               total: transaction['amount'],
               date: date);
           mydonations.add(mydonation);
+          print(mydonations.length);
         }
       });
     }
@@ -442,45 +306,6 @@ class DonatorContent extends StatefulWidget {
 List<Donator> donators = [];
 
 Future<List<Donator>> getData3() async {
-  String test3 = '''
-[
-  {
-    "donation_list": {
-      "2023-05-18": [
-        {
-          "amount": 100.0,
-          "user": "Ahmed"
-        },
-        {
-          "amount": 50.0,
-          "user": "Zahraa"
-        },
-        {
-          "amount": 10.0,
-          "user": "Admin"
-        }
-      ],
-      "2023-05-19": [
-        {
-          "amount": 100.0,
-          "user": "Ahmed"
-        },
-        {
-          "amount": 50.0,
-          "user": "Zahraa"
-        },
-        {
-          "amount": 10.0,
-          "user": "Admin"
-        }
-      ]
-    }
-  }
-]
-''';
-
-  //List<dynamic> jsonData = json.decode(test3);
-
   try {
     var url2 = Uri.parse(
         "${constant.server}api/donate/${charityform.donationID}/history/");

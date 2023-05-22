@@ -3,10 +3,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import '../../../../bloc/profile/profile_bloc.dart';
-import '../widgets/profile/edit_content.dart';
+import '../../../auth/edit_content.dart';
 import '../widgets/profile/payment_content.dart';
 import '../widgets/profile/payment_header.dart';
-import '../widgets/profile/profile_content.dart';
+import '../../../auth/profile_content.dart';
 import '../widgets/profile/profile_header.dart';
 
 class ProfileScreen extends StatelessWidget {
